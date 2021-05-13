@@ -1,0 +1,17 @@
+# App configuration
+server:
+  port: 8189
+
+# Spring
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://192.168.64.6:30432/jpa-test
+    username: postgres
+    password: pass
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
+
