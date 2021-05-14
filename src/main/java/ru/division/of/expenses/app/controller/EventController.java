@@ -6,4 +6,7 @@ import org.springframework.stereotype.Controller;
 @Controller
 @RequiredArgsConstructor
 public class EventController {
+
+    private EventController eventController;
+
 }
