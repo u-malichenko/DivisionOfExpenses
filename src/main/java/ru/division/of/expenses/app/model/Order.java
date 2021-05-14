@@ -4,14 +4,19 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
-import java.util.Map;
 
 @Entity
 @Data
 public class Order extends AbstractEntity {
 
-    @OneToOne
+    @ManyToOne
+    @JoinTable(
+            name = "users_orders",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "order_id"))
     private User buyer;
 
     @Column
@@ -26,18 +31,18 @@ public class Order extends AbstractEntity {
     @Column
     private BigDecimal totalOrderSum;
 
-    @ElementCollection
-    @CollectionTable(name = "direct_payers_map",
-            joinColumns = {@JoinColumn(name = "user_entity_id", referencedColumnName = "id")})
-    @MapKeyColumn(name = "user_entity_name")
-    @Column(name = "direct_payers")
-    private Map<User, Double> directPayersMap;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinTable(
+            name = "direct_payers_orders",
+            joinColumns = @JoinColumn(name = "direct_payer_id"),
+            inverseJoinColumns = @JoinColumn(name = "order_id"))
+    private Collection<DirectPayer> directPayersList = new ArrayList<>();
 
-    @ElementCollection
-    @CollectionTable(name = "partitial_payers_map",
-            joinColumns = {@JoinColumn(name = "user_entity_id", referencedColumnName = "id")})
-    @MapKeyColumn(name = "user_entity_name")
-    @Column(name = "partitial_payers")
-    private Map<User, Double> partitialPayersMap;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinTable(
+            name = "partitial_payers_orders",
+            joinColumns = @JoinColumn(name = "partitial_payer_id"),
+            inverseJoinColumns = @JoinColumn(name = "order_id"))
+    private Collection<DirectPayer> partitialPayersList = new ArrayList<>();
 
 }
