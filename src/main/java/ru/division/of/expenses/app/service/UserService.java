@@ -13,6 +13,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class UserService {
+
     private final UserRepository userRepository;
 
     public Page<User> findAllUsers(
@@ -33,4 +34,5 @@ public class UserService {
     ) {
         return userRepository.findUsersByName(name, PageRequest.of(page, size));
     }
+
 }
