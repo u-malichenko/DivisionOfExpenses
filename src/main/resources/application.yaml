@@ -7,8 +7,8 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://192.168.77.25:5432/postgresdb
-    username:
-    password:
+    username: palandarus
+    password: zx12gh67IP
 
   jpa:
     show-sql: true

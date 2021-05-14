@@ -16,6 +16,8 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
     )
     Page<User> findAllUsers(Pageable pageable);
 
+    Page<User> findAll(Pageable pageable);
+
 
     @Query(
             value = "SELECT u FROM User u WHERE u.firstName like :name or u.lastName like :name"
