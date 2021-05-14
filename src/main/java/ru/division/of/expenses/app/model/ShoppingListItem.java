@@ -15,4 +15,5 @@ public class ShoppingListItem extends AbstractEntity {
     @Column
     private String quantity;
 
+
 }
