@@ -6,12 +6,12 @@ server:
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://192.168.64.6:30432/jpa-test
-    username: postgres
-    password: pass
+    url: jdbc:postgresql://192.168.77.25:5432/postgresdb
+    username: palandarus
+    password: zx12gh67IP
 
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: validate
+      ddl-auto: create
 

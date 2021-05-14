@@ -4,13 +4,9 @@ import lombok.Data;
 
 import javax.persistence.*;
 
-@Entity
+@Entity(name = "user_entity")
 @Data
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+public class User extends AbstractEntity{
 
     @Column(name = "first_name")
     private String firstName;

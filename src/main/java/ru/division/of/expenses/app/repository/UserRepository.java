@@ -19,7 +19,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 
     @Query(
-            value = "SELECT u FROM User u WHERE u.firstName like :name or u.lastName like :name"
+            value = "SELECT u FROM User_entity u WHERE u.firstName like :name or u.lastName like :name"
     )
     List<User> findUsersByName(
             @Param("name") String name,
