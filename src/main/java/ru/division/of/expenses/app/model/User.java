@@ -31,5 +31,7 @@ public class User extends AbstractEntity {
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Collection<Orders> orders = new ArrayList<>();
 
+    //TODO добавить лист Event'ов
+
 
 }

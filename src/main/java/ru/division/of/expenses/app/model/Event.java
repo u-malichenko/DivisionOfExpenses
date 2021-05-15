@@ -28,4 +28,6 @@ public class Event extends AbstractEntity {
     @OneToMany
     private Collection<Role> roles = new ArrayList<>();
 
+    //TODO привести модель к соответствию диаграмме
+
 }
