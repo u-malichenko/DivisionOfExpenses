@@ -7,10 +7,13 @@ import javax.persistence.Entity;
 
 @Entity
 @Data
-public class Role extends AbstractEntity{
+public class ShoppingListItem extends AbstractEntity {
 
-
-    @Column(name = "name")
+    @Column
     private String name;
+
+    @Column
+    private String quantity;
+
 
 }
