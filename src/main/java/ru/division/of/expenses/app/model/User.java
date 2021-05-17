@@ -24,14 +24,13 @@ public class User extends AbstractEntity {
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Collection<Role> roles = new ArrayList<>();
 
-    @OneToMany
-    @JoinTable(
-            name = "users_orders",
-            joinColumns = @JoinColumn(name = "order_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private Collection<Orders> orders = new ArrayList<>();
 
-    //TODO добавить лист Event'ов
+    @ManyToMany
+    @JoinTable(
+            name = "events_users",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "event_id"))
+    private Collection<Event> eventList = new ArrayList<>();
 
 
 }

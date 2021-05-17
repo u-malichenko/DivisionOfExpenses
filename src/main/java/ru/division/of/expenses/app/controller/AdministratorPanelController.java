@@ -12,7 +12,7 @@ public class AdministratorPanelController {
 
     private DirectPayersService directPayersService;
     private EventService eventService;
-    private OrdersService ordersService;
+    private ExpenseService expenseService;
     private PartitialPayersService partitialPayersService;
     private RoleService roleService;
     private ShoppingListItemService shoppingListItemService;

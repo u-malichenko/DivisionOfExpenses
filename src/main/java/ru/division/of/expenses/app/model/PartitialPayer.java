@@ -19,6 +19,6 @@ public class PartitialPayer extends AbstractEntity {
 
     @ManyToOne
 //    @JoinColumn(name = "order_id")
-    private Orders order;
+    private Expense order;
 
 }

@@ -13,7 +13,7 @@ import java.util.List;
 
 @Entity
 @Data
-public class Orders extends AbstractEntity {
+public class Expense extends AbstractEntity {
 
     @ManyToOne
     private User buyer;
