@@ -5,7 +5,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.util.Calendar;
 
 @MappedSuperclass
 @Data
@@ -19,12 +19,12 @@ public abstract class AbstractEntity {
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_date", updatable = false)
-    private LocalDate createDate;
+    private Calendar createDate;
 
     @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "modify_date")
-    private LocalDate modifyDate;
+    private Calendar modifyDate;
 
 
 }
