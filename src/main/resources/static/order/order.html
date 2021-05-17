@@ -1,42 +1,42 @@
-<div>
-    <h3>Оформление заказа</h3>
-    <span ng-show = "cart.items.length == 0">В заказе нет товаров</span>
-    <table class="table table-hover" cellpadding="0" cellspacing="0" ng-show = "cart.items.length > 0">
-        <tr>
-            <th>Название</th>
-            <th>Категория</th>
-            <th>Количество</th>
-            <th>Цена</th>
-        </tr>
-        <tbody>
-        <tr ng-repeat="oi in cart.items">
-            <td>{{oi.productTitle}}</td>
-            <td>{{oi.categoryTitle}}</td>
-            <td>{{oi.quantity}}</td>
-            <td>{{oi.pricePerProduct + ' * ' + oi.quantity + ' = ' + oi.price}}</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>Итоговая стоимость</td>
-            <td>{{cart.price}}</td>
-        </tr>
-        </tbody>
-    </table>
-    <form createNewOrder ng-submit="createNewOrder()" ng-show = "cart.items.length > 0">
-        <div class="form-group col-md-6">
-            <label for="receiver_name">Имя получателя</label>
-            <input class="form-control" type="text" ng-model="order.receiverName" id="receiver_name" placeholder="Имя получателя">
-        </div>
-        <div class="form-group col-md-6">
-            <label for="phone_number">Телефон</label>
-            <input class="form-control" type="text" ng-model="order.phone" id="phone_number" placeholder="Телефон">
-        </div>
-        <div class="form-group col-md-6">
-            <label for="address">Адрес доставки</label>
-            <input class="form-control" type="text" ng-model="order.address" id="address" placeholder="Адрес доставки">
-        </div>
-        <div>
-            <button class="btn btn-success" type="submit">Подтвердить</button>
-        </div>
-    </form>
-</div>
+<!--<div>-->
+<!--    <h3>Оформление заказа</h3>-->
+<!--    <span ng-show = "cart.items.length == 0">В заказе нет товаров</span>-->
+<!--    <table class="table table-hover" cellpadding="0" cellspacing="0" ng-show = "cart.items.length > 0">-->
+<!--        <tr>-->
+<!--            <th>Название</th>-->
+<!--            <th>Категория</th>-->
+<!--            <th>Количество</th>-->
+<!--            <th>Цена</th>-->
+<!--        </tr>-->
+<!--        <tbody>-->
+<!--        <tr ng-repeat="oi in cart.items">-->
+<!--            <td>{{oi.productTitle}}</td>-->
+<!--            <td>{{oi.categoryTitle}}</td>-->
+<!--            <td>{{oi.quantity}}</td>-->
+<!--            <td>{{oi.pricePerProduct + ' * ' + oi.quantity + ' = ' + oi.price}}</td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--            <td></td>-->
+<!--            <td>Итоговая стоимость</td>-->
+<!--            <td>{{cart.price}}</td>-->
+<!--        </tr>-->
+<!--        </tbody>-->
+<!--    </table>-->
+<!--    <form createNewOrder ng-submit="createNewOrder()" ng-show = "cart.items.length > 0">-->
+<!--        <div class="form-group col-md-6">-->
+<!--            <label for="receiver_name">Имя получателя</label>-->
+<!--            <input class="form-control" type="text" ng-model="order.receiverName" id="receiver_name" placeholder="Имя получателя">-->
+<!--        </div>-->
+<!--        <div class="form-group col-md-6">-->
+<!--            <label for="phone_number">Телефон</label>-->
+<!--            <input class="form-control" type="text" ng-model="order.phone" id="phone_number" placeholder="Телефон">-->
+<!--        </div>-->
+<!--        <div class="form-group col-md-6">-->
+<!--            <label for="address">Адрес доставки</label>-->
+<!--            <input class="form-control" type="text" ng-model="order.address" id="address" placeholder="Адрес доставки">-->
+<!--        </div>-->
+<!--        <div>-->
+<!--            <button class="btn btn-success" type="submit">Подтвердить</button>-->
+<!--        </div>-->
+<!--    </form>-->
+<!--</div>-->

@@ -1,6 +1,8 @@
 # App configuration
 server:
   port: 8189
+  servlet:
+    context-path: /doe
 
 # Spring
 spring:

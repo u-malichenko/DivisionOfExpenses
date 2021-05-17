@@ -1,31 +1,31 @@
-<div>
-    <h3>Корзина</h3>
-    <span ng-show = "cart.items.length == 0">Корзина пуста</span>
-    <table class="table table-hover" cellpadding="0" cellspacing="0" ng-show = "cart.items.length > 0">
-        <tr>
-            <th>Название</th>
-            <th>Категория</th>
-            <th>Количество</th>
-            <th>Цена</th>
-        </tr>
-        <tbody>
-        <tr ng-repeat="oi in cart.items">
-            <td>{{oi.productTitle}}</td>
-            <td>{{oi.categoryTitle}}</td>
-            <td>
-                <button class="btn btn-success" ng-click="decrementItem(oi.productId)">-</button>
-                {{oi.quantity}}
-                <button class="btn btn-success" ng-click="incrementItem(oi.productId)">+</button>
-                <button class="btn btn-danger" ng-click="removeItem(oi.productId)">x</button>
-            </td>
-            <td>{{oi.pricePerProduct + ' * ' + oi.quantity + ' = ' + oi.price}}</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>Итоговая стоимость</td>
-            <td>{{cart.price}}</td>
-        </tr>
-        </tbody>
-    </table>
-    <a class="btn btn-primary" ng-show = "cart.items.length > 0" href="#!/order">Оформить заказ</a>
-</div>
+<!--<div>-->
+<!--    <h3>Корзина</h3>-->
+<!--    <span ng-show = "cart.items.length == 0">Корзина пуста</span>-->
+<!--    <table class="table table-hover" cellpadding="0" cellspacing="0" ng-show = "cart.items.length > 0">-->
+<!--        <tr>-->
+<!--            <th>Название</th>-->
+<!--            <th>Категория</th>-->
+<!--            <th>Количество</th>-->
+<!--            <th>Цена</th>-->
+<!--        </tr>-->
+<!--        <tbody>-->
+<!--        <tr ng-repeat="oi in cart.items">-->
+<!--            <td>{{oi.productTitle}}</td>-->
+<!--            <td>{{oi.categoryTitle}}</td>-->
+<!--            <td>-->
+<!--                <button class="btn btn-success" ng-click="decrementItem(oi.productId)">-</button>-->
+<!--                {{oi.quantity}}-->
+<!--                <button class="btn btn-success" ng-click="incrementItem(oi.productId)">+</button>-->
+<!--                <button class="btn btn-danger" ng-click="removeItem(oi.productId)">x</button>-->
+<!--            </td>-->
+<!--            <td>{{oi.pricePerProduct + ' * ' + oi.quantity + ' = ' + oi.price}}</td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--            <td></td>-->
+<!--            <td>Итоговая стоимость</td>-->
+<!--            <td>{{cart.price}}</td>-->
+<!--        </tr>-->
+<!--        </tbody>-->
+<!--    </table>-->
+<!--    <a class="btn btn-primary" ng-show = "cart.items.length > 0" href="#!/order">Оформить заказ</a>-->
+<!--</div>-->
