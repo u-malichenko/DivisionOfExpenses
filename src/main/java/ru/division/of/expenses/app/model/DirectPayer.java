@@ -18,6 +18,6 @@ public class DirectPayer extends AbstractEntity {
 
     @ManyToOne
     @JoinColumn(name = "order_id")
-    private Orders order;
+    private Expense order;
 
 }

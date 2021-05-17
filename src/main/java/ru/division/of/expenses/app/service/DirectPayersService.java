@@ -5,7 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.division.of.expenses.app.model.DirectPayer;
-import ru.division.of.expenses.app.model.Orders;
+import ru.division.of.expenses.app.model.Expense;
 import ru.division.of.expenses.app.repository.DirectPayersRepository;
 
 import java.util.List;
@@ -28,7 +28,7 @@ public class DirectPayersService {
         return directPayersRepository.findAll(PageRequest.of(page, size));
     }
 
-    public Optional<List<DirectPayer>> findAllByOrders(Orders order) {
+    public Optional<List<DirectPayer>> findAllByOrders(Expense order) {
         return directPayersRepository.findByOrder(order);
     }
 
