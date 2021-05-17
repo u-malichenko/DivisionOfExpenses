@@ -1,6 +1,6 @@
 # App configuration
 server:
-  port: 8190
+  port: 8189
 
 # Spring
 spring:
@@ -17,4 +17,5 @@ spring:
   flyway:
     enabled: true
     baseline-on-migrate: true
+    schemas: divisionOfExpenses
 
