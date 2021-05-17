@@ -1,6 +1,6 @@
 # App configuration
 server:
-  port: 8189
+  port: 8190
 
 # Spring
 spring:
@@ -13,5 +13,8 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: validate
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
 
