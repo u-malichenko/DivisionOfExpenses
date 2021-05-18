@@ -14,7 +14,11 @@ import ru.division.of.expenses.app.configs.JwtTokenUtil;
 import ru.division.of.expenses.app.dto.JwtRequest;
 import ru.division.of.expenses.app.dto.JwtResponse;
 import ru.division.of.expenses.app.exceptions_handling.AppError;
+import ru.division.of.expenses.app.models.User;
+import ru.division.of.expenses.app.repositoryes.UserRepository;
 import ru.division.of.expenses.app.services.UserService;
+
+import java.util.Optional;
 
 
 @RestController

@@ -47,13 +47,16 @@ public class UserService implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> user = findByUsername(username);//.orElseThrow(() -> new UsernameNotFoundException(String.format("User '%s' not found", username)));
-        return null;//new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));
+        User user = findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(String.format("User '%s' not found", username)));
+//        Optional<User> user = findByUsername(username);//.orElseThrow(() -> new UsernameNotFoundException(String.format("User '%s' not found", username)));
+//        return null;//new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));
     }
 
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
+
 
     private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
         return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
