@@ -151,6 +151,16 @@ create table if not exists "doe".users_roles
             references "doe".roles
 );
 
+create table if not exists "doe".events_users
+(
+    user_id bigint not null
+        constraint fkjtfkvtvgx1uprk653b7g5p5n6
+            references "doe".users,
+    event_id bigint not null
+        constraint fkjtfkvtdx1uprk653b7g5p5n6
+            references "doe".event
+);
+
 insert into "doe".roles (name)
 values
 ('ROLE_USER'),
