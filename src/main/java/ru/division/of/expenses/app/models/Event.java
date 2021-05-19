@@ -4,7 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -20,7 +20,7 @@ public class Event extends AbstractEntity {
     private Collection<User> eventUserLIst = new ArrayList<>();
 
     @Column
-    private LocalDate eventDateTime;
+    private Timestamp eventDateTime;
 
     @Column
     private String name;
