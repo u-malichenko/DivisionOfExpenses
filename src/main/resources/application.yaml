@@ -11,7 +11,8 @@ spring:
 
   jpa:
     show-sql: true
-    ddl-auto: validate
+    hibernate:
+      ddl-auto: validate
   flyway:
     enabled: true
     baseline-on-migrate: true
