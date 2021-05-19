@@ -1,89 +1,77 @@
-(function () {
+(function ($localStorage) {
     'use strict';
 
     angular
-        .module('app', ['ngRoute', 'ngStorage']) //, 'angular-jwt'
+        .module('app', ['ngRoute', 'ngStorage'])
         .config(config)
         .run(run);
 
     function config($routeProvider, $httpProvider) {
         $routeProvider
             .when('/', {
-                templateUrl: 'main/main.html'
+                templateUrl: 'home/home.html',
+                controller: 'homeController'
             })
-            .when('/auth', {
-                templateUrl: 'auth/auth.html',
-                controller: 'authController'
+            // .when('/auth', {
+            //     templateUrl: 'auth/auth.html',
+            //     controller: 'authController'
+            // })
+            .when('/profile', {
+                templateUrl: 'profile/profile.html',
+                controller: 'profileController'
             })
-            // .when('/store', {
-            //     templateUrl: 'store/store.html',
-            //     controller: 'storeController'
-            // })
-            // .when('/admin', {
-            //     templateUrl: 'admin/admin.html',
-            //     controller: 'adminController'
-            // })
-            // .when('/cart', {
-            //     templateUrl: 'cart/cart.html',
-            //     controller: 'cartController'
-            // })
-            // .when('/order', {
-            //     templateUrl: 'order/order.html',
-            //     controller: 'orderController'
-            // })
-            // .when('/orders', {
-            //     templateUrl: 'orders/orders.html',
-            //     controller: 'ordersController'
-            // })
-            // .when('/profile', {
-            //     templateUrl: 'profile/profile.html',
-            //     controller: 'profileController'
-            // })
             .otherwise({
                 redirectTo: '/'
             });
-
-        // $httpProvider.interceptors.push(function ($q, $location) {
-        //         //     return {
-        //         //         'responseError': function (rejection, $localStorage, $http) {
-        //         //             var defer = $q.defer();
-        //         //             if (rejection.status == 401 || rejection.status == 403) {
-        //         //                 console.log('error: 401-403!');
-        //         //                 $location.path('/auth');
-        //         //                 if (!(localStorage.getItem("localUser") === null)) {
-        //         //                     delete $localStorage.currentUser;
-        //         //                     $http.defaults.headers.common.Authorization = '';
-        //         //                     console.log('zxc');
-        //         //                 }
-        //         //                 console.log(rejection.data);
-        //         //                 var answer = JSON.parse(rejection.data);
-        //         //                 console.log(answer);
-        //         //                 // window.alert(answer.message);
-        //         //             }
-        //         //             defer.reject(rejection);
-        //         //             return defer.promise;
-        //         //         }
-        //         //     };
-        //         // });
     }
+
+    const contextPath = 'http://localhost:8189/doe';
 
     function run($rootScope, $http, $localStorage) {
         if ($localStorage.currentUser) {
             $http.defaults.headers.common.Authorization = 'Bearer ' + $localStorage.currentUser.token;
         }
 
-        // $rootScope.$on('$locationChangeStart', function (event, next, current) {
-        //     let publicPages = ['/auth', '/', '/store'];
-        //     let restrictedPage = publicPages.indexOf($location.path()) === -1;
-        //     if (restrictedPage && !$localStorage.currentUser) {
-        //         $location.path('/auth');
-        //     }
-        // });
     }
 })();
 
-angular.module('app').controller('indexController', function ($scope, $http, $localStorage) {
+angular.module('app').controller('indexController', function ($scope, $http, $localStorage, $location) {
     const contextPath = 'http://localhost:8189/doe';
+
+    $scope.tryToAuth = function () {
+
+        $http.post(contextPath + '/auth', $scope.user)
+            .then(function successCallback(response) {
+                if (response.data.token) {
+                    $http.defaults.headers.common.Authorization = 'Bearer ' + response.data.token;
+                    $localStorage.currentUser = {username: $scope.user.username, token: response.data.token};
+
+                    $scope.currentUserName = $scope.user.username;
+
+                    $scope.user.username = null;
+                    $scope.user.password = null;
+                }
+            }, function errorCallback(response) {
+                window.alert(response.data.message);
+            });
+    };
+
+    $scope.tryToLogout = function () {
+        $scope.clearUser();
+
+        $location.path('/');
+        if ($scope.user.username) {
+            $scope.user.username = null;
+        }
+        if ($scope.user.password) {
+            $scope.user.password = null;
+        }
+    };
+
+    $scope.clearUser = function () {
+        delete $localStorage.currentUser;
+        $http.defaults.headers.common.Authorization = '';
+    };
 
     $scope.isUserLoggedIn = function () {
         if ($localStorage.currentUser) {
