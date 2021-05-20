@@ -11,6 +11,10 @@ spring:
   jpa:
     show-sql: true
     hibernate:
+      dialect: org.hibernate.dialect.PostgreSQL95Dialect
+      jdbc:
+        lob:
+          non_contextual_creation: true
       ddl-auto: validate
 #      ddl-auto: create
   flyway:
