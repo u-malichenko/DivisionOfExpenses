@@ -1,17 +1,20 @@
 # App configuration
 server:
   port: 8189
+  servlet:
+    context-path: /doe
 
 # Spring
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://77.37.134.139:5522/ravilich?schema=divisionOfExpenses
-    username: ravilich
-    password: Eiquemibi1oomied8d
 
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: create
-
+      ddl-auto: validate
+#      ddl-auto: create
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    schemas: doe
