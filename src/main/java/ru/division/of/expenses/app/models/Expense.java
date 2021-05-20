@@ -19,7 +19,7 @@ public class Expense extends AbstractEntity {
     private User buyer;
 
     @Column
-    private Calendar orderDate;
+    private Calendar expenseDate;
 
     @Column
     private String comment;
@@ -28,12 +28,12 @@ public class Expense extends AbstractEntity {
     private String billPhoto;
 
     @Column
-    private BigDecimal totalOrderSum;
+    private BigDecimal totalExpenseSum;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "expense")
     private List<DirectPayer> directPayersList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "expense")
     private List<PartitialPayer> partitialPayersList = new ArrayList<>();
 
 }

@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
@@ -18,7 +19,7 @@ public class PartitialPayer extends AbstractEntity {
     private Double coefficient;
 
     @ManyToOne
-//    @JoinColumn(name = "order_id")
-    private Expense order;
+    @JoinColumn(name = "expense_id")
+    private Expense expense;
 
 }

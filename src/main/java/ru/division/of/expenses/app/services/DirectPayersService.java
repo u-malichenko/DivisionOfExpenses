@@ -28,8 +28,8 @@ public class DirectPayersService {
         return directPayersRepository.findAll(PageRequest.of(page, size));
     }
 
-    public Optional<List<DirectPayer>> findAllByOrders(Expense order) {
-        return directPayersRepository.findByOrder(order);
+    public Optional<List<DirectPayer>> findAllByExpense(Expense expense) {
+        return directPayersRepository.findByExpense(expense);
     }
 
 }

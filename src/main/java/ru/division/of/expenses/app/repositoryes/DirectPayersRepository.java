@@ -12,6 +12,6 @@ import java.util.Optional;
 @Repository
 public interface DirectPayersRepository extends JpaRepository<DirectPayer, Long>, JpaSpecificationExecutor<DirectPayer> {
 
-    Optional<List<DirectPayer>> findByOrder(Expense order);
+    Optional<List<DirectPayer>> findByExpense(Expense expense);
 
 }
