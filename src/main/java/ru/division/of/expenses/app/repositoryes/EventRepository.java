@@ -7,4 +7,5 @@ import ru.division.of.expenses.app.models.Event;
 
 @Repository
 public interface EventRepository extends JpaRepository<Event, Long>, JpaSpecificationExecutor<Event> {
+
 }
