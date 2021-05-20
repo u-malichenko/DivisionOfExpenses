@@ -12,7 +12,7 @@ import ru.division.of.expenses.app.models.User;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {//, JpaSpecificationExecutor<User>
+public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query(
             value = "SELECT u FROM User u"

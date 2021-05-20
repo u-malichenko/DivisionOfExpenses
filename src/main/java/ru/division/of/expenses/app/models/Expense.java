@@ -7,8 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 @Entity
@@ -19,7 +19,7 @@ public class Expense extends AbstractEntity {
     private User buyer;
 
     @Column
-    private LocalDate orderDate;
+    private Calendar orderDate;
 
     @Column
     private String comment;
