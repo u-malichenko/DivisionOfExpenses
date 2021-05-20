@@ -38,5 +38,6 @@ public class User extends AbstractEntity {
             inverseJoinColumns = @JoinColumn(name = "event_id"))
     private Collection<Event> eventList = new ArrayList<>();
 
+    //for commit
 
 }
