@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ru.division.of.expenses.app.dto.EventDto;
@@ -67,10 +68,11 @@ public class EventController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public Event addEvent(
             @RequestBody Event event
     ) {
-        event.setId(null);
+//        event.setId(null);
         return eventService.saveOrUpdate(event);
     }
 
