@@ -1,11 +1,14 @@
 package ru.division.of.expenses.app.utils;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.division.of.expenses.app.dto.EventDto;
 import ru.division.of.expenses.app.models.Event;
+import ru.division.of.expenses.app.services.EventService;
 
 @Component
 public class MappingEventUtils {
+
 
     public EventDto mapToEventDto(Event event){
 
@@ -17,6 +20,7 @@ public class MappingEventUtils {
         EventDto eventDto = new EventDto();
         eventDto.setId(event.getId());
         eventDto.setName(event.getName());
+        eventDto.setUsername(event.getEventManager().getUsername());
         return eventDto;
     }
 }

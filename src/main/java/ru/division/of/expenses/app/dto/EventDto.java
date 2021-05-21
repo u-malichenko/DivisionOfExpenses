@@ -10,6 +10,7 @@ public class EventDto {
 
     private Long id;
     private String name;
+    private String username;
 
 //    public EventDto(Event event){
 //        this.id = event.getId();
