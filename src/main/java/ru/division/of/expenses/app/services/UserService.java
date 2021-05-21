@@ -10,9 +10,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.division.of.expenses.app.dto.EventDto;
+import ru.division.of.expenses.app.dto.UserDto;
+import ru.division.of.expenses.app.models.Event;
 import ru.division.of.expenses.app.models.Role;
 import ru.division.of.expenses.app.models.User;
 import ru.division.of.expenses.app.repositoryes.UserRepository;
+import ru.division.of.expenses.app.utils.MappingUserUtils;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -24,12 +28,24 @@ import java.util.stream.Collectors;
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
+    private final MappingUserUtils mappingUserUtils;
 
     public Page<User> findAllUsers(
             int page,
             int size
     ) {
         return userRepository.findAllUsers(PageRequest.of(page, size));
+    }
+
+    public Page<UserDto> findAllUserDto(
+            int page,
+            int size
+    ) {
+        return userRepository.findAll(PageRequest.of(page, size)).map(mappingUserUtils::mapToUserDto);
+    }
+
+    public UserDto findUserDtoById(Long id){
+        return mappingUserUtils.mapToUserDto(userRepository.findById(id).orElse(new User()));
     }
 
     public Optional<User> findUserById(Long id) {

@@ -5,7 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import ru.division.of.expenses.app.dto.EventDto;
+import ru.division.of.expenses.app.dto.UserDto;
 import ru.division.of.expenses.app.models.Event;
+import ru.division.of.expenses.app.models.User;
 import ru.division.of.expenses.app.services.EventService;
 import ru.division.of.expenses.app.utils.MappingEventUtils;
 
@@ -22,6 +24,7 @@ public class EventController {
 
     private final EventService eventService;
 
+    ////////////////////////
     @GetMapping("/dto/{id}")
     public EventDto findEventDtoById(@PathVariable Long id){
         return eventService.findEventDtoById(id);
@@ -33,6 +36,7 @@ public class EventController {
         return eventService.findAllEventDto(page, size);
     }
 
+    ///////////////////////////////////////////////
     @GetMapping("/{id}")
     public Optional<Event> findById(@PathVariable Long id){
         return eventService.findById(id);
@@ -43,6 +47,24 @@ public class EventController {
                                @RequestParam(required = false, defaultValue = "10") int size){
         return eventService.findAll(page, size);
     }
+
+    //////////////////////////////////////////
+    //////////////   состав участников Event'а
+    @GetMapping("/userlist/{id}")
+    public Page<User> findEventUserlistById(@PathVariable Long id,
+                                            @RequestParam(required = false, defaultValue = "0") int page ,
+                                            @RequestParam(required = false, defaultValue = "10") int size){
+        return  eventService.findEventUserlistById(id, page, size);
+    }
+
+    @GetMapping("/userlist/dto/{id}")
+    public Page<UserDto> findEventUserDtolistById(@PathVariable Long id,
+                                                  @RequestParam(required = false, defaultValue = "0") int page ,
+                                                  @RequestParam(required = false, defaultValue = "10") int size){
+        return eventService.findEventUserDtolistById(id, page, size);
+    }
+
+
 
     //    @GetMapping("/{id}")
 //    public EventDto findById(@PathVariable Long id) throws IOException {

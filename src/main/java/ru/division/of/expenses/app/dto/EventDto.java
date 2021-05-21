@@ -15,6 +15,7 @@ public class EventDto {
     private String name;
     private BigDecimal totalEventSum;
     private Calendar eventDateTime;
+    private String username;
 
     public EventDto(Event event) {
         this.id = event.getId();
