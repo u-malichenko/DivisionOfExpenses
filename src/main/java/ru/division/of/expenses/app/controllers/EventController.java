@@ -68,6 +68,7 @@ public class EventController {
 
 
 
+
     //    @GetMapping("/{id}")
 //    public EventDto findById(@PathVariable Long id) throws IOException {
 //        try{
