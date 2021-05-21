@@ -8,9 +8,12 @@ server:
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://77.37.134.139:5522/ravilich?currentSchema=doe}
-    username: ${SPRING_DATASOURCE_USERNAME:ravilich}
-    password: ${SPRING_DATASOURCE_PASSWORD:Eiquemibi1oomied8d}
+    #    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://77.37.134.139:5522/ravilich?currentSchema=doe}
+    #    username: ${SPRING_DATASOURCE_USERNAME:ravilich}
+    #    password: ${SPRING_DATASOURCE_PASSWORD:Eiquemibi1oomied8d}
+    url: jdbc:postgresql://77.37.134.139:5522/ravilich?currentSchema=doe
+    username: ravilich
+    password: Eiquemibi1oomied8d
   jpa:
     show-sql: true
     hibernate:
