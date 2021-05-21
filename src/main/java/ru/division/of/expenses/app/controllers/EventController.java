@@ -66,6 +66,14 @@ public class EventController {
         return eventService.findEventUserDtolistById(id, page, size);
     }
 
+    @PostMapping
+    public Event addEvent(
+            @RequestBody Event event
+    ) {
+        event.setId(null);
+        return eventService.saveOrUpdate(event);
+    }
+
 
 
 

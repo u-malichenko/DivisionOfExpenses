@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.division.of.expenses.app.dto.EventDto;
 import ru.division.of.expenses.app.dto.UserDto;
 import ru.division.of.expenses.app.models.Event;
@@ -61,6 +62,11 @@ public class EventService {
             int size
     ){
         return eventRepository.findEventUserlistById(id, PageRequest.of(page, size)).map(mappingUserUtils::mapToUserDto);
+    }
+
+    @Transactional
+    public Event saveOrUpdate(Event event) {
+        return eventRepository.save(event);
     }
 
     public String findUsernameEventManagerById(Long id){
