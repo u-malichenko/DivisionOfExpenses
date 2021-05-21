@@ -34,7 +34,7 @@ public class Event extends AbstractEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User eventManager;
+    private User eventManager; //так неудобно искать тут по юзеру, мб по айди? зачем тут юзер? мб мы его можем вытягивать по айди?
 
     @Column
     private BigDecimal totalEventSum;

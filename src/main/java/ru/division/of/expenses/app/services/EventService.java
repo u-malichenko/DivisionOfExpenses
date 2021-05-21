@@ -41,6 +41,4 @@ public class EventService {
         return eventRepository.findAll(PageRequest.of(page, size)).map(mappingEventUtils::mapToEventDto);
     }
 
-
-
 }

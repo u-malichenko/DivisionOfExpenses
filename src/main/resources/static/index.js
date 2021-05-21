@@ -12,6 +12,10 @@
                 templateUrl: 'home/home.html',
                 controller: 'homeController'
             })
+            .when('/events', {
+                templateUrl: 'events/events.html',
+                controller: 'eventsController'
+            })
             .otherwise({
                 redirectTo: '/'
             });
@@ -30,10 +34,8 @@ angular.module('app')
         const API_ENDPOINT = 'http://localhost:8189/doe';
         $scope.API_ENDPOINT = API_ENDPOINT;
 
-
     $scope.tryToAuth = function () {
-
-        $http.post(API_ENDPOINT + '/auth', $scope.user)//contextPath
+        $http.post(API_ENDPOINT + '/auth', $scope.user)
             .then(function successCallback(response) {
                 if (response.data.token) {
                     $http.defaults.headers.common.Authorization = 'Bearer ' + response.data.token;
