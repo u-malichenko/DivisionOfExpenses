@@ -4,15 +4,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.division.of.expenses.app.models.Event;
 
-@NoArgsConstructor
+//@NoArgsConstructor
 @Data
 public class EventDto {
 
     private Long id;
     private String name;
 
-    public EventDto(Event event){
-        this.id = event.getId();
-        this.name = event.getName();
-    }
+//    public EventDto(Event event){
+//        this.id = event.getId();
+//        this.name = event.getName();
+//    }
 }
