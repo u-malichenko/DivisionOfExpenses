@@ -17,22 +17,23 @@
             });
     }
 
-    const contextPath = 'http://localhost:8189/doe';
-
     function run($rootScope, $http, $localStorage) {
         if ($localStorage.currentUser) {
             $http.defaults.headers.common.Authorization = 'Bearer ' + $localStorage.currentUser.token;
         }
-
     }
 })();
 
-angular.module('app').controller('indexController', function ($scope, $http, $localStorage, $location) {
-    const contextPath = 'http://localhost:8189/doe';
+angular.module('app')
+    .controller('indexController', function ( $scope, $http, $localStorage, $location) {
+  //  const contextPath = 'http://localhost:8189/doe';
+        const API_ENDPOINT = 'http://localhost:8189/doe';
+        $scope.API_ENDPOINT = API_ENDPOINT;
+
 
     $scope.tryToAuth = function () {
 
-        $http.post(contextPath + '/auth', $scope.user)
+        $http.post(API_ENDPOINT + '/auth', $scope.user)//contextPath
             .then(function successCallback(response) {
                 if (response.data.token) {
                     $http.defaults.headers.common.Authorization = 'Bearer ' + response.data.token;
