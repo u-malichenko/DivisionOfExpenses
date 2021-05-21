@@ -9,7 +9,7 @@ public class MappingEventUtils {
 
     public EventDto mapToEventDto(Event event){
 
-        // если нужен пустой объект, то if не нужен.
+        // если нужен пустой объект, то блок "if" не нужен.
         if(event.getId() == null){
             return null;
         }
