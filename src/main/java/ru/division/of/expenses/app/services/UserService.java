@@ -16,6 +16,7 @@ import ru.division.of.expenses.app.models.Event;
 import ru.division.of.expenses.app.models.Role;
 import ru.division.of.expenses.app.models.User;
 import ru.division.of.expenses.app.repositoryes.UserRepository;
+import ru.division.of.expenses.app.utils.MappingEventUtils;
 import ru.division.of.expenses.app.utils.MappingUserUtils;
 
 import java.util.Collection;
@@ -29,6 +30,7 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final MappingUserUtils mappingUserUtils;
+    private final MappingEventUtils mappingEventUtils;
 
     public Page<User> findAllUsers(
             int page,
@@ -58,6 +60,22 @@ public class UserService implements UserDetailsService {
             int size
     ) {
         return userRepository.findUsersByName(name, PageRequest.of(page, size));
+    }
+
+    public Page<Event> findEventlistById(
+            Long id,
+            int page,
+            int size
+    ){
+        return userRepository.findEventListById(id, PageRequest.of(page, size));
+    }
+
+    public Page<EventDto> findEventDtolistById(
+            Long id,
+            int page,
+            int size
+    ){
+        return userRepository.findEventListById(id, PageRequest.of(page, size)).map(mappingEventUtils::mapToEventDto);
     }
 
     @Override

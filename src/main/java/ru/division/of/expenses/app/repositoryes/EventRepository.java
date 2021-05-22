@@ -26,6 +26,4 @@ public interface EventRepository extends JpaRepository<Event, Long>, JpaSpecific
     )
     Page<User> findEventUserlistById(Long id, Pageable pageable);
 
-
-
 }

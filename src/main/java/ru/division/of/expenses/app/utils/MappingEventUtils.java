@@ -20,6 +20,8 @@ public class MappingEventUtils {
         EventDto eventDto = new EventDto();
         eventDto.setId(event.getId());
         eventDto.setName(event.getName());
+        eventDto.setEventDateTime(event.getEventDateTime());
+        eventDto.setTotalEventSum(event.getTotalEventSum());
         eventDto.setUsername(event.getEventManager().getUsername());
         return eventDto;
     }
