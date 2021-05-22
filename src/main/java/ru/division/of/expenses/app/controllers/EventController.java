@@ -55,7 +55,7 @@ public class EventController {
     @GetMapping("/byUserId/{id}")
     public List<EventDto> findEventsByUserId(
             @PathVariable("id") Long id,
-            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "page", defaultValue = "1") int page,
             @RequestParam(name = "size", defaultValue = "5") int size
     ) {
         if (page <= 0) {
