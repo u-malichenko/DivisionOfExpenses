@@ -3,6 +3,7 @@ package ru.division.of.expenses.app.controllers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import ru.division.of.expenses.app.dto.EventDto;
 import ru.division.of.expenses.app.dto.UserDto;
@@ -38,11 +39,13 @@ public class EventController {
     }
 
     @PostMapping
+    @Transactional
     public Event saveEvent(@RequestBody Event event) {
         return eventService.saveEvent(event);
     }
 
     @PutMapping
+    @Transactional
     public Event updateEvent(@RequestBody Event event) throws EventNotFoundExcpetion {
         return eventService.updateEvent(event);
     }
