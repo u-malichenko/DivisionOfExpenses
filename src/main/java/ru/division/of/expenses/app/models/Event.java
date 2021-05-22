@@ -42,12 +42,4 @@ public class Event extends AbstractEntity {
     @OneToOne
     private ShoppingList shoppingList;
 
-    public Event() {
-    }
-
-    public Event(String name, String description, BigDecimal totalEventSum) {
-        this.name = name;
-        this.description = description;
-        this.totalEventSum = totalEventSum;
-    }
 }
