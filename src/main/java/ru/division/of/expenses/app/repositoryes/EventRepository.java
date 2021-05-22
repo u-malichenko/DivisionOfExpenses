@@ -8,22 +8,15 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ru.division.of.expenses.app.models.Event;
-import ru.division.of.expenses.app.models.User;
-
-import java.util.Collection;
 
 @Repository
 public interface EventRepository extends JpaRepository<Event, Long>, JpaSpecificationExecutor<Event> {
-
     @Query(
-            value = "SELECT em.username FROM Event e JOIN e.eventManager em WHERE e.id = :id"
+            value = "SELECT * FROM event WHERE user_id = :userId",
+            nativeQuery = true
     )
-    String findUsernameEventManagerById(@Param("id") Long id);
-
-
-    @Query(
-          value = "SELECT e.eventUserLIst FROM Event e WHERE e.id = :id"
-    )
-    Page<User> findEventUserlistById(Long id, Pageable pageable);
-
+    Page<Event> findEventsByUserId(
+            @Param("userId") Long id,
+            Pageable pageable
+    );
 }

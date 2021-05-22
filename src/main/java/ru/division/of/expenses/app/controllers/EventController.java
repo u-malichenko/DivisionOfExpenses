@@ -1,98 +1,71 @@
 package ru.division.of.expenses.app.controllers;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ru.division.of.expenses.app.dto.EventDto;
 import ru.division.of.expenses.app.dto.UserDto;
+import ru.division.of.expenses.app.exceptions_handling.EventNotFoundExcpetion;
 import ru.division.of.expenses.app.models.Event;
 import ru.division.of.expenses.app.models.User;
 import ru.division.of.expenses.app.services.EventService;
-import ru.division.of.expenses.app.utils.MappingEventUtils;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/event")
-@Slf4j
 public class EventController {
-
     private final EventService eventService;
 
-    ////////////////////////
-    @GetMapping("/dto/{id}")
-    public EventDto findEventDtoById(@PathVariable Long id){
-        return eventService.findEventDtoById(id);
-    }
-
-    @GetMapping("/dto")
-    public Page<EventDto> findAllEventDto(@RequestParam(required = false, defaultValue = "0") int page ,
-                                          @RequestParam(required = false, defaultValue = "10") int size){
-        return eventService.findAllEventDto(page, size);
-    }
-
-    ///////////////////////////////////////////////
     @GetMapping("/{id}")
-    public Optional<Event> findById(@PathVariable Long id){
-        return eventService.findById(id);
+    public EventDto findEventById(@PathVariable("id") Long id) throws EventNotFoundExcpetion {
+        return eventService.findEventById(id);
     }
 
     @GetMapping
-    public Page<Event> findAll(@RequestParam(required = false, defaultValue = "0") int page ,
-                               @RequestParam(required = false, defaultValue = "10") int size){
+    public List<EventDto> findAll(
+            @RequestParam(name = "page", defaultValue = "1") int page,
+            @RequestParam(name = "size", defaultValue = "5") int size
+
+    ) {
+        if (page <= 0) {
+            page = 1;
+        }
         return eventService.findAll(page, size);
     }
 
-    //////////////////////////////////////////
-    //////////////   состав участников Event'а
-    @GetMapping("/userlist/{id}")
-    public Page<User> findEventUserlistById(@PathVariable Long id,
-                                            @RequestParam(required = false, defaultValue = "0") int page ,
-                                            @RequestParam(required = false, defaultValue = "10") int size){
-        return  eventService.findEventUserlistById(id, page, size);
-    }
-
-    @GetMapping("/userlist/dto/{id}")
-    public Page<UserDto> findEventUserDtolistById(@PathVariable Long id,
-                                                  @RequestParam(required = false, defaultValue = "0") int page ,
-                                                  @RequestParam(required = false, defaultValue = "10") int size){
-        return eventService.findEventUserDtolistById(id, page, size);
-    }
-
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public Event addEvent(
-            @RequestBody Event event
-    ) {
-//        event.setId(null);
-        return eventService.saveOrUpdate(event);
+    public Event saveEvent(@RequestBody Event event) {
+        return eventService.saveEvent(event);
     }
 
+    @PutMapping
+    public Event updateEvent(@RequestBody Event event) throws EventNotFoundExcpetion {
+        return eventService.updateEvent(event);
+    }
 
+    @DeleteMapping("/{id}")
+    public void deleteEvent(@PathVariable Long id) throws EventNotFoundExcpetion {
+        eventService.deleteEvent(id);
+    }
 
-
-    //    @GetMapping("/{id}")
-//    public EventDto findById(@PathVariable Long id) throws IOException {
-//        try{
-//
-//            return new EventDto(eventService.findById(id).get());
-//        }catch (Exception ioException){
-//            log.error("TEST");
-//        }
-//        return null;
-//    }
-
-//    @GetMapping
-//    public Page<EventDto> findAll(@RequestParam(required = false, defaultValue = "0") int page , @RequestParam(required = false, defaultValue = "10") int size){
-//        return eventService.findAll(page, size).map(EventDto::new);
-//    }
+    @GetMapping("/byUserId/{id}")
+    public List<EventDto> findEventsByUserId(
+            @PathVariable("id") Long id,
+            @RequestParam(name = "page", defaultValue = "1") int page,
+            @RequestParam(name = "size", defaultValue = "5") int size
+    ) {
+        if (page <= 0) {
+            page = 1;
+        }
+        return eventService.findEventsByUserId(
+                id,
+                page,
+                size
+        );
+    }
 
 }
