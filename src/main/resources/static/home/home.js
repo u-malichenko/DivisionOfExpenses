@@ -1,3 +1,4 @@
-angular.module('app').controller('homeController', function ($scope, $http, $localStorage) {
-    console.log($scope.API_ENDPOINT);
+angular.module('app')
+    .controller('homeController', function (API_ENDPOINT, $scope, $http, $localStorage) {
+    console.log(API_ENDPOINT);
 });

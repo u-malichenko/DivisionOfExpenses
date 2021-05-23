@@ -6,6 +6,7 @@
         <td>Имя</td>
         <td>Дата</td>
         <td>Сумма</td>
+        <td></td>
     </tr>
     </thead>
     <tbody>
@@ -14,6 +15,10 @@
         <td>{{e.username}}</td>
         <td>{{e.eventDateTime}}</td>
         <td>{{e.totalEventSum}}</td>
+        <td>
+            <button class="btn btn-success" href="#!/events" ng-click="editEvent(e.id)">Изменить</button>
+
+        </td>
     </tr>
     </tbody>
 </table>

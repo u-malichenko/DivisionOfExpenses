@@ -1,8 +1,8 @@
 (function ($localStorage) {
     'use strict';
 
-    angular
-        .module('app', ['ngRoute', 'ngStorage'])
+    angular.module('app', ['ngRoute', 'ngStorage'])
+        .constant('API_ENDPOINT', 'http://localhost:8189/doe')
         .config(config)
         .run(run);
 
@@ -29,11 +29,7 @@
 })();
 
 angular.module('app')
-    .controller('indexController', function ( $scope, $http, $localStorage, $location) {
-  //  const contextPath = 'http://localhost:8189/doe';
-        const API_ENDPOINT = 'http://localhost:8189/doe';
-        $scope.API_ENDPOINT = API_ENDPOINT;
-
+    .controller('indexController', function (API_ENDPOINT, $scope, $http, $localStorage, $location) {
     $scope.tryToAuth = function () {
         $http.post(API_ENDPOINT + '/auth', $scope.user)
             .then(function successCallback(response) {
