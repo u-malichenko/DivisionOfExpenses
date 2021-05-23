@@ -24,21 +24,6 @@ import java.util.List;
 public class EventController {
     private final EventService eventService;
 
-//    @GetMapping("/{id}")
-//    public EventDto findEventById(@PathVariable("id") Long id) throws EventNotFoundException {
-//        return eventService.findEventById(id);
-//    }
-
-//    @GetMapping("/{id}")
-//    public ResponseEntity<?> findEventById(@PathVariable Long id) {
-//        EventDto eventDto = eventService.findEventById(id);
-//        if(eventDto.getId() != null){
-//            return new ResponseEntity<EventDto>(eventDto, HttpStatus.OK);
-//        }else{
-//            return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.OK);
-//        }
-//    }
-
     @GetMapping("/{id}")
     public ResponseEntity<?> findEventById(@PathVariable Long id) {
         return eventService.findEventById(id);
@@ -57,18 +42,13 @@ public class EventController {
     }
 
     @PostMapping
-    public Event saveEvent(@RequestBody Event event) {
-        return eventService.saveEvent(event);
+    public Event saveEvent(@RequestBody EventDto eventDto) {
+        return eventService.saveEvent(eventDto);
     }
 
-//    @PutMapping
-//    public Event updateEvent(@RequestBody Event event) throws EventNotFoundException {
-//        return eventService.updateEvent(event);
-//    }
-
     @PutMapping
-    public ResponseEntity<?> updateEvent(@RequestBody Event event){
-        return eventService.updateEvent(event);
+    public ResponseEntity<?> updateEvent(@RequestBody EventDto eventDto){
+        return eventService.updateEvent(eventDto);
     }
 
     @DeleteMapping("/{id}")
@@ -142,5 +122,36 @@ public class EventController {
                 size
         );
     }
+
+
+
+    ///////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////
+
+
+    //    @GetMapping("/{id}")
+//    public EventDto findEventById(@PathVariable("id") Long id) throws EventNotFoundException {
+//        return eventService.findEventById(id);
+//    }
+
+//    @GetMapping("/{id}")
+//    public ResponseEntity<?> findEventById(@PathVariable Long id) {
+//        EventDto eventDto = eventService.findEventById(id);
+//        if(eventDto.getId() != null){
+//            return new ResponseEntity<EventDto>(eventDto, HttpStatus.OK);
+//        }else{
+//            return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.OK);
+//        }
+//    }
+
+//        @PostMapping
+//    public Event saveEvent(@RequestBody Event event) {
+//        return eventService.saveEvent(event);
+//    }
+
+    //    @PutMapping
+//    public Event updateEvent(@RequestBody Event event) throws EventNotFoundException {
+//        return eventService.updateEvent(event);
+//    }
 
 }

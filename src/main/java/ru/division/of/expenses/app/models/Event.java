@@ -1,6 +1,7 @@
 package ru.division.of.expenses.app.models;
 
 import lombok.Data;
+import ru.division.of.expenses.app.dto.EventDto;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -50,4 +51,5 @@ public class Event extends AbstractEntity {
         this.description = description;
         this.totalEventSum = totalEventSum;
     }
+
 }
