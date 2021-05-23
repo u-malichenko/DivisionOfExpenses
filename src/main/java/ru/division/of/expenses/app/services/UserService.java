@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.division.of.expenses.app.dto.EventDto;
 import ru.division.of.expenses.app.dto.UserDto;
+import ru.division.of.expenses.app.exceptions_handling.EventNotFoundException;
+import ru.division.of.expenses.app.exceptions_handling.UserNotFoundException;
 import ru.division.of.expenses.app.models.Event;
 import ru.division.of.expenses.app.models.Role;
 import ru.division.of.expenses.app.models.User;
@@ -53,6 +55,14 @@ public class UserService implements UserDetailsService {
     public Optional<User> findUserById(Long id) {
         return userRepository.findById(id);
     }
+
+//    public UserDto findUserById(Long id) throws UserNotFoundException {
+//        User user = userRepository.findById(id)
+//                .orElseThrow(
+//                        () -> new UserNotFoundException("Event: " + id + " not found.")
+//                );
+//        return new UserDto(user);
+//    }
 
     public Page<User> findUsersByName(
             String name,

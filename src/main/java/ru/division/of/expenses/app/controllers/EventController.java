@@ -1,18 +1,16 @@
 package ru.division.of.expenses.app.controllers;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.division.of.expenses.app.dto.EventDto;
-import ru.division.of.expenses.app.dto.UserDto;
-import ru.division.of.expenses.app.exceptions_handling.EventNotFoundExcpetion;
+import ru.division.of.expenses.app.exceptions_handling.EventNotFoundException;
 import ru.division.of.expenses.app.models.Event;
-import ru.division.of.expenses.app.models.User;
 import ru.division.of.expenses.app.services.EventService;
+import ru.division.of.expenses.app.utils.EmptyJsonResponse;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,8 +18,23 @@ import java.util.Optional;
 public class EventController {
     private final EventService eventService;
 
+//    @GetMapping("/{id}")
+//    public EventDto findEventById(@PathVariable("id") Long id) throws EventNotFoundException {
+//        return eventService.findEventById(id);
+//    }
+
+//    @GetMapping("/{id}")
+//    public ResponseEntity<?> findEventById(@PathVariable Long id) {
+//        EventDto eventDto = eventService.findEventById(id);
+//        if(eventDto.getId() != null){
+//            return new ResponseEntity<EventDto>(eventDto, HttpStatus.OK);
+//        }else{
+//            return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.OK);
+//        }
+//    }
+
     @GetMapping("/{id}")
-    public EventDto findEventById(@PathVariable("id") Long id) throws EventNotFoundExcpetion {
+    public ResponseEntity<?> findEventById(@PathVariable Long id) {
         return eventService.findEventById(id);
     }
 
@@ -43,12 +56,12 @@ public class EventController {
     }
 
     @PutMapping
-    public Event updateEvent(@RequestBody Event event) throws EventNotFoundExcpetion {
+    public Event updateEvent(@RequestBody Event event) throws EventNotFoundException {
         return eventService.updateEvent(event);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteEvent(@PathVariable Long id) throws EventNotFoundExcpetion {
+    public void deleteEvent(@PathVariable Long id) throws EventNotFoundException {
         eventService.deleteEvent(id);
     }
 

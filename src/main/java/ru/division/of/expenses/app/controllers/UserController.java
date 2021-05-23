@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ru.division.of.expenses.app.dto.EventDto;
 import ru.division.of.expenses.app.dto.UserDto;
+import ru.division.of.expenses.app.exceptions_handling.EventNotFoundException;
+import ru.division.of.expenses.app.exceptions_handling.UserNotFoundException;
 import ru.division.of.expenses.app.models.Event;
 import ru.division.of.expenses.app.models.User;
 import ru.division.of.expenses.app.services.UserService;
@@ -29,6 +31,11 @@ public class UserController {
     public UserDto findUserDtoById(@PathVariable Long id){
         return userService.findUserDtoById(id);
     }
+
+//    @GetMapping("/{id}")
+//    public UserDto findEventById(@PathVariable("id") Long id) throws UserNotFoundException {
+//        return userService.findUserById(id);
+//    }
 
     @GetMapping
     public Page<User> findAllUsers(@RequestParam(required = false, defaultValue = "0") int page ,

@@ -24,9 +24,9 @@ public class EventDto {
         this.id = event.getId();
         this.name = event.getName();
         this.eventDateTime = event.getEventDateTime();
-//        this.username = event.getName();
-        if(this.id != null){
-        this.managerUsername = event.getEventManager().getUsername();}
+//        this.managerUsername = event.getName();
+        if(event.getEventManager() != null){
+        this.managerUsername = event.getEventManager().getUsername(); }
         this.totalEventSum = event.getTotalEventSum();
     }
 }
