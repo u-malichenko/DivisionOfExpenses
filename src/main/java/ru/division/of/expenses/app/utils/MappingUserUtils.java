@@ -13,9 +13,10 @@ public class MappingUserUtils {
 
     public UserDto mapToUserDto(User user){
         UserDto userDto = new UserDto();
+        userDto.setId(user.getId());
         userDto.setFirstname(user.getFirstName());
         userDto.setLastname(user.getLastName());
-        userDto.setUsername(userDto.getUsername());
+        userDto.setUsername(user.getUsername());
         userDto.setRoles(user.getRoles().stream()
                 .map(Role::getName)
                 .collect(Collectors.toList()));

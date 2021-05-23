@@ -2,7 +2,6 @@ package ru.division.of.expenses.app.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ru.division.of.expenses.app.models.Expense;
 import ru.division.of.expenses.app.services.ExpenseService;

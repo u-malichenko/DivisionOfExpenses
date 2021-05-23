@@ -17,14 +17,18 @@ public class EventDto {
     private Long id;
     private String name;
     private Calendar eventDateTime;
-    private String username;
+    private String description;
+    private String managerUsername;
     private BigDecimal totalEventSum;
 
     public EventDto(Event event) {
         this.id = event.getId();
         this.name = event.getName();
         this.eventDateTime = event.getEventDateTime();
-        this.username = event.getName();
+        this.description = event.getDescription();
+//        this.managerUsername = event.getName();
+        if(event.getEventManager() != null){
+        this.managerUsername = event.getEventManager().getUsername(); }
         this.totalEventSum = event.getTotalEventSum();
     }
 }
