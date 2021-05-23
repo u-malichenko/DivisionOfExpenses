@@ -52,6 +52,7 @@ public class EventController {
         eventService.deleteEvent(id);
     }
 
+    // Поиск событий по менеджеру
     @GetMapping("/byUserId/{id}")
     public List<EventDto> findEventsByUserId(
             @PathVariable("id") Long id,
@@ -62,6 +63,23 @@ public class EventController {
             page = 1;
         }
         return eventService.findEventsByUserId(
+                id,
+                page,
+                size
+        );
+    }
+
+    // поиск событий по любому участнику.
+    @GetMapping("/byParticipantId/{id}")
+    public List<EventDto> findEventByParticipantId(
+            @PathVariable("id") Long id,
+            @RequestParam(name = "page", defaultValue = "1") int page,
+            @RequestParam(name = "size", defaultValue = "5") int size
+    ){
+        if (page <= 0) {
+            page = 1;
+        }
+        return eventService.findEventByParticipantId(
                 id,
                 page,
                 size

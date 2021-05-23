@@ -19,4 +19,12 @@ public interface EventRepository extends JpaRepository<Event, Long>, JpaSpecific
             @Param("userId") Long id,
             Pageable pageable
     );
+
+    @Query(
+            value = "SELECT e FROM Event e JOIN e.eventUserLIst eu WHERE eu.id = :participantId "
+    )
+    Page<Event> findEventByParticipantId(
+           @Param("participantId") Long id,
+           Pageable pageable
+    );
 }

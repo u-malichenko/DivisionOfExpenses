@@ -72,4 +72,16 @@ public class EventService {
                 .map(EventDto::new)
                 .collect(Collectors.toList());
     }
+
+    public List<EventDto> findEventByParticipantId(
+            Long id,
+            int page,
+            int size
+    ){
+        Page<Event> events = eventRepository.findEventByParticipantId(id, PageRequest.of(page - 1, size));
+        return events
+                .stream()
+                .map(EventDto::new)
+                .collect(Collectors.toList());
+    }
 }
