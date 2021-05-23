@@ -58,19 +58,19 @@ public class EventService {
             return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.OK);
         }
     }
-    private Event findEventByIdBasic(Long id){
-        Event event = new Event();
-        try {
-            event = eventRepository.findById(id)
-                    .orElseThrow(
-                            () -> new EventNotFoundException("Event: " + id + " not found.")
-                    );
-        }catch (EventNotFoundException e){
-//            e.printStackTrace();
-            System.out.println(e);
-        }
-        return event;
-    }
+//    private Event findEventByIdBasic(Long id){
+//        Event event = new Event();
+//        try {
+//            event = eventRepository.findById(id)
+//                    .orElseThrow(
+//                            () -> new EventNotFoundException("Event: " + id + " not found.")
+//                    );
+//        }catch (EventNotFoundException e){
+////            e.printStackTrace();
+//            System.out.println(e);
+//        }
+//        return event;
+//    }
 
     public List<EventDto> findAll(
             int page,
@@ -87,16 +87,29 @@ public class EventService {
         return eventRepository.save(event);
     }
 
-    public Event updateEvent(Event event) throws EventNotFoundException {
-        Event eventFromDB = eventRepository.findById(event.getId())
-                .orElseThrow(
-                        () -> new EventNotFoundException("Event: " + event.getId() + " not found.")
-                );
-        eventFromDB.setName(event.getName());
-        eventFromDB.setDescription(event.getDescription());
-        eventFromDB.setTotalEventSum(event.getTotalEventSum());
+//    public Event updateEvent(Event event) throws EventNotFoundException {
+//        Event eventFromDB = eventRepository.findById(event.getId())
+//                .orElseThrow(
+//                        () -> new EventNotFoundException("Event: " + event.getId() + " not found.")
+//                );
+//        eventFromDB.setName(event.getName());
+//        eventFromDB.setDescription(event.getDescription());
+//        eventFromDB.setTotalEventSum(event.getTotalEventSum());
+//
+//        return eventRepository.save(eventFromDB);
+//    }
 
-        return eventRepository.save(eventFromDB);
+    public ResponseEntity<?> updateEvent(Event event){
+        Event eventFromDB = findEventByIdBasic(event.getId());
+
+        if(eventFromDB.getId() != null){
+            eventFromDB.setName(event.getName());
+            eventFromDB.setDescription(event.getDescription());
+            eventFromDB.setTotalEventSum(event.getTotalEventSum());
+            return new ResponseEntity<Event>(eventFromDB, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.OK);
+        }
     }
 
     public void deleteEvent(Long id) {
@@ -128,17 +141,17 @@ public class EventService {
                 .collect(Collectors.toList());
     }
 
-//    private Event findEventByIdBasic(Long id){
-//        Event event = new Event();
-//        try {
-//            event = eventRepository.findById(id)
-//                    .orElseThrow(
-//                            () -> new EventNotFoundException("Event: " + id + " not found.")
-//                    );
-//        }catch (EventNotFoundException e){
-////            e.printStackTrace();
-//            System.out.println(e);
-//        }
-//        return event;
-//    }
+    private Event findEventByIdBasic(Long id){
+        Event event = new Event();
+        try {
+            event = eventRepository.findById(id)
+                    .orElseThrow(
+                            () -> new EventNotFoundException("Event: " + id + " not found.")
+                    );
+        }catch (EventNotFoundException e){
+//            e.printStackTrace();
+            System.out.println(e);
+        }
+        return event;
+    }
 }

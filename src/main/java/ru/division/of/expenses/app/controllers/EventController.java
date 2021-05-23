@@ -55,8 +55,13 @@ public class EventController {
         return eventService.saveEvent(event);
     }
 
+//    @PutMapping
+//    public Event updateEvent(@RequestBody Event event) throws EventNotFoundException {
+//        return eventService.updateEvent(event);
+//    }
+
     @PutMapping
-    public Event updateEvent(@RequestBody Event event) throws EventNotFoundException {
+    public ResponseEntity<?> updateEvent(@RequestBody Event event){
         return eventService.updateEvent(event);
     }
 
