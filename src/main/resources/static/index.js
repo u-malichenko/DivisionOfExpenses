@@ -4,6 +4,7 @@
     angular.module('app', ['ngRoute', 'ngStorage'])
         .constant('API_ENDPOINT', 'http://localhost:8189/doe')
         .config(config)
+        .service('sharedEventId', share)
         .run(run);
 
     function config($routeProvider, $httpProvider) {
@@ -16,9 +17,25 @@
                 templateUrl: 'events/events.html',
                 controller: 'eventsController'
             })
+            .when('/event', {
+                templateUrl: 'event/event.html',
+                controller: 'eventController'
+            })
             .otherwise({
                 redirectTo: '/'
             });
+    }
+
+    function share() {
+        let eventId = null;
+        return {
+            getEventId: function () {
+                return eventId;
+            },
+            setEventId: function(value) {
+                eventId = value;
+            }
+        };
     }
 
     function run($rootScope, $http, $localStorage) {
@@ -27,6 +44,21 @@
         }
     }
 })();
+
+// angular.module('app', [])
+//     .service('sharedEventId', function () {
+//         let eventId = null;
+//
+//         return {
+//             getEventId: function () {
+//                 return eventId;
+//             },
+//             setEventId: function(value) {
+//                 eventId = value;
+//             }
+//         };
+//     });
+
 
 angular.module('app')
     .controller('indexController', function (API_ENDPOINT, $scope, $http, $localStorage, $location) {

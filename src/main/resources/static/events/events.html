@@ -12,12 +12,11 @@
     <tbody>
     <tr ng-repeat="e in MyEvents">
         <td>#{{e.id}}</td>
-        <td>{{e.username}}</td>
+        <td>{{e.name}}</td>
         <td>{{e.eventDateTime}}</td>
         <td>{{e.totalEventSum}}</td>
         <td>
-            <button class="btn btn-success" href="#!/events" ng-click="editEvent(e.id)">Изменить</button>
-
+            <button class="btn btn-success" ng-click="goToEventId(e.id)">Изменить</button>
         </td>
     </tr>
     </tbody>
