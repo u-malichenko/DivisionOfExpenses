@@ -1,8 +1,6 @@
 package ru.division.of.expenses.app.models;
 
 import lombok.Data;
-import ru.division.of.expenses.app.dto.EventDto;
-
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -43,13 +41,13 @@ public class Event extends AbstractEntity {
     @OneToOne
     private ShoppingList shoppingList;
 
-    public Event() {
-    }
-
-    public Event(String name, String description, BigDecimal totalEventSum) {
-        this.name = name;
-        this.description = description;
-        this.totalEventSum = totalEventSum;
-    }
+//    public Event() {
+//    }
+//
+//    public Event(String name, String description, BigDecimal totalEventSum) {
+//        this.name = name;
+//        this.description = description;
+//        this.totalEventSum = totalEventSum;
+//    }
 
 }

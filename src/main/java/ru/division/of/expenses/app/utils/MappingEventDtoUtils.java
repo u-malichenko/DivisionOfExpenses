@@ -15,10 +15,11 @@ public class MappingEventDtoUtils {
     public Event mapToEvent(EventDto eventDto){
 
         Event event = new Event();
-        event.setId(eventDto.getId());
+//        event.setId(eventDto.getId());
         event.setName(eventDto.getName());
         event.setEventDateTime(eventDto.getEventDateTime());
         event.setTotalEventSum(eventDto.getTotalEventSum());
+        event.setDescription(eventDto.getDescription());
         event.setEventManager(userService.findByUsername(eventDto.getManagerUsername()).get());
         return event;
 

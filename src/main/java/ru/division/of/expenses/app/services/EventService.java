@@ -8,10 +8,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ru.division.of.expenses.app.dto.EventDto;
 import ru.division.of.expenses.app.exceptions_handling.EventNotFoundException;
 import ru.division.of.expenses.app.models.Event;
+import ru.division.of.expenses.app.models.User;
 import ru.division.of.expenses.app.repositoryes.EventRepository;
 import ru.division.of.expenses.app.utils.EmptyJsonResponse;
 import ru.division.of.expenses.app.utils.MappingEventDtoUtils;
@@ -54,7 +56,8 @@ public class EventService {
         event.setDescription(eventDto.getDescription());
         event.setTotalEventSum(eventDto.getTotalEventSum());
         if(eventDto.getManagerUsername() != null){
-        event.setEventManager(userService.findByUsername(eventDto.getManagerUsername()).get());}
+        event.setEventManager(userService.findByUsername(eventDto.getManagerUsername()).get());
+        }
         return eventRepository.save(event);
     }
 
@@ -113,6 +116,7 @@ public class EventService {
         }
         return event;
     }
+
 
 /////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////

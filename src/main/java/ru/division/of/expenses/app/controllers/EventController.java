@@ -1,20 +1,14 @@
 package ru.division.of.expenses.app.controllers;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import ru.division.of.expenses.app.dto.EventDto;
-import ru.division.of.expenses.app.exceptions_handling.EventNotFoundException;
 import ru.division.of.expenses.app.models.Event;
 import ru.division.of.expenses.app.models.User;
 import ru.division.of.expenses.app.services.EventService;
-import ru.division.of.expenses.app.utils.EmptyJsonResponse;
-import ru.division.of.expenses.app.utils.PrincipalImpl;
-
 import java.security.Principal;
 import java.util.List;
 
@@ -52,7 +46,7 @@ public class EventController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteEvent(@PathVariable Long id) throws EventNotFoundException {
+    public void deleteEvent(@PathVariable Long id){
         eventService.deleteEvent(id);
     }
 
