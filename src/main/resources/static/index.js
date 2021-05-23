@@ -4,7 +4,7 @@
     angular.module('app', ['ngRoute', 'ngStorage'])
         .constant('API_ENDPOINT', 'http://localhost:8189/doe')
         .config(config)
-        .service('sharedEventId', share)
+        .service('sharedParam', share)
         .run(run);
 
     function config($routeProvider, $httpProvider) {
@@ -21,6 +21,22 @@
                 templateUrl: 'event/event.html',
                 controller: 'eventController'
             })
+            .when('/addevent', {
+                templateUrl: 'eventAdd/addevent.html',
+                controller: 'addEventController'
+            })
+            .when('/expenses', {
+                templateUrl: 'expenses/expenses.html',
+                controller: 'expensesController'
+            })
+            .when('/expense', {
+                templateUrl: 'expense/expense.html',
+                controller: 'expenseController'
+            })
+            .when('/addexpense', {
+                templateUrl: 'expenseAdd/addexpense.html',
+                controller: 'addExpenseController'
+            })
             .otherwise({
                 redirectTo: '/'
             });
@@ -28,12 +44,19 @@
 
     function share() {
         let eventId = null;
+        let expenseId = null;
         return {
             getEventId: function () {
                 return eventId;
             },
             setEventId: function(value) {
                 eventId = value;
+            },
+            getExpenseId: function () {
+                return expenseId;
+            },
+            setExpenseId: function(value) {
+                expenseId = value;
             }
         };
     }

@@ -1,8 +1,9 @@
-angular.module('app').controller('eventsController', function (API_ENDPOINT, sharedEventId, $scope, $http, $location) {
+angular.module('app')
+    .controller('eventController', function (API_ENDPOINT, sharedParam, $scope, $http, $location) {
 
     $scope.loadEvent = function () {
         $http({
-            url: API_ENDPOINT + '/api/v1/event/' + sharedEventId.getEventId,
+            url: API_ENDPOINT + '/api/v1/event/' + sharedParam.getEventId,
             method: 'GET'
         }).then(function (response) {
             $scope.event = response.data;
@@ -16,6 +17,11 @@ angular.module('app').controller('eventsController', function (API_ENDPOINT, sha
                 window.alert("Event обновлен");
             });
     };
+
+    $scope.goToExpenses = function (eventId) {
+        sharedParam.setEventId(eventId);
+        $location.path('/expenses');
+    }
 
     $scope.loadEvent();
 });

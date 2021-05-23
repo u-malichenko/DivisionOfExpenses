@@ -1,5 +1,5 @@
 angular.module('app')
-    .controller('eventsController', function (API_ENDPOINT, sharedEventId, $scope, $http, $location) {
+    .controller('eventsController', function (API_ENDPOINT, sharedParam, $scope, $http, $location) {
 
     $scope.showMyEvents = function () {
         $http({
@@ -11,8 +11,12 @@ angular.module('app')
     };
 
     $scope.goToEventId = function (eventId) {
-        sharedEventId.setEventId(eventId);
+        sharedParam.setEventId(eventId);
         $location.path('/event');
+    }
+
+    $scope.addEvent = function () {
+        $location.path('/addevent');
     }
 
     $scope.showMyEvents();

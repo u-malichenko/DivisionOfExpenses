@@ -1,0 +1,26 @@
+<h3>Траты события</h3>
+<table class="table table-hover" cellpadding="0" cellspacing="0">
+    <thead>
+    <tr>
+        <td>ID</td>
+        <td>buyer</td>
+        <td>expenseDate</td>
+        <td>comment</td>
+        <td>totalExpenseSum</td>
+        <td></td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="e in MyEvents">
+        <td>#{{e.id}}</td>
+        <td>{{e.buyer}}</td>
+        <td>{{e.expenseDate}}</td>
+        <td>{{e.comment}}</td>
+        <td>{{e.totalExpenseSum}}</td>
+        <td>
+            <button class="btn btn-success" ng-click="goToExpenseId(e.id)">Изменить</button>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<button class="btn btn-success" ng-click="addExpense()">Добавить трату</button>
