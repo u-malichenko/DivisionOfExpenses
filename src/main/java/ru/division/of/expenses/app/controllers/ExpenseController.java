@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.division.of.expenses.app.dto.EventDto;
 import ru.division.of.expenses.app.dto.ExpenseDto;
 import ru.division.of.expenses.app.models.Expense;
 import ru.division.of.expenses.app.services.EventService;
@@ -44,12 +43,12 @@ public class ExpenseController {
     }
 
     @PostMapping
-    public Expense saveExpense(@RequestBody ExpenseDto expenseDto) {
-        return expenseService.saveExpenxe(expenseDto);
+    public Expense saveExpense(@RequestBody Expense expense) {
+        return expenseService.saveExpense(expense);
     }
 
     @PutMapping
-    public ResponseEntity<?> updateExpence(@RequestBody ExpenseDto expenseDto){
-        return expenseService.updateExpense(expenseDto);
+    public ResponseEntity<?> updateExpense(@RequestBody Expense expense){
+        return expenseService.updateExpense(expense);
     }
 }

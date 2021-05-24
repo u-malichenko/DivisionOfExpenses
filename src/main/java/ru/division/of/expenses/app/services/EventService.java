@@ -52,30 +52,48 @@ public class EventService {
     }
 
 
-    public Event saveEvent(EventDto eventDto){
-        Event event = new Event();
-        event.setName(eventDto.getName());
-        event.setEventDateTime(eventDto.getEventDateTime());
-        event.setDescription(eventDto.getDescription());
-        event.setTotalEventSum(eventDto.getTotalEventSum());
-        if(eventDto.getManagerUsername() != null){
-        event.setEventManager(userService.findByUsername(eventDto.getManagerUsername()).get());
-        }
+//    public Event saveEvent(EventDto eventDto){
+//        Event event = new Event();
+//        event.setName(eventDto.getName());
+//        event.setEventDateTime(eventDto.getEventDateTime());
+//        event.setDescription(eventDto.getDescription());
+//        event.setTotalEventSum(eventDto.getTotalEventSum());
+//        if(eventDto.getManagerUsername() != null){
+//        event.setEventManager(userService.findByUsername(eventDto.getManagerUsername()).get());
+//        }
+//        return eventRepository.save(event);
+//    }
+
+    public Event saveEvent(Event event){
         return eventRepository.save(event);
     }
 
-    public ResponseEntity<?> updateEvent(EventDto eventDto){
-        Event eventFromDB = findEventByIdBasic(eventDto.getId());
+//    public ResponseEntity<?> updateEvent(EventDto eventDto){
+//        Event eventFromDB = findEventByIdBasic(eventDto.getId());
+//
+//        if(eventFromDB.getId() != null){
+//            eventFromDB.setName(eventDto.getName());
+//            eventFromDB.setDescription(eventDto.getDescription());
+//            eventFromDB.setTotalEventSum(eventDto.getTotalEventSum());
+//           return new ResponseEntity<Event>(eventRepository.save(eventFromDB), HttpStatus.OK);
+//        }else{
+//            return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.OK);
+//        }
+//    }
 
+    public ResponseEntity<?> updateEvent(Event event){
+        Event eventFromDB = findEventByIdBasic(event.getId());
         if(eventFromDB.getId() != null){
-            eventFromDB.setName(eventDto.getName());
-            eventFromDB.setDescription(eventDto.getDescription());
-            eventFromDB.setTotalEventSum(eventDto.getTotalEventSum());
+            eventFromDB.setName(event.getName());
+            eventFromDB.setDescription(event.getDescription());
+            eventFromDB.setTotalEventSum(event.getTotalEventSum());
             return new ResponseEntity<Event>(eventRepository.save(eventFromDB), HttpStatus.OK);
         }else{
             return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.OK);
         }
     }
+
+
 
     public void deleteEvent(Long id) {
         Event eventFromDB = findEventByIdBasic(id);
@@ -178,7 +196,29 @@ public class EventService {
 //        return eventRepository.save(eventFromDB);
 //    }
 
-//    public Event saveEvent(Event event) {
+    //    public Event saveEvent(EventDto eventDto){
+//        Event event = new Event();
+//        event.setName(eventDto.getName());
+//        event.setEventDateTime(eventDto.getEventDateTime());
+//        event.setDescription(eventDto.getDescription());
+//        event.setTotalEventSum(eventDto.getTotalEventSum());
+//        if(eventDto.getManagerUsername() != null){
+//        event.setEventManager(userService.findByUsername(eventDto.getManagerUsername()).get());
+//        }
 //        return eventRepository.save(event);
 //    }
+
+    //    public ResponseEntity<?> updateEvent(EventDto eventDto){
+//        Event eventFromDB = findEventByIdBasic(eventDto.getId());
+//
+//        if(eventFromDB.getId() != null){
+//            eventFromDB.setName(eventDto.getName());
+//            eventFromDB.setDescription(eventDto.getDescription());
+//            eventFromDB.setTotalEventSum(eventDto.getTotalEventSum());
+//           return new ResponseEntity<Event>(eventRepository.save(eventFromDB), HttpStatus.OK);
+//        }else{
+//            return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.OK);
+//        }
+//    }
+
 }

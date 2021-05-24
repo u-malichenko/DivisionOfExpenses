@@ -44,28 +44,35 @@ public class ExpenseService {
         }
     }
 
-    public Expense saveExpenxe(ExpenseDto expenseDto){
-        Expense expense = new Expense();
-        expense.setExpenseDate(expenseDto.getExpenseDate());
-        expense.setTotalExpenseSum(expenseDto.getTotalExpenseSum());
-        expense.setExpenseDate(expenseDto.getExpenseDate());
-        expense.setComment(expenseDto.getComment());
-        if(expenseDto.getBuyer() != null){
-           expense.setBuyer(userService.findByUsername(expenseDto.getBuyer()).get());
-        }
+
+    public Expense saveExpense(Expense expense){
         return expenseRepository.save(expense);
     }
 
-    public ResponseEntity<?> updateExpense(ExpenseDto expenseDto){
-        Expense expenseFromDB = findExpenseByIdBasic(expenseDto.getId());
+//    public ResponseEntity<?> updateExpense(ExpenseDto expenseDto){
+//        Expense expenseFromDB = findExpenseByIdBasic(expenseDto.getId());
+//
+//        if(expenseFromDB.getId() != null){
+//            expenseFromDB.setExpenseDate(expenseDto.getExpenseDate());
+//            expenseFromDB.setTotalExpenseSum(expenseDto.getTotalExpenseSum());
+//            expenseFromDB.setComment(expenseDto.getComment());
+//            if(expenseDto.getBuyer() != null) {
+//                expenseFromDB.setBuyer(userService.findByUsername(expenseDto.getBuyer()).get());
+//            }
+//            return new ResponseEntity<Expense>(expenseRepository.save(expenseFromDB), HttpStatus.OK);
+//        }else {
+//            return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.OK);
+//        }
+//    }
+
+    public ResponseEntity<?> updateExpense(Expense expense){
+        Expense expenseFromDB = findExpenseByIdBasic(expense.getId());
 
         if(expenseFromDB.getId() != null){
-            expenseFromDB.setExpenseDate(expenseDto.getExpenseDate());
-            expenseFromDB.setTotalExpenseSum(expenseDto.getTotalExpenseSum());
-            expenseFromDB.setComment(expenseDto.getComment());
-            if(expenseDto.getBuyer() != null) {
-                expenseFromDB.setBuyer(userService.findByUsername(expenseDto.getBuyer()).get());
-            }
+            expenseFromDB.setExpenseDate(expense.getExpenseDate());
+            expenseFromDB.setTotalExpenseSum(expense.getTotalExpenseSum());
+            expenseFromDB.setComment(expense.getComment());
+            expenseFromDB.setBuyer(expense.getBuyer());
             return new ResponseEntity<Expense>(expenseRepository.save(expenseFromDB), HttpStatus.OK);
         }else {
             return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.OK);
@@ -85,5 +92,21 @@ public class ExpenseService {
         }
         return expense;
     }
+
+
+    //////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////
+
+    //    public Expense saveExpenxe(ExpenseDto expenseDto){
+//        Expense expense = new Expense();
+//        expense.setExpenseDate(expenseDto.getExpenseDate());
+//        expense.setTotalExpenseSum(expenseDto.getTotalExpenseSum());
+//        expense.setExpenseDate(expenseDto.getExpenseDate());
+//        expense.setComment(expenseDto.getComment());
+//        if(expenseDto.getBuyer() != null){
+//           expense.setBuyer(userService.findByUsername(expenseDto.getBuyer()).get());
+//        }
+//        return expenseRepository.save(expense);
+//    }
 
 }
