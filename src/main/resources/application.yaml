@@ -8,12 +8,26 @@ server:
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
+    #    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://77.37.134.139:5522/ravilich?currentSchema=doe}
+    #    username: ${SPRING_DATASOURCE_USERNAME:ravilich}
+    #    password: ${SPRING_DATASOURCE_PASSWORD:Eiquemibi1oomied8d}
+    url: jdbc:postgresql://77.37.134.139:5522/ravilich?currentSchema=doe
+    username: ravilich
+    password: Eiquemibi1oomied8d
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: validate
-  #      ddl-auto: create
+      dialect: org.hibernate.dialect.PostgreSQL95Dialect
+      jdbc:
+        lob:
+          non_contextual_creation: true
+        #      ddl-auto: validate
+        ddl-auto: create
   flyway:
     enabled: true
     baseline-on-migrate: true
     schemas: doe
+
+jwt:
+  header: Authorization
+  secret: tg5g98h45g98h45g9845hg98hf9834hf9834hjheriheriuher9g8h384y5934yhhtertg
