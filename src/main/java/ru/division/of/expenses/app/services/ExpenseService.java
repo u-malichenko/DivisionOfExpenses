@@ -22,11 +22,6 @@ import java.util.Optional;
 public class ExpenseService {
 
     private final ExpenseRepository expenseRepository;
-    private final UserService userService;
-
-//    public Optional<Expense> findById(Long id) {
-//        return expenseRepository.findById(id);
-//    }
 
     public Page<Expense> findAll(
             int page,
@@ -49,21 +44,6 @@ public class ExpenseService {
         return expenseRepository.save(expense);
     }
 
-//    public ResponseEntity<?> updateExpense(ExpenseDto expenseDto){
-//        Expense expenseFromDB = findExpenseByIdBasic(expenseDto.getId());
-//
-//        if(expenseFromDB.getId() != null){
-//            expenseFromDB.setExpenseDate(expenseDto.getExpenseDate());
-//            expenseFromDB.setTotalExpenseSum(expenseDto.getTotalExpenseSum());
-//            expenseFromDB.setComment(expenseDto.getComment());
-//            if(expenseDto.getBuyer() != null) {
-//                expenseFromDB.setBuyer(userService.findByUsername(expenseDto.getBuyer()).get());
-//            }
-//            return new ResponseEntity<Expense>(expenseRepository.save(expenseFromDB), HttpStatus.OK);
-//        }else {
-//            return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.OK);
-//        }
-//    }
 
     public ResponseEntity<?> updateExpense(Expense expense){
         Expense expenseFromDB = findExpenseByIdBasic(expense.getId());
@@ -93,20 +73,5 @@ public class ExpenseService {
         return expense;
     }
 
-
-    //////////////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////////////
-
-    //    public Expense saveExpenxe(ExpenseDto expenseDto){
-//        Expense expense = new Expense();
-//        expense.setExpenseDate(expenseDto.getExpenseDate());
-//        expense.setTotalExpenseSum(expenseDto.getTotalExpenseSum());
-//        expense.setExpenseDate(expenseDto.getExpenseDate());
-//        expense.setComment(expenseDto.getComment());
-//        if(expenseDto.getBuyer() != null){
-//           expense.setBuyer(userService.findByUsername(expenseDto.getBuyer()).get());
-//        }
-//        return expenseRepository.save(expense);
-//    }
 
 }

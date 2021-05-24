@@ -19,11 +19,6 @@ public class ExpenseController {
     private final ExpenseService expenseService;
     private final EventService eventService;
 
-//    @GetMapping("/{id}")
-//    public Optional<Expense> findById(@PathVariable Long id){
-//        return expenseService.findById(id);
-//    }
-
     @GetMapping("/{id}")
     public ResponseEntity<?> findById(@PathVariable Long id){
         return expenseService.findById(id);
