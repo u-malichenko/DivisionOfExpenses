@@ -14,7 +14,7 @@ public class DirectPayer extends AbstractEntity {
     private User user;
 
     @Column
-    private Double summa;
+    private BigDecimal summa;
 
     @ManyToOne
     @JoinColumn(name = "expense_id")
