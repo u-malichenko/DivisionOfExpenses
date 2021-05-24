@@ -37,13 +37,13 @@ public class EventController {
     }
 
     @PostMapping
-    public Event saveEvent(@RequestBody EventDto eventDto) {
-        return eventService.saveEvent(eventDto);
+    public Event saveEvent(@RequestBody Event event) {
+        return eventService.saveEvent(event);
     }
 
     @PutMapping
-    public ResponseEntity<?> updateEvent(@RequestBody EventDto eventDto){
-        return eventService.updateEvent(eventDto);
+    public ResponseEntity<?> updateEvent(@RequestBody Event event){
+        return eventService.updateEvent(event);
     }
 
     @DeleteMapping("/{id}")

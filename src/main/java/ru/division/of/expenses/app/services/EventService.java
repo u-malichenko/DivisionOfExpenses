@@ -11,8 +11,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ru.division.of.expenses.app.dto.EventDto;
+import ru.division.of.expenses.app.dto.ExpenseDto;
 import ru.division.of.expenses.app.exceptions_handling.EventNotFoundException;
 import ru.division.of.expenses.app.models.Event;
+import ru.division.of.expenses.app.models.Expense;
 import ru.division.of.expenses.app.models.User;
 import ru.division.of.expenses.app.repositoryes.EventRepository;
 import ru.division.of.expenses.app.utils.EmptyJsonResponse;
@@ -49,30 +51,49 @@ public class EventService {
                 .collect(Collectors.toList());
     }
 
-    public Event saveEvent(EventDto eventDto){
-        Event event = new Event();
-        event.setName(eventDto.getName());
-        event.setEventDateTime(eventDto.getEventDateTime());
-        event.setDescription(eventDto.getDescription());
-        event.setTotalEventSum(eventDto.getTotalEventSum());
-        if(eventDto.getManagerUsername() != null){
-        event.setEventManager(userService.findByUsername(eventDto.getManagerUsername()).get());
-        }
+
+//    public Event saveEvent(EventDto eventDto){
+//        Event event = new Event();
+//        event.setName(eventDto.getName());
+//        event.setEventDateTime(eventDto.getEventDateTime());
+//        event.setDescription(eventDto.getDescription());
+//        event.setTotalEventSum(eventDto.getTotalEventSum());
+//        if(eventDto.getManagerUsername() != null){
+//        event.setEventManager(userService.findByUsername(eventDto.getManagerUsername()).get());
+//        }
+//        return eventRepository.save(event);
+//    }
+
+    public Event saveEvent(Event event){
         return eventRepository.save(event);
     }
 
-    public ResponseEntity<?> updateEvent(EventDto eventDto){
-        Event eventFromDB = findEventByIdBasic(eventDto.getId());
+//    public ResponseEntity<?> updateEvent(EventDto eventDto){
+//        Event eventFromDB = findEventByIdBasic(eventDto.getId());
+//
+//        if(eventFromDB.getId() != null){
+//            eventFromDB.setName(eventDto.getName());
+//            eventFromDB.setDescription(eventDto.getDescription());
+//            eventFromDB.setTotalEventSum(eventDto.getTotalEventSum());
+//           return new ResponseEntity<Event>(eventRepository.save(eventFromDB), HttpStatus.OK);
+//        }else{
+//            return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.OK);
+//        }
+//    }
 
+    public ResponseEntity<?> updateEvent(Event event){
+        Event eventFromDB = findEventByIdBasic(event.getId());
         if(eventFromDB.getId() != null){
-            eventFromDB.setName(eventDto.getName());
-            eventFromDB.setDescription(eventDto.getDescription());
-            eventFromDB.setTotalEventSum(eventDto.getTotalEventSum());
+            eventFromDB.setName(event.getName());
+            eventFromDB.setDescription(event.getDescription());
+            eventFromDB.setTotalEventSum(event.getTotalEventSum());
             return new ResponseEntity<Event>(eventRepository.save(eventFromDB), HttpStatus.OK);
         }else{
             return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.OK);
         }
     }
+
+
 
     public void deleteEvent(Long id) {
         Event eventFromDB = findEventByIdBasic(id);
@@ -88,6 +109,18 @@ public class EventService {
         return events
                 .stream()
                 .map(EventDto::new)
+                .collect(Collectors.toList());
+    }
+
+    public List<ExpenseDto> findExpenseById(
+            Long id,
+            int page,
+            int size
+    ){
+        Page<Expense> expenses = eventRepository.findExpenseById(id, PageRequest.of(page - 1, size));
+        return expenses
+                .stream()
+                .map(ExpenseDto::new)
                 .collect(Collectors.toList());
     }
 
@@ -116,6 +149,8 @@ public class EventService {
         }
         return event;
     }
+
+
 
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -161,7 +196,29 @@ public class EventService {
 //        return eventRepository.save(eventFromDB);
 //    }
 
-//    public Event saveEvent(Event event) {
+    //    public Event saveEvent(EventDto eventDto){
+//        Event event = new Event();
+//        event.setName(eventDto.getName());
+//        event.setEventDateTime(eventDto.getEventDateTime());
+//        event.setDescription(eventDto.getDescription());
+//        event.setTotalEventSum(eventDto.getTotalEventSum());
+//        if(eventDto.getManagerUsername() != null){
+//        event.setEventManager(userService.findByUsername(eventDto.getManagerUsername()).get());
+//        }
 //        return eventRepository.save(event);
 //    }
+
+    //    public ResponseEntity<?> updateEvent(EventDto eventDto){
+//        Event eventFromDB = findEventByIdBasic(eventDto.getId());
+//
+//        if(eventFromDB.getId() != null){
+//            eventFromDB.setName(eventDto.getName());
+//            eventFromDB.setDescription(eventDto.getDescription());
+//            eventFromDB.setTotalEventSum(eventDto.getTotalEventSum());
+//           return new ResponseEntity<Event>(eventRepository.save(eventFromDB), HttpStatus.OK);
+//        }else{
+//            return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.OK);
+//        }
+//    }
+
 }

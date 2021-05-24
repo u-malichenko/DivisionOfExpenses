@@ -7,7 +7,6 @@ import ru.division.of.expenses.app.models.*;
 
 import java.math.BigDecimal;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,7 +25,8 @@ public class ExpenseDto {
 
     public ExpenseDto(Expense expense) {
         this.id = expense.getId();
-        this.buyer = expense.getBuyer().getUsername();
+        if (expense.getBuyer() != null){
+        this.buyer = expense.getBuyer().getUsername();}
         this.expenseDate = expense.getExpenseDate();
         this.comment = expense.getComment();
         this.totalExpenseSum = expense.getTotalExpenseSum();
