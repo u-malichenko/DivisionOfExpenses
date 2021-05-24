@@ -36,15 +36,15 @@ public class ExpenseController {
         return expenseService.findAll(page, size);
     }
 
-    @GetMapping("/event/{id}")
-    public List<ExpenseDto> findExpenseById(@PathVariable Long id,
+    @GetMapping("/ByEventId/{id}")
+    public List<ExpenseDto> findExpenseByEventId(@PathVariable Long id,
                                             @RequestParam(required = false, defaultValue = "1") int page ,
                                             @RequestParam(required = false, defaultValue = "5") int size){
         return eventService.findExpenseById(id, page, size);
     }
 
     @PostMapping
-    public Expense saveEvent(@RequestBody ExpenseDto expenseDto) {
+    public Expense saveExpense(@RequestBody ExpenseDto expenseDto) {
         return expenseService.saveExpenxe(expenseDto);
     }
 
