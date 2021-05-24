@@ -16,7 +16,7 @@ public class Event extends AbstractEntity {
             name = "events_users",
             joinColumns = @JoinColumn(name = "event_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private Collection<User> eventUserLIst = new ArrayList<>();
+    private Collection<User> eventUserList = new ArrayList<>();
 
     @Column
     private Calendar eventDateTime;

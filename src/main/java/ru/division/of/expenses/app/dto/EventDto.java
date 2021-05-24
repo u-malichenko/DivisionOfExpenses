@@ -34,17 +34,13 @@ public class EventDto {
         this.name = event.getName();
         this.eventDateTime = event.getEventDateTime();
         this.description = event.getDescription();
-        if(event.getEventManager() != null){
-        this.managerUsername = event.getEventManager().getUsername(); }
+        if(event.getEventManager() != null) {
+            this.managerUsername = event.getEventManager().getUsername();
+        }
         this.totalEventSum = event.getTotalEventSum();
-        this.eventUserLIst = event.getEventUserLIst().stream()
+        this.eventUserLIst = event.getEventUserList().stream()
                 .map(User::getUsername)
                 .collect(Collectors.toList());
-        Collection<Expense> collection = event.getExpenseList();
-        System.out.println(collection.size());
-        this.expenseList = event.getExpenseList().stream()
-                .map(ExpenseDto::new)
-                .collect(Collectors.toList());
-
+        this.expenseList = event.getExpenseList().stream().map(ExpenseDto::new).collect(Collectors.toList());
     }
 }

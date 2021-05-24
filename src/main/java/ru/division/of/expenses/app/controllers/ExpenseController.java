@@ -25,8 +25,8 @@ public class ExpenseController {
     }
 
     @GetMapping
-    public Page<Expense> findAll(@RequestParam(required = false, defaultValue = "0") int page ,
-                                 @RequestParam(required = false, defaultValue = "10") int size){
+    public Page<Expense> findAll(@RequestParam(required = false, defaultValue = "1") int page ,
+                                 @RequestParam(required = false, defaultValue = "5") int size){
         return expenseService.findAll(page, size);
     }
 

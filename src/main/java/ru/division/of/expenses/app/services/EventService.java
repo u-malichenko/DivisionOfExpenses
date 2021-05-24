@@ -1,25 +1,18 @@
 package ru.division.of.expenses.app.services;
 
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ru.division.of.expenses.app.dto.EventDto;
 import ru.division.of.expenses.app.dto.ExpenseDto;
 import ru.division.of.expenses.app.exceptions_handling.EventNotFoundException;
 import ru.division.of.expenses.app.models.Event;
 import ru.division.of.expenses.app.models.Expense;
-import ru.division.of.expenses.app.models.User;
 import ru.division.of.expenses.app.repositoryes.EventRepository;
 import ru.division.of.expenses.app.utils.EmptyJsonResponse;
-import ru.division.of.expenses.app.utils.MappingEventDtoUtils;
-import ru.division.of.expenses.app.utils.MappingEventUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
