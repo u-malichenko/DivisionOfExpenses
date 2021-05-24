@@ -28,7 +28,7 @@ public class Event extends AbstractEntity {
     private String description;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "expense_id")
+    @JoinColumn(name = "id")
     private Collection<Expense> expenseList = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
