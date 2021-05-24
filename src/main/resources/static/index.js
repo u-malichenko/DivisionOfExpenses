@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app', ['ngRoute', 'ngStorage'])
-        .constant('API_ENDPOINT', 'http://divisionofexpenses.herokuapp.com/doe')
+        .constant('API_ENDPOINT', 'http://divisionofexpenses.herokuapp.com')
         .config(config)
         .service('sharedParam', share)
         .run(run);
