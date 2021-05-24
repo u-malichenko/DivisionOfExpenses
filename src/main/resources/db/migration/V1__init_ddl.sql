@@ -56,7 +56,7 @@ create table if not exists event
 
 create table if not exists events_users
 (
-    user_id bigint not null
+    user_id  bigint not null
         constraint fk4qi1ew1ii81ipjy5p3oy5ypeq
             references users,
     event_id bigint not null
@@ -64,15 +64,25 @@ create table if not exists events_users
             references event
 );
 
+create table if not exists invited_events_users
+(
+    user_id  bigint not null
+        constraint FKp5o1w7ukqaepwei6tx7yvglks
+            references users,
+    event_id bigint not null
+        constraint FK9r3oi2ntgo4tgv09hbmmgnvx3
+            references event
+);
+
 create table if not exists expense
 (
-    id bigserial not null
+    id                bigserial not null
         constraint expense_pkey
             primary key,
-    create_date timestamp,
-    modify_date timestamp,
-    bill_photo varchar(255),
-    comment varchar(255),
+    create_date       timestamp,
+    modify_date       timestamp,
+    bill_photo        varchar(255),
+    comment           varchar(255),
     expense_date timestamp,
     total_expense_sum numeric(19,2),
     buyer_id bigint
