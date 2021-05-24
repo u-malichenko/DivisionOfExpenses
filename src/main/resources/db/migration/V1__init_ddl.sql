@@ -88,7 +88,7 @@ create table if not exists expense
     buyer_id bigint
         constraint fk2wm2hsnaeugfskywd72bsfx2c
             references users,
-    expense_id bigint
+    event_id bigint
         constraint fkk3gx26ki6g8jinamvk52opp8f
             references event
 );
