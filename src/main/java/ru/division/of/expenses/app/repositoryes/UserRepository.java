@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import ru.division.of.expenses.app.models.Event;
 import ru.division.of.expenses.app.models.User;
 
 import java.util.Optional;
@@ -31,4 +32,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     );
 
     Optional<User> findByUsername(String username);
+
+    @Query(
+            value = "SELECT u.eventList FROM User u WHERE u.id = :id"
+    )
+    Page<Event> findEventListById(Long id, Pageable pageable);
 }
