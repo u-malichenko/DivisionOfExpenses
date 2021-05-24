@@ -1,6 +1,7 @@
 package ru.division.of.expenses.app.models;
 
 import lombok.Data;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -28,12 +29,12 @@ public class Event extends AbstractEntity {
     private String description;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "expense_id")
+    @JoinColumn(name = "event_id")
     private Collection<Expense> expenseList = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User eventManager; //так неудобно искать тут по юзеру, мб по айди? зачем тут юзер? мб мы его можем вытягивать по айди?
+    private User eventManager;
 
     @Column
     private BigDecimal totalEventSum;
@@ -41,13 +42,5 @@ public class Event extends AbstractEntity {
     @OneToOne
     private ShoppingList shoppingList;
 
-//    public Event() {
-//    }
-//
-//    public Event(String name, String description, BigDecimal totalEventSum) {
-//        this.name = name;
-//        this.description = description;
-//        this.totalEventSum = totalEventSum;
-//    }
 
 }
