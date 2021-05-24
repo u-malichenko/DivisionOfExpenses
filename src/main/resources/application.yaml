@@ -2,7 +2,7 @@
 server:
   port: 8189
   servlet:
-    context-path: /doe
+    context-path: /
 
 # Spring
 spring:
@@ -11,8 +11,8 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-#      ddl-auto: validate
-      ddl-auto: create
+      ddl-auto: validate
+  #      ddl-auto: create
   flyway:
     enabled: true
     baseline-on-migrate: true
