@@ -1,3 +1,4 @@
-angular.module('app').controller('homeController', function ($scope, $http, $localStorage) {
-    const contextPath = 'http://localhost:8189/doe';
+angular.module('app')
+    .controller('homeController', function (API_ENDPOINT, $scope, $http, $localStorage) {
+    console.log(API_ENDPOINT);
 });

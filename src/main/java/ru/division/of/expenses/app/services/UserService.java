@@ -10,9 +10,16 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.division.of.expenses.app.dto.EventDto;
+import ru.division.of.expenses.app.dto.UserDto;
+import ru.division.of.expenses.app.exceptions_handling.EventNotFoundException;
+import ru.division.of.expenses.app.exceptions_handling.UserNotFoundException;
+import ru.division.of.expenses.app.models.Event;
 import ru.division.of.expenses.app.models.Role;
 import ru.division.of.expenses.app.models.User;
 import ru.division.of.expenses.app.repositoryes.UserRepository;
+import ru.division.of.expenses.app.utils.MappingEventUtils;
+import ru.division.of.expenses.app.utils.MappingUserUtils;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -24,6 +31,8 @@ import java.util.stream.Collectors;
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
+    private final MappingUserUtils mappingUserUtils;
+    private final MappingEventUtils mappingEventUtils;
 
     public Page<User> findAllUsers(
             int page,
@@ -32,9 +41,28 @@ public class UserService implements UserDetailsService {
         return userRepository.findAllUsers(PageRequest.of(page, size));
     }
 
+    public Page<UserDto> findAllUserDto(
+            int page,
+            int size
+    ) {
+        return userRepository.findAll(PageRequest.of(page, size)).map(mappingUserUtils::mapToUserDto);
+    }
+
+    public UserDto findUserDtoById(Long id){
+        return mappingUserUtils.mapToUserDto(userRepository.findById(id).orElse(new User()));
+    }
+
     public Optional<User> findUserById(Long id) {
         return userRepository.findById(id);
     }
+
+//    public UserDto findUserById(Long id) throws UserNotFoundException {
+//        User user = userRepository.findById(id)
+//                .orElseThrow(
+//                        () -> new UserNotFoundException("Event: " + id + " not found.")
+//                );
+//        return new UserDto(user);
+//    }
 
     public Page<User> findUsersByName(
             String name,
@@ -42,6 +70,22 @@ public class UserService implements UserDetailsService {
             int size
     ) {
         return userRepository.findUsersByName(name, PageRequest.of(page, size));
+    }
+
+    public Page<Event> findEventlistById(
+            Long id,
+            int page,
+            int size
+    ){
+        return userRepository.findEventListById(id, PageRequest.of(page, size));
+    }
+
+    public Page<EventDto> findEventDtolistById(
+            Long id,
+            int page,
+            int size
+    ){
+        return userRepository.findEventListById(id, PageRequest.of(page, size)).map(mappingEventUtils::mapToEventDto);
     }
 
     @Override
@@ -54,7 +98,6 @@ public class UserService implements UserDetailsService {
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
-
 
     private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
         return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
