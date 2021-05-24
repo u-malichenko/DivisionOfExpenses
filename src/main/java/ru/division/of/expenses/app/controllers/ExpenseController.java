@@ -4,13 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.division.of.expenses.app.dto.EventDto;
 import ru.division.of.expenses.app.dto.ExpenseDto;
 import ru.division.of.expenses.app.models.Expense;
 import ru.division.of.expenses.app.services.EventService;
 import ru.division.of.expenses.app.services.ExpenseService;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -41,5 +41,15 @@ public class ExpenseController {
                                             @RequestParam(required = false, defaultValue = "1") int page ,
                                             @RequestParam(required = false, defaultValue = "5") int size){
         return eventService.findExpenseById(id, page, size);
+    }
+
+    @PostMapping
+    public Expense saveEvent(@RequestBody ExpenseDto expenseDto) {
+        return expenseService.saveExpenxe(expenseDto);
+    }
+
+    @PutMapping
+    public ResponseEntity<?> updateExpence(@RequestBody ExpenseDto expenseDto){
+        return expenseService.updateExpense(expenseDto);
     }
 }
