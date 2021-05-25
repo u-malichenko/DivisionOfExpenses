@@ -26,24 +26,24 @@ public class User extends AbstractEntity {
     @ManyToMany
     @JoinTable(
             name = "users_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
+            joinColumns = @JoinColumn(name = "role_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Collection<Role> roles = new ArrayList<>();
 
 
     @ManyToMany
     @JoinTable(
             name = "events_users",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "event_id"))
+            joinColumns = @JoinColumn(name = "event_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Collection<Event> eventList = new ArrayList<>();
 
-    @ManyToMany
-    @JoinTable(
-            name = "invitedEvents_users",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "event_id"))
-    private Collection<Event> invitedEventList = new ArrayList<>();
+//    @ManyToMany
+//    @JoinTable(
+//            name = "invitedEvents_users",
+//            joinColumns = @JoinColumn(name = "user_id"),
+//            inverseJoinColumns = @JoinColumn(name = "event_id"))
+//    private Collection<Event> invitedEventList = new ArrayList<>();
 
 
 }
