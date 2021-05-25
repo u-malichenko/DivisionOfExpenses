@@ -3,7 +3,6 @@ package ru.division.of.expenses.app.models;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 
 @Entity
 @Data
@@ -15,7 +14,7 @@ public class DirectPayer extends AbstractEntity {
     private User user;
 
     @Column
-    private BigDecimal summa;
+    private Double summa;
 
     @ManyToOne
     @JoinColumn(name = "expense_id")
