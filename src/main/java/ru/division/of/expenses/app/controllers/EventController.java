@@ -10,6 +10,7 @@ import ru.division.of.expenses.app.models.User;
 import ru.division.of.expenses.app.services.EventService;
 import java.security.Principal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -65,6 +66,13 @@ public class EventController {
                 size
         );
     }
+
+//Петя, привет!
+// я бы сделал как-то типа так:
+//    @GetMapping
+//    public List<EventDto> getCurrentUserOrders(Principal principal) {
+//        return eventService.findAllEventsByOwnerName(principal.getName()).stream().map(EventDto::new).collect(Collectors.toList());
+//    }
 
     @GetMapping("/byManager")
     public List<EventDto> findEventsByUserId(
