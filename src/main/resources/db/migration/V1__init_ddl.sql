@@ -157,7 +157,7 @@ create table if not exists users_roles
             references users
 );
 
-insert into "doe".users (password, username, first_name, last_name)
+insert into users (password, username, first_name, last_name)
 values ('$2y$12$03d0usVKKgPvmgt4dMfGLuyFgHUzTZw8w8vhrjR98ppMBRrpTbvTa', 'bob', 'bob', 'bombaster'),
        ('$2y$12$03d0usVKKgPvmgt4dMfGLuyFgHUzTZw8w8vhrjR98ppMBRrpTbvTa', 'john', 'john', 'johnson'),
        ('$2y$12$03d0usVKKgPvmgt4dMfGLuyFgHUzTZw8w8vhrjR98ppMBRrpTbvTa', 'silver', 'silver', 'star'),
@@ -169,11 +169,11 @@ values ('$2y$12$03d0usVKKgPvmgt4dMfGLuyFgHUzTZw8w8vhrjR98ppMBRrpTbvTa', 'bob', '
        ('$2y$12$03d0usVKKgPvmgt4dMfGLuyFgHUzTZw8w8vhrjR98ppMBRrpTbvTa', 'mitch', 'mitch', 'kuznezov'),
        ('$2y$12$03d0usVKKgPvmgt4dMfGLuyFgHUzTZw8w8vhrjR98ppMBRrpTbvTa', 'goro', 'goro', 'takimura');
 
-insert into "doe".roles (name)
+insert into roles (name)
 values ('ROLE_USER'),
        ('ROLE_ADMIN');
 
-insert into "doe".users_roles (role_id, user_id)
+insert into users_roles (role_id, user_id)
 values (1, 1),
        (2, 2),
        (1, 3),
@@ -185,7 +185,7 @@ values (1, 1),
        (1, 9),
        (1, 10);
 
-insert into "doe".event (description, name, user_id, total_event_sum)
+insert into event (description, name, user_id, total_event_sum)
 values ('first event description', 'first event', 1, 2030.00),
        ('second event description', 'second event', 2, 9330.30),
        ('third event description', 'third event', 3, 6204.00),
@@ -196,7 +196,7 @@ values ('first event description', 'first event', 1, 2030.00),
        ('eighths event description', 'eights event', 8, 1004.00),
        ('nines event description', 'nines event', 9, 4000.00);
 
-insert into "doe".events_users (user_id, event_id)
+insert into events_users (user_id, event_id)
 values (1, 1),
        (2, 1),
        (3, 1),
@@ -229,7 +229,7 @@ values (1, 1),
        (8, 9),
        (9, 9);
 
-insert into "doe".expense (comment, total_expense_sum, buyer_id, event_id)
+insert into expense (comment, total_expense_sum, buyer_id, event_id)
 values ('expense 1', 1000.00, 1, 1),
        ('expense 2', 1030.00, 2, 1),
        ('expense 3', 1030.20, 2, 2),
@@ -265,7 +265,7 @@ values ('expense 1', 1000.00, 1, 1),
        ('expense 33', 1000.00, 3, 9),
        ('expense 34', 1000.00, 8, 9);
 
-insert into "doe".direct_payer (expense_id, user_id, summa)
+insert into direct_payer (expense_id, user_id, summa)
 values (1, 1, 100.00),
        (1, 2, 300.00),
        (2, 5, 50.00),
@@ -281,7 +281,7 @@ values (1, 1, 100.00),
        (9, 7, 200.00),
        (9, 8, 340.00);
 
-insert into "doe".partitial_payer (expense_id, user_id)
+insert into partitial_payer (expense_id, user_id)
 values (1, 3),
        (2, 2),
        (2, 3),
