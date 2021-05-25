@@ -49,6 +49,10 @@ public class EventService {
         return eventRepository.save(event);
     }
 
+//    public EventDto saveEventDto(Event event){
+//        return new EventDto(eventRepository.save(event));
+//    }
+
     public ResponseEntity<?> updateEvent(Event event){
         Event eventFromDB = findEventByIdBasic(event.getId());
         if(eventFromDB.getId() != null){
@@ -85,6 +89,7 @@ public class EventService {
             int size
     ){
         Page<Expense> expenses = eventRepository.findExpenseById(id, PageRequest.of(page - 1, size));
+        System.out.println(expenses);
         return expenses
                 .stream()
                 .map(ExpenseDto::new)
