@@ -20,8 +20,10 @@ public class ExpenseDto {
     private Calendar expenseDate;
     private String comment;
     private BigDecimal totalExpenseSum;
-    private List<User> directPayersList;
-    private List<User> partitialPayersList;
+//    private List<User> directPayersList;
+//    private List<User> partitialPayersList;
+    private List<String> directPayersList;
+    private List<String> partitialPayersList;
 
     public ExpenseDto(Expense expense) {
         this.id = expense.getId();
@@ -31,11 +33,20 @@ public class ExpenseDto {
         this.expenseDate = expense.getExpenseDate();
         this.comment = expense.getComment();
         this.totalExpenseSum = expense.getTotalExpenseSum();
+//        this.directPayersList = expense.getDirectPayersList().stream()
+//            .map(DirectPayer::getUser)
+//            .collect(Collectors.toList());
+//        this.partitialPayersList = expense.getPartitialPayersList().stream()
+//            .map(PartitialPayer::getUser)
+//            .collect(Collectors.toList());
         this.directPayersList = expense.getDirectPayersList().stream()
-            .map(DirectPayer::getUser)
-            .collect(Collectors.toList());
+                .map(DirectPayer::getUser)
+                .map(User::getUsername)
+                .collect(Collectors.toList());
         this.partitialPayersList = expense.getPartitialPayersList().stream()
-            .map(PartitialPayer::getUser)
-            .collect(Collectors.toList());
+                .map(PartitialPayer::getUser)
+                .map(User::getUsername)
+                .collect(Collectors.toList());
+
     }
 }

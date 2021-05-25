@@ -25,7 +25,7 @@ public class EventController {
     @GetMapping
     public List<EventDto> findAll(
             @RequestParam(name = "page", defaultValue = "1") int page,
-            @RequestParam(name = "size", defaultValue = "5") int size
+            @RequestParam(name = "size", defaultValue = "10") int size
 
     ) {
         if (page <= 0) {
