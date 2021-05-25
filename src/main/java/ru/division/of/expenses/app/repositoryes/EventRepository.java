@@ -8,6 +8,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ru.division.of.expenses.app.models.Event;
+import ru.division.of.expenses.app.models.Expense;
+
+import java.util.Collection;
 
 @Repository
 public interface EventRepository extends JpaRepository<Event, Long>, JpaSpecificationExecutor<Event> {
@@ -21,10 +24,15 @@ public interface EventRepository extends JpaRepository<Event, Long>, JpaSpecific
     );
 
     @Query(
-            value = "SELECT e FROM Event e JOIN e.eventUserLIst eu WHERE eu.id = :participantId "
+            value = "SELECT e FROM Event e JOIN e.eventUserList eu WHERE eu.id = :participantId "
     )
     Page<Event> findEventByParticipantId(
            @Param("participantId") Long id,
            Pageable pageable
     );
+
+    @Query(
+            value = "SELECT e.expenseList FROM Event e WHERE e.id = :id"
+    )
+    Page<Expense> findExpenseById(@Param("id") Long id, Pageable pageable);
 }
