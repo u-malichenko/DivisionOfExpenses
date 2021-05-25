@@ -16,7 +16,7 @@ public class Event extends AbstractEntity {
             name = "events_users",
             joinColumns = @JoinColumn(name = "event_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private Collection<User> eventUserLIst = new ArrayList<>();
+    private Collection<User> eventUserList = new ArrayList<>();
 
     @Column
     private Calendar eventDateTime;
@@ -40,14 +40,5 @@ public class Event extends AbstractEntity {
 
     @OneToOne
     private ShoppingList shoppingList;
-
-//    public Event() {
-//    }
-//
-//    public Event(String name, String description, BigDecimal totalEventSum) {
-//        this.name = name;
-//        this.description = description;
-//        this.totalEventSum = totalEventSum;
-//    }
 
 }

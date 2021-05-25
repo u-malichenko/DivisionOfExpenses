@@ -19,19 +19,14 @@ public class ExpenseController {
     private final ExpenseService expenseService;
     private final EventService eventService;
 
-//    @GetMapping("/{id}")
-//    public Optional<Expense> findById(@PathVariable Long id){
-//        return expenseService.findById(id);
-//    }
-
     @GetMapping("/{id}")
     public ResponseEntity<?> findById(@PathVariable Long id){
         return expenseService.findById(id);
     }
 
     @GetMapping
-    public Page<Expense> findAll(@RequestParam(required = false, defaultValue = "0") int page ,
-                                 @RequestParam(required = false, defaultValue = "10") int size){
+    public Page<Expense> findAll(@RequestParam(required = false, defaultValue = "1") int page ,
+                                 @RequestParam(required = false, defaultValue = "5") int size){
         return expenseService.findAll(page, size);
     }
 

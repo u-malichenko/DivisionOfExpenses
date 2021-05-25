@@ -24,7 +24,7 @@ public interface EventRepository extends JpaRepository<Event, Long>, JpaSpecific
     );
 
     @Query(
-            value = "SELECT e FROM Event e JOIN e.eventUserLIst eu WHERE eu.id = :participantId "
+            value = "SELECT e FROM Event e JOIN e.eventUserList eu WHERE eu.id = :participantId "
     )
     Page<Event> findEventByParticipantId(
            @Param("participantId") Long id,

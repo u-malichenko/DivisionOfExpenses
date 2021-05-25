@@ -3,7 +3,6 @@ package ru.division.of.expenses.app.controllers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import ru.division.of.expenses.app.dto.EventDto;
 import ru.division.of.expenses.app.models.Event;
@@ -27,7 +26,7 @@ public class EventController {
     @GetMapping
     public List<EventDto> findAll(
             @RequestParam(name = "page", defaultValue = "1") int page,
-            @RequestParam(name = "size", defaultValue = "5") int size
+            @RequestParam(name = "size", defaultValue = "10") int size
 
     ) {
         if (page <= 0) {
@@ -84,6 +83,7 @@ public class EventController {
         if (page <= 0) {
             page = 1;
         }
+        principal.getName();
         User user = (User)((UsernamePasswordAuthenticationToken)principal).getPrincipal();
         return eventService.findEventsByUserId(
                 user.getId(),
@@ -125,35 +125,5 @@ public class EventController {
         );
     }
 
-
-
-    ///////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////
-
-
-    //    @GetMapping("/{id}")
-//    public EventDto findEventById(@PathVariable("id") Long id) throws EventNotFoundException {
-//        return eventService.findEventById(id);
-//    }
-
-//    @GetMapping("/{id}")
-//    public ResponseEntity<?> findEventById(@PathVariable Long id) {
-//        EventDto eventDto = eventService.findEventById(id);
-//        if(eventDto.getId() != null){
-//            return new ResponseEntity<EventDto>(eventDto, HttpStatus.OK);
-//        }else{
-//            return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.OK);
-//        }
-//    }
-
-//        @PostMapping
-//    public Event saveEvent(@RequestBody Event event) {
-//        return eventService.saveEvent(event);
-//    }
-
-    //    @PutMapping
-//    public Event updateEvent(@RequestBody Event event) throws EventNotFoundException {
-//        return eventService.updateEvent(event);
-//    }
 
 }
