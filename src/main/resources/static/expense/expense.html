@@ -1,0 +1,40 @@
+<div>
+    <form novalidate ng-submit="updateExpense()">
+        <h1 class="h3 mb-3 font-weight-normal">Изменить Трату</h1>
+
+        <input class="form-control" type="number" hidden ng-model="expense.id">
+
+
+        <div class="form-group col-md-6">
+            <label for="buyer">buyer</label>
+            <input type=text ng-model="expense.buyer" id="buyer" class="form-control"
+                   placeholder={{expense.buyer}}>
+        </div>
+
+
+        <div class="form-group col-md-6">
+            <label for="expenseDate">expenseDate</label>
+            <input type="date" ng-model="expense.expenseDate" id="expenseDate" class="form-control"
+                   placeholder={{expense.expenseDate}}>
+        </div>
+
+
+        <div class="form-group col-md-6">
+            <label for="comment">comment</label>
+            <input type="text" ng-model="expense.comment" id="comment" class="form-control"
+                   placeholder={{expense.comment}}>
+        </div>
+
+
+        <div class="form-group col-md-6">
+            <label for="totalExpenseSum">totalExpenseSum</label>
+            <input type="number" ng-model="expense.totalExpenseSum" id="totalExpenseSum" class="form-control"
+                   placeholder={{expense.totalExpenseSum}}>
+        </div>
+
+
+        <div>
+            <button class="btn btn-success" type="submit">Сохранить</button>
+        </div>
+    </form>
+</div>

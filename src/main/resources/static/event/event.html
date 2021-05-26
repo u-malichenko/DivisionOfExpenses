@@ -1,0 +1,44 @@
+<div>
+    <form novalidate ng-submit="updateEvent()">
+        <h1 class="h3 mb-3 font-weight-normal">Изменить Event</h1>
+
+        <input class="form-control" type="number" hidden ng-model="event.id">
+
+
+        <div class="form-group col-md-6">
+            <label for="name">name</label>
+            <input type=text ng-model="event.name" id="name" class="form-control"
+                   placeholder={{event.name}}>
+        </div>
+
+
+        <div class="form-group col-md-6">
+            <label for="eventDateTime">eventDateTime</label>
+            <input type="date" ng-model="event.eventDateTime" id="eventDateTime" class="form-control"
+                   placeholder={{event.eventDateTime}}>
+        </div>
+
+
+        <div class="form-group col-md-6">
+            <label for="username">username</label>
+            <input type="text" ng-model="event.username" id="username" class="form-control"
+                   placeholder={{event.username}}>
+        </div>
+
+
+        <div class="form-group col-md-6">
+            <label for="totalEventSum">totalEventSum</label>
+            <input type="number" ng-model="event.totalEventSum" id="totalEventSum" class="form-control"
+                   placeholder={{event.totalEventSum}}>
+        </div>
+
+
+        <div>
+            <button class="btn btn-success" type="submit">Сохранить</button>
+        </div>
+    </form>
+
+    <div>
+        <button class="btn btn-success" ng-click="goToExpenses(event.id)">Список трат</button>
+    </div>
+</div>
