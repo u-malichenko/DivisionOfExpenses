@@ -25,7 +25,7 @@ public class ExpenseController {
     }
 
     @GetMapping
-    public List<ExpenseDto> findAll(@RequestParam(required = false, defaultValue = "0") int page ,
+    public List<ExpenseDto> findAll(@RequestParam(required = false, defaultValue = "1") int page ,
                                  @RequestParam(required = false, defaultValue = "5") int size){
         return expenseService.findAll(page, size);
     }
