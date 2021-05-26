@@ -25,7 +25,8 @@ public class ExpenseDto {
         }
         this.comment = expense.getComment();
         this.totalExpenseSum = expense.getTotalExpenseSum();
-        this.numberOfExpenseParticipants = expense.getDirectPayersList().size() +
+        this.numberOfExpenseParticipants = this.buyer.isEmpty() ? 0 : 1 +
+                expense.getDirectPayersList().size() +
                 expense.getDirectPayersList().size();
     }
 }
