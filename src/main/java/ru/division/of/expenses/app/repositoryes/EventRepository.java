@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import ru.division.of.expenses.app.dto.EventDto;
 import ru.division.of.expenses.app.models.Event;
 import ru.division.of.expenses.app.models.Expense;
 
@@ -18,7 +19,7 @@ public interface EventRepository extends JpaRepository<Event, Long>, JpaSpecific
             value = "SELECT * FROM event WHERE user_id = :userId",
             nativeQuery = true
     )
-    Page<Event> findEventsByUserId(
+    Page<Event> findEventsByManagerId(
             @Param("userId") Long id,
             Pageable pageable
     );
@@ -35,4 +36,20 @@ public interface EventRepository extends JpaRepository<Event, Long>, JpaSpecific
             value = "SELECT e.expenseList FROM Event e WHERE e.id = :id"
     )
     Page<Expense> findExpenseById(@Param("id") Long id, Pageable pageable);
+
+    @Query(
+            value = "SELECT e FROM Event e WHERE e.eventManager.username =:username"
+    )
+    Page<Event> findEventsByManagerUsername(
+            @Param("username") String username,
+            Pageable pageable
+    );
+
+    @Query(
+            value = "SELECT e FROM Event e JOIN e.eventUserList eu WHERE eu.username =:username"
+    )
+    Page<Event> findEventsByParticipantUsername(
+            @Param("username") String username,
+            Pageable pageable
+    );
 }

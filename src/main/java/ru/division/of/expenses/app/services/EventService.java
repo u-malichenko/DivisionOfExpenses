@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import ru.division.of.expenses.app.dto.EventDto;
 import ru.division.of.expenses.app.dto.ExpenseDto;
@@ -22,7 +23,6 @@ import java.util.stream.Collectors;
 public class EventService {
 
     private final EventRepository eventRepository;
-    private final UserService userService;
 
     public ResponseEntity<?> findEventById(Long id) {
         EventDto eventDto = new EventDto(findEventByIdBasic(id));
@@ -71,15 +71,39 @@ public class EventService {
             eventRepository.delete(eventFromDB);
     }
 
-    public List<EventDto> findEventsByUserId(
+    public List<EventDto> findEventsByManagerId(
             Long id,
             int page,
             int size
     ) {
-        Page<Event> events = eventRepository.findEventsByUserId(id, PageRequest.of(page - 1, size));
+        Page<Event> events = eventRepository.findEventsByManagerId(id, PageRequest.of(page - 1, size));
         return events
                 .stream()
                 .map(EventDto::new)
+                .collect(Collectors.toList());
+    }
+
+    public List<EventDto> findEventsByManagerUsername(
+            String username,
+            int page,
+            int size
+    ){
+        Page<Event> events = eventRepository.findEventsByManagerUsername(username, PageRequest.of(page - 1, size));
+        return events
+                .stream()
+                .map((EventDto::new))
+                .collect(Collectors.toList());
+    }
+
+    public List<EventDto> findEventsByParticipantUsername(
+            String username,
+            int page,
+            int size
+    ){
+        Page<Event> events = eventRepository.findEventsByParticipantUsername(username, PageRequest.of(page - 1, size));
+        return events
+                .stream()
+                .map((EventDto::new))
                 .collect(Collectors.toList());
     }
 

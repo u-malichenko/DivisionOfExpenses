@@ -24,7 +24,7 @@ public class EventDto {
     private String name;
     private Calendar eventDateTime;
     private BigDecimal totalEventSum;
-    private List<String> eventUserLIst;
+//    private List<String> eventUserLIst;
     private Integer amountOfExpense;
 
     public EventDto(Event event) {
@@ -33,8 +33,8 @@ public class EventDto {
         this.eventDateTime = event.getEventDateTime();
         this.totalEventSum = event.getTotalEventSum();
         this.amountOfExpense = event.getExpenseList().size();
-        this.eventUserLIst = event.getEventUserList().stream()
-                .map(User::getUsername)
-                .collect(Collectors.toList());
+//        this.eventUserLIst = event.getEventUserList().stream()
+//                .map(User::getUsername)
+//                .collect(Collectors.toList());
     }
 }
