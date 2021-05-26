@@ -17,36 +17,18 @@ public class ExpenseDto {
 
     private Long id;
     private String buyer;
-    private Calendar expenseDate;
     private String comment;
     private BigDecimal totalExpenseSum;
-//    private List<User> directPayersList;
-//    private List<User> partitialPayersList;
-    private List<String> directPayersList;
-    private List<String> partitialPayersList;
+    private Integer numberOfExpenseParticipants;
 
     public ExpenseDto(Expense expense) {
         this.id = expense.getId();
         if (expense.getBuyer() != null){
             this.buyer = expense.getBuyer().getUsername();
         }
-        this.expenseDate = expense.getExpenseDate();
         this.comment = expense.getComment();
         this.totalExpenseSum = expense.getTotalExpenseSum();
-//        this.directPayersList = expense.getDirectPayersList().stream()
-//            .map(DirectPayer::getUser)
-//            .collect(Collectors.toList());
-//        this.partitialPayersList = expense.getPartitialPayersList().stream()
-//            .map(PartitialPayer::getUser)
-//            .collect(Collectors.toList());
-        this.directPayersList = expense.getDirectPayersList().stream()
-                .map(DirectPayer::getUser)
-                .map(User::getUsername)
-                .collect(Collectors.toList());
-        this.partitialPayersList = expense.getPartitialPayersList().stream()
-                .map(PartitialPayer::getUser)
-                .map(User::getUsername)
-                .collect(Collectors.toList());
-
+        this.numberOfExpenseParticipants = expense.getDirectPayersList().size() +
+                expense.getDirectPayersList().size();
     }
 }
