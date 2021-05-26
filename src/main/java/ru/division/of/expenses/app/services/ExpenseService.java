@@ -6,11 +6,15 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import ru.division.of.expenses.app.controllers.ExpenseController;
 import ru.division.of.expenses.app.dto.ExpenseDto;
 import ru.division.of.expenses.app.exceptions_handling.ExpenseNotFoundException;
 import ru.division.of.expenses.app.models.Expense;
 import ru.division.of.expenses.app.repositoryes.ExpenseRepository;
 import ru.division.of.expenses.app.utils.EmptyJsonResponse;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -18,11 +22,15 @@ public class ExpenseService {
 
     private final ExpenseRepository expenseRepository;
 
-    public Page<Expense> findAll(
+    public List<ExpenseDto> findAll(
             int page,
             int size
     ) {
-        return expenseRepository.findAll(PageRequest.of(page, size));
+        Page<Expense> expenses = expenseRepository.findAll(PageRequest.of(page - 1, size));
+        return expenses
+                .stream()
+                .map(ExpenseDto::new)
+                .collect(Collectors.toList());
     }
 
     public ResponseEntity<?> findById(Long id) {
