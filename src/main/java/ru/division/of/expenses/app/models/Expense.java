@@ -36,4 +36,7 @@ public class Expense extends AbstractEntity {
     @OneToMany(mappedBy = "expense")
     private List<PartitialPayer> partitialPayersList = new ArrayList<>();
 
+    @ManyToOne
+    private Event event;
+
 }

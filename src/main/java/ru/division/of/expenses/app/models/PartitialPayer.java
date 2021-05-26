@@ -12,7 +12,7 @@ import javax.persistence.ManyToOne;
 public class PartitialPayer extends AbstractEntity {
 
     @ManyToOne
-//    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @Column
