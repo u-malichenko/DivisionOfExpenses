@@ -40,6 +40,11 @@ public class EventController {
         return eventService.saveEvent(event);
     }
 
+//    @PostMapping("/dto")
+//    public EventDto saveEventDto(@RequestBody Event event) {
+//        return eventService.saveEventDto(event);
+//    }
+
     @PutMapping
     public ResponseEntity<?> updateEvent(@RequestBody Event event){
         return eventService.updateEvent(event);

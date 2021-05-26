@@ -2,13 +2,9 @@ package ru.division.of.expenses.app.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.security.core.parameters.P;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ru.division.of.expenses.app.dto.EventDto;
 import ru.division.of.expenses.app.dto.UserDto;
-import ru.division.of.expenses.app.exceptions_handling.EventNotFoundException;
-import ru.division.of.expenses.app.exceptions_handling.UserNotFoundException;
 import ru.division.of.expenses.app.models.Event;
 import ru.division.of.expenses.app.models.User;
 import ru.division.of.expenses.app.services.UserService;
@@ -59,8 +55,8 @@ public class UserController {
 
     @GetMapping("/event/dto/{id}")
     public Page<EventDto> findEventDtolistById(@PathVariable Long id,
-                                              @RequestParam(required = false, defaultValue = "0") int page ,
-                                              @RequestParam(required = false, defaultValue = "10") int size){
+                                               @RequestParam(required = false, defaultValue = "0") int page ,
+                                               @RequestParam(required = false, defaultValue = "10") int size){
         return userService.findEventDtolistById(id, page, size);
     }
     ///////////////////////////////////////////////

@@ -6,16 +6,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import ru.division.of.expenses.app.dto.EventDto;
 import ru.division.of.expenses.app.dto.ExpenseDto;
-import ru.division.of.expenses.app.exceptions_handling.EventNotFoundException;
 import ru.division.of.expenses.app.exceptions_handling.ExpenseNotFoundException;
-import ru.division.of.expenses.app.models.Event;
 import ru.division.of.expenses.app.models.Expense;
 import ru.division.of.expenses.app.repositoryes.ExpenseRepository;
 import ru.division.of.expenses.app.utils.EmptyJsonResponse;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
