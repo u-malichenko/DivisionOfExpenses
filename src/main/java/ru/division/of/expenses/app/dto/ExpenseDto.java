@@ -6,9 +6,6 @@ import lombok.NoArgsConstructor;
 import ru.division.of.expenses.app.models.*;
 
 import java.math.BigDecimal;
-import java.util.Calendar;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @NoArgsConstructor
