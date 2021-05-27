@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app', ['ngRoute', 'ngStorage'])
-        .constant('API_ENDPOINT', 'https://divisionofexpenses.herokuapp.com')
+        .constant('API_ENDPOINT', 'https://localhost:8189')
         .config(config)
         .service('sharedParam', share)
         .run(run);
@@ -67,21 +67,6 @@
         }
     }
 })();
-
-// angular.module('app', [])
-//     .service('sharedEventId', function () {
-//         let eventId = null;
-//
-//         return {
-//             getEventId: function () {
-//                 return eventId;
-//             },
-//             setEventId: function(value) {
-//                 eventId = value;
-//             }
-//         };
-//     });
-
 
 angular.module('app')
     .controller('indexController', function (API_ENDPOINT, $scope, $http, $localStorage, $location) {
