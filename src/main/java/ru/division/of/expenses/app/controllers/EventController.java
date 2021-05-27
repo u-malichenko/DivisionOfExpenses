@@ -18,11 +18,13 @@ import java.util.stream.Collectors;
 public class EventController {
     private final EventService eventService;
 
+    // Поиск евента по айди
     @GetMapping("/{id}")
     public ResponseEntity<?> findEventById(@PathVariable Long id) {
         return eventService.findEventById(id);
     }
 
+    // Поиск всех евентов
     @GetMapping
     public List<EventDto> findAll(
             @RequestParam(name = "page", defaultValue = "1") int page,
@@ -35,27 +37,25 @@ public class EventController {
         return eventService.findAll(page, size);
     }
 
+    // Сохранить евент
     @PostMapping
     public Event saveEvent(@RequestBody Event event) {
         return eventService.saveEvent(event);
     }
 
-//    @PostMapping("/dto")
-//    public EventDto saveEventDto(@RequestBody Event event) {
-//        return eventService.saveEventDto(event);
-//    }
-
+    // Изменить евент
     @PutMapping
     public ResponseEntity<?> updateEvent(@RequestBody Event event){
         return eventService.updateEvent(event);
     }
 
+    // Удалить евент по айди
     @DeleteMapping("/{id}")
     public void deleteEvent(@PathVariable Long id){
         eventService.deleteEvent(id);
     }
 
-    // Поиск событий по менеджеру
+    // Поиск евента по менеджеру
     @GetMapping("/byUserId/{id}")
     public List<EventDto> findEventsByUserId(
             @PathVariable("id") Long id,
@@ -97,23 +97,7 @@ public class EventController {
         );
     }
 
-//    @GetMapping("/byManager")
-//    public List<EventDto> findEventsByUserId(
-//            @AuthenticationPrincipal User user,
-//            @RequestParam(name = "page", defaultValue = "1") int page,
-//            @RequestParam(name = "size", defaultValue = "5") int size
-//    ) {
-//        if (page <= 0) {
-//            page = 1;
-//        }
-//        return eventService.findEventsByUserId(
-//                user.getId(),
-//                page,
-//                size
-//        );
-//    }
-
-    // поиск событий по любому участнику.
+    // Поиск событий по любому участнику.
     @GetMapping("/byParticipantId/{id}")
     public List<EventDto> findEventByParticipantId(
             @PathVariable("id") Long id,

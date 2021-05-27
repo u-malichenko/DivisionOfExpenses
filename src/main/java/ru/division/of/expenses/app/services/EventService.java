@@ -45,30 +45,25 @@ public class EventService {
     }
 
 
-    public Event saveEvent(Event event){
+    public Event saveEvent(Event event) {
         return eventRepository.save(event);
     }
 
-//    public EventDto saveEventDto(Event event){
-//        return new EventDto(eventRepository.save(event));
-//    }
-
-    public ResponseEntity<?> updateEvent(Event event){
+    public ResponseEntity<?> updateEvent(Event event) {
         Event eventFromDB = findEventByIdBasic(event.getId());
-        if(eventFromDB.getId() != null){
+        if (eventFromDB.getId() != null) {
             eventFromDB.setName(event.getName());
             eventFromDB.setDescription(event.getDescription());
             eventFromDB.setTotalEventSum(event.getTotalEventSum());
             return new ResponseEntity<Event>(eventRepository.save(eventFromDB), HttpStatus.OK);
-        }else{
+        } else {
             return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.OK);
         }
     }
 
-
     public void deleteEvent(Long id) {
         Event eventFromDB = findEventByIdBasic(id);
-            eventRepository.delete(eventFromDB);
+        eventRepository.delete(eventFromDB);
     }
 
     public List<EventDto> findEventsByUserId(
@@ -87,9 +82,8 @@ public class EventService {
             Long id,
             int page,
             int size
-    ){
+    ) {
         Page<Expense> expenses = eventRepository.findExpenseById(id, PageRequest.of(page - 1, size));
-        System.out.println(expenses);
         return expenses
                 .stream()
                 .map(ExpenseDto::new)
@@ -100,7 +94,7 @@ public class EventService {
             Long id,
             int page,
             int size
-    ){
+    ) {
         Page<Event> events = eventRepository.findEventByParticipantId(id, PageRequest.of(page - 1, size));
         return events
                 .stream()
@@ -108,16 +102,15 @@ public class EventService {
                 .collect(Collectors.toList());
     }
 
-    private Event findEventByIdBasic(Long id){
+    private Event findEventByIdBasic(Long id) {
         Event event = new Event();
         try {
             event = eventRepository.findById(id)
                     .orElseThrow(
                             () -> new EventNotFoundException("Event: " + id + " not found.")
                     );
-        }catch (EventNotFoundException e){
-//            e.printStackTrace();
-            System.out.println(e);
+        } catch (EventNotFoundException e) {
+            e.printStackTrace();
         }
         return event;
     }

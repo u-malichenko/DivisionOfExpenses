@@ -37,4 +37,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
             value = "SELECT u.eventList FROM User u WHERE u.id = :id"
     )
     Page<Event> findEventListById(Long id, Pageable pageable);
+
+    @Query(
+            value = "SELECT u FROM User u WHERE u.username = :username"
+    )
+    Optional<User> findUserByUsername(@Param("username") String username);
 }

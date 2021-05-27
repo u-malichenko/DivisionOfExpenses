@@ -54,13 +54,9 @@ public class UserService implements UserDetailsService {
         return userRepository.findById(id);
     }
 
-//    public UserDto findUserById(Long id) throws UserNotFoundException {
-//        User user = userRepository.findById(id)
-//                .orElseThrow(
-//                        () -> new UserNotFoundException("Event: " + id + " not found.")
-//                );
-//        return new UserDto(user);
-//    }
+    public Optional<User> findUserByUsername(String username) {
+        return userRepository.findUserByUsername(username);
+    }
 
     public Page<User> findUsersByName(
             String name,
