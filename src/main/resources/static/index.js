@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app', ['ngRoute', 'ngStorage'])
-        .constant('API_ENDPOINT', 'https://localhost:8189')
+        .constant('API_ENDPOINT', 'http://localhost:8189')
         .config(config)
         .service('sharedParam', share)
         .run(run);
@@ -43,19 +43,19 @@
     }
 
     function share() {
-        let eventId = null;
-        let expenseId = null;
+        var eventId = 0;
+        var expenseId = 0;
         return {
             getEventId: function () {
                 return eventId;
             },
-            setEventId: function(value) {
+            setEventId: function (value) {
                 eventId = value;
             },
             getExpenseId: function () {
                 return expenseId;
             },
-            setExpenseId: function(value) {
+            setExpenseId: function (value) {
                 expenseId = value;
             }
         };
@@ -70,45 +70,45 @@
 
 angular.module('app')
     .controller('indexController', function (API_ENDPOINT, $scope, $http, $localStorage, $location) {
-    $scope.tryToAuth = function () {
-        $http.post(API_ENDPOINT + '/auth', $scope.user)
-            .then(function successCallback(response) {
-                if (response.data.token) {
-                    $http.defaults.headers.common.Authorization = 'Bearer ' + response.data.token;
-                    $localStorage.currentUser = {username: $scope.user.username, token: response.data.token};
+        $scope.tryToAuth = function () {
+            console.log('tryToAuth $http.post('+API_ENDPOINT + '/auth, $scope.user)');
+            $http.post(API_ENDPOINT + '/auth', $scope.user)
+                .then(function successCallback(response) {
+                    console.log(response.data)
+                    if (response.data.token) {
+                        $http.defaults.headers.common.Authorization = 'Bearer ' + response.data.token;
+                        $localStorage.currentUser = {username: $scope.user.username, token: response.data.token};
+                        $scope.currentUserName = $scope.user.username;
+                        $scope.user.username = null;
+                        $scope.user.password = null;
+                    }
+                }, function errorCallback(response) {
+                    window.alert(response.data.message);
+                });
+        };
 
-                    $scope.currentUserName = $scope.user.username;
+        $scope.tryToLogout = function () {
+            $scope.clearUser();
+            console.log('tryToLogout $location.path(\'/\');')
+            $location.path('/');
+            if ($scope.user.username) {
+                $scope.user.username = null;
+            }
+            if ($scope.user.password) {
+                $scope.user.password = null;
+            }
+        };
 
-                    $scope.user.username = null;
-                    $scope.user.password = null;
-                }
-            }, function errorCallback(response) {
-                window.alert(response.data.message);
-            });
-    };
+        $scope.clearUser = function () {
+            delete $localStorage.currentUser;
+            $http.defaults.headers.common.Authorization = '';
+        };
 
-    $scope.tryToLogout = function () {
-        $scope.clearUser();
-
-        $location.path('/');
-        if ($scope.user.username) {
-            $scope.user.username = null;
-        }
-        if ($scope.user.password) {
-            $scope.user.password = null;
-        }
-    };
-
-    $scope.clearUser = function () {
-        delete $localStorage.currentUser;
-        $http.defaults.headers.common.Authorization = '';
-    };
-
-    $scope.isUserLoggedIn = function () {
-        if ($localStorage.currentUser) {
-            return true;
-        } else {
-            return false;
-        }
-    };
-});
+        $scope.isUserLoggedIn = function () {
+            if ($localStorage.currentUser) {
+                return true;
+            } else {
+                return false;
+            }
+        };
+    });

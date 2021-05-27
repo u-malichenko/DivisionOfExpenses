@@ -2,7 +2,6 @@
 <table class="table table-hover" cellpadding="0" cellspacing="0">
     <thead>
     <tr>
-        <td>ID</td>
         <td>Имя</td>
         <td>Дата</td>
         <td>Сумма</td>
@@ -10,10 +9,10 @@
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="e in MyEvents">
-        <td>#{{e.id}}</td>
+    <tr ng-repeat="e in events">
         <td>{{e.name}}</td>
         <td>{{e.eventDateTime}}</td>
+<!--        | date:'yyyy-MM-dd HH:mm:ss Z'}}-->
         <td>{{e.totalEventSum}}</td>
         <td>
             <button class="btn btn-success" ng-click="goToEventId(e.id)">Изменить</button>
