@@ -14,7 +14,7 @@
     <tr ng-repeat="e in expenses">
         <td>#{{e.id}}</td>
         <td>{{e.buyer}}</td>
-        <td>{{e.expenseDate}}</td>
+        <td>{{e.expenseDate | date: 'small'}}</td>
 <!--        | date:'yyyy-MM-dd HH:mm:ss Z'}}-->
         <td>{{e.comment}}</td>
         <td>{{e.totalExpenseSum}}</td>
