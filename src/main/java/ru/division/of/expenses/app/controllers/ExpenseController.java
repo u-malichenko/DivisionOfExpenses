@@ -27,6 +27,9 @@ public class ExpenseController {
     @GetMapping
     public List<ExpenseDto> findAll(@RequestParam(required = false, defaultValue = "1") int page ,
                                  @RequestParam(required = false, defaultValue = "5") int size){
+        if (page <= 0) {
+            page = 1;
+        }
         return expenseService.findAll(page, size);
     }
 
@@ -34,6 +37,9 @@ public class ExpenseController {
     public List<ExpenseDto> findExpenseByEventId(@PathVariable Long id,
                                             @RequestParam(required = false, defaultValue = "1") int page ,
                                             @RequestParam(required = false, defaultValue = "5") int size){
+        if (page <= 0) {
+            page = 1;
+        }
         return eventService.findExpenseById(id, page, size);
     }
 

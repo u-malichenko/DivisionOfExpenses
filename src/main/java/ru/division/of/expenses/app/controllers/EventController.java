@@ -20,17 +20,17 @@ public class EventController {
         return eventService.findEventById(id);
     }
 
-    @GetMapping
-    public List<EventDto> findAll(
-            @RequestParam(name = "page", defaultValue = "1") int page,
-            @RequestParam(name = "size", defaultValue = "10") int size
-
-    ) {
-        if (page <= 0) {
-            page = 1;
-        }
-        return eventService.findAll(page, size);
-    }
+//    @GetMapping
+//    public List<EventDto> findAll(
+//            @RequestParam(name = "page", defaultValue = "1") int page,
+//            @RequestParam(name = "size", defaultValue = "10") int size
+//
+//    ) {
+//        if (page <= 0) {
+//            page = 1;
+//        }
+//        return eventService.findAll(page, size);
+//    }
 
     @PostMapping
     public Event saveEvent(@RequestBody Event event) {
@@ -63,7 +63,6 @@ public class EventController {
         if (page <= 0) {
             page = 1;
         }
-        System.out.println("Principal --- " + principal.getName());
         return eventService.findEventsByManagerUsername(
                 principal.getName(),
                 page,
@@ -72,7 +71,8 @@ public class EventController {
     }
 
     // Поиск событий по участнику, Principal
-    @GetMapping("/byParticipant")
+    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    @GetMapping()
     public List<EventDto> findEventsByParticipantUsername(
             Principal principal,
             @RequestParam(name = "page", defaultValue = "1") int page,
@@ -87,6 +87,21 @@ public class EventController {
                 size
         );
     }
+//    @GetMapping("/byParticipant")
+//    public List<EventDto> findEventsByParticipantUsername(
+//            Principal principal,
+//            @RequestParam(name = "page", defaultValue = "1") int page,
+//            @RequestParam(name = "size", defaultValue = "5") int size
+//    ){
+//        if (page <= 0) {
+//            page = 1;
+//        }
+//        return eventService.findEventsByParticipantUsername(
+//                principal.getName(),
+//                page,
+//                size
+//        );
+//    }
 
     // Поиск событий по менеджеру события, id
     @GetMapping("/byManagerId/{id}")
