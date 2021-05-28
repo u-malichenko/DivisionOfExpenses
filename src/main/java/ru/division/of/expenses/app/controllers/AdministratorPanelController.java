@@ -2,9 +2,7 @@ package ru.division.of.expenses.app.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import ru.division.of.expenses.app.dto.EventDto;
 import ru.division.of.expenses.app.services.*;
 
@@ -34,6 +32,40 @@ public class AdministratorPanelController {
             page = 1;
         }
         return eventService.findAll(page, size);
+    }
+
+    // Поиск событий по менеджеру события, id
+    @GetMapping("/byManagerId/{id}")
+    public List<EventDto> findEventsByManagerrId(
+            @PathVariable("id") Long id,
+            @RequestParam(name = "page", defaultValue = "1") int page,
+            @RequestParam(name = "size", defaultValue = "5") int size
+    ) {
+        if (page <= 0) {
+            page = 1;
+        }
+        return eventService.findEventsByManagerId(
+                id,
+                page,
+                size
+        );
+    }
+
+    // поиск событий по участнику, id
+    @GetMapping("/byParticipantId/{id}")
+    public List<EventDto> findEventByParticipantId(
+            @PathVariable("id") Long id,
+            @RequestParam(name = "page", defaultValue = "1") int page,
+            @RequestParam(name = "size", defaultValue = "5") int size
+    ){
+        if (page <= 0) {
+            page = 1;
+        }
+        return eventService.findEventByParticipantId(
+                id,
+                page,
+                size
+        );
     }
 
 }
