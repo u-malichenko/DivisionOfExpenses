@@ -1,9 +1,11 @@
 package ru.division.of.expenses.app.controllers;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ru.division.of.expenses.app.dto.EventDto;
+import ru.division.of.expenses.app.models.Event;
 import ru.division.of.expenses.app.services.*;
 
 import java.util.List;
@@ -36,7 +38,7 @@ public class AdministratorPanelController {
 
     // Поиск событий по менеджеру события, id
     @GetMapping("/byManagerId/{id}")
-    public List<EventDto> findEventsByManagerrId(
+    public List<EventDto> findEventsByManagerId(
             @PathVariable("id") Long id,
             @RequestParam(name = "page", defaultValue = "1") int page,
             @RequestParam(name = "size", defaultValue = "5") int size
@@ -66,6 +68,16 @@ public class AdministratorPanelController {
                 page,
                 size
         );
+    }
+
+    @PutMapping
+    public ResponseEntity<?> updateEvent(@RequestBody Event event){
+        return eventService.updateEvent(event);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteEvent(@PathVariable Long id){
+        eventService.deleteEvent(id);
     }
 
 }

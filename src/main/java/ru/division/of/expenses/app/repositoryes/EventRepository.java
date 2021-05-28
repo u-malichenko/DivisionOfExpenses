@@ -52,4 +52,9 @@ public interface EventRepository extends JpaRepository<Event, Long>, JpaSpecific
             @Param("username") String username,
             Pageable pageable
     );
+
+    @Query(
+            value = "SELECT em.username FROM Event e JOIN e.eventManager em WHERE e.id =:id"
+    )
+    String findEventManagerUsernameById(@Param("id") Long id);
 }

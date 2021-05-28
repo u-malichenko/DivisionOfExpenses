@@ -56,15 +56,32 @@ public class EventService {
     public ResponseEntity<?> updateEvent(Event event){
         Event eventFromDB = findEventByIdBasic(event.getId());
         if(eventFromDB.getId() != null){
-            eventFromDB.setName(event.getName());
-            eventFromDB.setDescription(event.getDescription());
-            eventFromDB.setTotalEventSum(event.getTotalEventSum());
+            if(event.getName() != null){
+            eventFromDB.setName(event.getName());}
+            if(event.getDescription() != null){
+            eventFromDB.setDescription(event.getDescription());}
+            if (event.getTotalEventSum() != null){
+            eventFromDB.setTotalEventSum(event.getTotalEventSum());}
             return new ResponseEntity<Event>(eventRepository.save(eventFromDB), HttpStatus.OK);
         }else{
             return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.OK);
         }
     }
 
+    public ResponseEntity<?> updateEventByPrincipal(Event event, String username){
+        if(!username.equals(eventRepository.findEventManagerUsernameById(event.getId()))){
+            return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.OK);
+        }
+        return updateEvent(event);
+    }
+
+
+    public void deleteEventByPrincipal(Long id, String username) {
+        if(!username.equals(eventRepository.findEventManagerUsernameById(id))){
+            return;
+        }
+        deleteEvent(id);
+    }
 
     public void deleteEvent(Long id) {
         Event eventFromDB = findEventByIdBasic(id);
