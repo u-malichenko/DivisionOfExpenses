@@ -8,19 +8,19 @@ import ru.division.of.expenses.app.services.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/admin")
 public class AdministratorPanelController {
 
-    private DirectPayersService directPayersService;
-    private EventService eventService;
-    private ExpenseService expenseService;
-    private PartitialPayersService partitialPayersService;
-    private RoleService roleService;
-    private ShoppingListItemService shoppingListItemService;
-    private ShoppingListService shoppingListService;
-    private UserService userService;
+    private final DirectPayersService directPayersService;
+    private final EventService eventService;
+    private final ExpenseService expenseService;
+    private final PartitialPayersService partitialPayersService;
+    private final RoleService roleService;
+    private final ShoppingListItemService shoppingListItemService;
+    private final ShoppingListService shoppingListService;
+    private final UserService userService;
 
     @GetMapping
     public List<EventDto> findAll(
