@@ -1,9 +1,6 @@
 package ru.division.of.expenses.app.services;
 
-import ru.division.of.expenses.app.models.DirectPayer;
-import ru.division.of.expenses.app.models.Event;
-import ru.division.of.expenses.app.models.EventMember;
-import ru.division.of.expenses.app.models.Expense;
+import ru.division.of.expenses.app.models.*;
 
 import java.math.BigDecimal;
 import java.util.Collection;
@@ -31,9 +28,20 @@ public class DivisionOfExpenseService {
                     eventMember.setSaldo(eventMember.getSaldo().add(directPayer.getSumma()));
             }
         }
+        List<PartitialPayer> partitialPayersList = expense.getPartitialPayersList();
+        int partitialListSize = partitialPayersList.size();
 
 
-        expense.getPartitialPayersList();
+        for (PartitialPayer partitialPayer : partitialPayersList
+        ) {
+            for (EventMember eventMember : eventMemberList
+            ) {
+                if (eventMember.getUser().equals(partitialPayer.getUser()))
+                    eventMember.setSaldo(eventMember.getSaldo().add(summa.divide(BigDecimal.valueOf(partitialListSize)).multiply(partitialPayer.getCoefficient())));
+            }
+
+        }
+
 
     }
 
