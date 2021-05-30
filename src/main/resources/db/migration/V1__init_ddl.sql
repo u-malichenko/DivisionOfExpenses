@@ -1,11 +1,3 @@
-create table if not exists event_roles
-(
-    event_id bigint not null,
-    roles_id bigint not null
-        constraint uk_qydu3p9hsfvlkaxq1tvftf4b0
-            unique
-);
-
 create table if not exists users_expenses
 (
         user_id     bigint not null,
@@ -257,6 +249,8 @@ insert into event_member (user_id, event_id)
 values (1, 1),
        (2, 1),
        (3, 1),
+       (5, 1),
+       (6, 1),
        (2, 2),
        (3, 2),
        (5, 2),
@@ -290,6 +284,8 @@ insert into events_members (event_member_id, event_id)
 values (1, 1),
        (2, 1),
        (3, 1),
+       (4, 1),
+       (5, 1),
        (4, 2),
        (5, 2),
        (6, 2),
@@ -392,7 +388,12 @@ values (1, 3),
 
 insert into users_expenses (user_id, expenses_id)
 values (1, 1),
+       (2, 1),
+       (3, 1),
        (2, 2),
+       (3, 2),
+       (5, 2),
+       (6, 2),
        (2, 3),
        (3, 4),
        (5, 5),

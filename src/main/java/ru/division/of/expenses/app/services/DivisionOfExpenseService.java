@@ -30,6 +30,7 @@ public class DivisionOfExpenseService {
     public void calculateExpense(Expense expense, Collection<EventMember> eventMemberList) {
 
         BigDecimal summa = expense.getTotalExpenseSum();
+        User buyer=expense.getBuyer();
         for (DirectPayer directPayer : expense.getDirectPayersList()) {
             summa = summa.subtract(directPayer.getSumma());
             for (EventMember eventMember : eventMemberList
@@ -77,7 +78,7 @@ public class DivisionOfExpenseService {
 
         for (EventMember eventMember : eventMemberList
         ) {
-            if (eventMember.equals(expense.getBuyer()))
+            if (eventMember.getUser().equals(buyer))
                 eventMember.setSaldo(
                         eventMember
                                 .getSaldo()
