@@ -124,13 +124,12 @@ public class EventService {
                 .collect(Collectors.toList());
     }
 
-    public List<ExpenseDto> findExpenseById(
+    public List<ExpenseDto> findExpenseByEventId(
             Long id,
             int page,
             int size
     ){
-        Page<Expense> expenses = eventRepository.findExpenseById(id, PageRequest.of(page - 1, size));
-        System.out.println(expenses);
+        Page<Expense> expenses = eventRepository.findExpenseByEventId(id, PageRequest.of(page - 1, size));
         return expenses
                 .stream()
                 .map(ExpenseDto::new)
@@ -156,7 +155,7 @@ public class EventService {
                     .orElseThrow(
                             () -> new EventNotFoundException("Event: " + id + " not found.")
                     );
-        }catch (EventNotFoundException e){
+        }catch (EventNotFoundException e) {
 //            e.printStackTrace();
             System.out.println(e);
         }

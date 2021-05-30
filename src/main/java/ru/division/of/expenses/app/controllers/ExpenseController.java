@@ -40,7 +40,7 @@ public class ExpenseController {
         if (page <= 0) {
             page = 1;
         }
-        return eventService.findExpenseById(id, page, size);
+        return eventService.findExpenseByEventId(id, page, size);
     }
 
     @PostMapping

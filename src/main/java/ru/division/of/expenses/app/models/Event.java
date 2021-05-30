@@ -1,6 +1,8 @@
 package ru.division.of.expenses.app.models;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
