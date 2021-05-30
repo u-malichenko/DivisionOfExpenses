@@ -1,20 +1,30 @@
 package ru.division.of.expenses.app.services;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 import ru.division.of.expenses.app.models.*;
+import ru.division.of.expenses.app.repositoryes.EventRepository;
 
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
 
+@Service
+@RequiredArgsConstructor
 public class DivisionOfExpenseService {
+
+    private final EventRepository eventRepository;
 
     public void calculateEvent(Event event) {
         event.setTotalEventSum(new BigDecimal("0.00"));
+        Collection<EventMember> eventMembers= event.getEventMembers();
+        resetEventMemberSaldo(eventMembers);
         for (Expense expense : event.getExpenseList()
         ) {
-            calculateExpense(expense, event.getEventMembers());
+            calculateExpense(expense, eventMembers);
             event.setTotalEventSum(event.getTotalEventSum().add(expense.getTotalExpenseSum()));
         }
+        eventRepository.save(event);
     }
 
     public void calculateExpense(Expense expense, Collection<EventMember> eventMemberList) {
@@ -25,7 +35,17 @@ public class DivisionOfExpenseService {
             for (EventMember eventMember : eventMemberList
             ) {
                 if (eventMember.getUser().equals(directPayer.getUser()))
-                    eventMember.setSaldo(eventMember.getSaldo().add(directPayer.getSumma()));
+                    eventMember
+                            .setSaldo
+                                    (
+                                            eventMember
+                                                    .getSaldo()
+                                                    .add
+                                                            (
+                                                                    directPayer
+                                                                            .getSumma()
+                                                            )
+                                    );
             }
         }
         List<PartitialPayer> partitialPayersList = expense.getPartitialPayersList();
@@ -37,12 +57,46 @@ public class DivisionOfExpenseService {
             for (EventMember eventMember : eventMemberList
             ) {
                 if (eventMember.getUser().equals(partitialPayer.getUser()))
-                    eventMember.setSaldo(eventMember.getSaldo().add(summa.divide(BigDecimal.valueOf(partitialListSize)).multiply(partitialPayer.getCoefficient())));
+                    eventMember
+                            .setSaldo(
+                                    eventMember.getSaldo()
+                                            .add(
+                                                    summa.divide
+                                                            (
+                                                                    BigDecimal.valueOf(partitialListSize)
+                                                            )
+                                                            .multiply
+                                                                    (
+                                                                            partitialPayer.getCoefficient()
+                                                                    )
+                                            )
+                            );
             }
 
         }
 
+        for (EventMember eventMember : eventMemberList
+        ) {
+            if (eventMember.equals(expense.getBuyer()))
+                eventMember.setSaldo(
+                        eventMember
+                                .getSaldo()
+                                .subtract(
+                                        expense
+                                                .getTotalExpenseSum()
+                                )
+                );
+        }
+        System.out.println("hi");
 
+    }
+
+    private void resetEventMemberSaldo(Collection<EventMember> eventMemberList) {
+        for (EventMember eventMember : eventMemberList
+        )
+        {
+            eventMember.setSaldo(new BigDecimal("0.00"));
+        }
     }
 
 }

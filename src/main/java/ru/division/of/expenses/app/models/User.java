@@ -1,6 +1,7 @@
 package ru.division.of.expenses.app.models;
 
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -38,7 +39,8 @@ public class User extends AbstractEntity {
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Collection<Event> eventList = new ArrayList<>();
 
-//    @ManyToMany
+
+    //    @ManyToMany
 //    @JoinTable(
 //            name = "invitedEvents_users",
 //            joinColumns = @JoinColumn(name = "user_id"),

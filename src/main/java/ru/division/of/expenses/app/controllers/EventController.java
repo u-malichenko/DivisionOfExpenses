@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.division.of.expenses.app.dto.EventDto;
 import ru.division.of.expenses.app.models.Event;
 import ru.division.of.expenses.app.services.EventService;
+import ru.division.of.expenses.app.services.DivisionOfExpenseService;
 import java.security.Principal;
 import java.util.List;
 

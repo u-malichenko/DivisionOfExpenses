@@ -3,10 +3,7 @@ package ru.division.of.expenses.app.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.division.of.expenses.app.models.DirectPayer;
-import ru.division.of.expenses.app.models.Event;
-import ru.division.of.expenses.app.models.Expense;
-import ru.division.of.expenses.app.models.User;
+import ru.division.of.expenses.app.models.*;
 
 import java.math.BigDecimal;
 import java.util.Calendar;

@@ -6,12 +6,10 @@ create table if not exists event_roles
             unique
 );
 
-create table if not exists users_expense
+create table if not exists users_expenses
 (
-    expense_id bigint not null,
-    user_id bigint not null
-        constraint uk_mf679n92xfppdm65roapo95je
-            unique
+        user_id     bigint not null,
+    expenses_id bigint not null
 );
 
 create table if not exists roles
@@ -70,7 +68,7 @@ create table event_member
             references users
 );
 
-create table does.events_members
+create table events_members
 (
     event_id        bigint not null
         constraint fk265xqmjoy0dc03sbni7n60oi2
@@ -255,6 +253,72 @@ values (1, 1),
        (8, 9),
        (9, 9);
 
+insert into event_member (user_id, event_id)
+values (1, 1),
+       (2, 1),
+       (3, 1),
+       (2, 2),
+       (3, 2),
+       (5, 2),
+       (6, 2),
+       (3, 3),
+       (8, 3),
+       (9, 3),
+       (2, 4),
+       (3, 4),
+       (4, 4),
+       (5, 4),
+       (6, 4),
+       (7, 4),
+       (8, 4),
+       (9, 4),
+       (5, 5),
+       (9, 5),
+       (6, 6),
+       (1, 7),
+       (4, 7),
+       (7, 7),
+       (5, 8),
+       (8, 8),
+       (1, 9),
+       (3, 9),
+       (7, 9),
+       (8, 9),
+       (9, 9);
+
+insert into events_members (event_member_id, event_id)
+values (1, 1),
+       (2, 1),
+       (3, 1),
+       (4, 2),
+       (5, 2),
+       (6, 2),
+       (7, 2),
+       (8, 3),
+       (9, 3),
+       (10, 3),
+       (11, 4),
+       (12, 4),
+       (13, 4),
+       (14, 4),
+       (15, 4),
+       (16, 4),
+       (17, 4),
+       (18, 4),
+       (19, 5),
+       (20, 5),
+       (21, 6),
+       (22, 7),
+       (23, 7),
+       (24, 7),
+       (25, 8),
+       (26, 8),
+       (27, 9),
+       (28, 9),
+       (29, 9),
+       (30, 9),
+       (31, 9);
+
 insert into expense (comment, total_expense_sum, buyer_id, event_id)
 values ('expense 1', 1000.00, 1, 1),
        ('expense 2', 1030.00, 2, 1),
@@ -325,3 +389,39 @@ values (1, 3),
        (8, 8),
        (9, 1),
        (9, 9);
+
+insert into users_expenses (user_id, expenses_id)
+values (1, 1),
+       (2, 2),
+       (2, 3),
+       (3, 4),
+       (5, 5),
+       (5, 6),
+       (6, 7),
+       (6, 8),
+       (6, 9),
+       (3, 10),
+       (3, 11),
+       (3, 12),
+       (8, 13),
+       (9, 14),
+       (9, 15),
+       (2, 16),
+       (3, 17),
+       (4, 18),
+       (5, 19),
+       (5, 20),
+       (6, 21),
+       (7, 22),
+       (8, 23),
+       (9, 24),
+       (9, 25),
+       (9, 26),
+       (5, 27),
+       (6, 28),
+       (7, 29),
+       (8, 30),
+       (9, 31),
+       (8, 32),
+       (3, 33),
+       (8, 34);

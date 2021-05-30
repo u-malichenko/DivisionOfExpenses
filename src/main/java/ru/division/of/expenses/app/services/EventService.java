@@ -14,6 +14,7 @@ import ru.division.of.expenses.app.models.Event;
 import ru.division.of.expenses.app.models.Expense;
 import ru.division.of.expenses.app.repositoryes.EventRepository;
 import ru.division.of.expenses.app.utils.EmptyJsonResponse;
+import ru.division.of.expenses.app.services.DivisionOfExpenseService;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,9 +24,11 @@ import java.util.stream.Collectors;
 public class EventService {
 
     private final EventRepository eventRepository;
+    private final DivisionOfExpenseService divisionOfExpenseService;
 
     public ResponseEntity<?> findEventById(Long id) {
         EventDto eventDto = new EventDto(findEventByIdBasic(id));
+        divisionOfExpenseService.calculateEvent(findEventByIdBasic(id));
         if (eventDto.getId() != null) {
             return new ResponseEntity<EventDto>(eventDto, HttpStatus.OK);
         } else {
