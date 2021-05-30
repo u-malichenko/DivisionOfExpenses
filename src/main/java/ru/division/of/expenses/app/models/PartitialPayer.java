@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import java.math.BigDecimal;
 
 @Entity
 @Data
@@ -16,7 +17,7 @@ public class PartitialPayer extends AbstractEntity {
     private User user;
 
     @Column
-    private Double coefficient;
+    private BigDecimal coefficient;
 
     @ManyToOne
     @JoinColumn(name = "expense_id")

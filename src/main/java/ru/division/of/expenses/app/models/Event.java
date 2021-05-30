@@ -18,6 +18,14 @@ public class Event extends AbstractEntity {
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Collection<User> eventUserList = new ArrayList<>();
 
+
+    @ManyToMany
+    @JoinTable(
+            name = "events_members",
+            joinColumns = @JoinColumn(name = "event_id"),
+            inverseJoinColumns = @JoinColumn(name = "event_member_id"))
+    private Collection<EventMember> eventMembers = new ArrayList<>();
+
     @Column
     private Calendar eventDateTime;
 

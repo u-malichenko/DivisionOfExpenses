@@ -45,13 +45,39 @@ create table if not exists event
     create_date timestamp default current_timestamp,
     modify_date timestamp default current_timestamp,
     description varchar(255),
-    event_date_time timestamp,
+    event_date_time timestamp default current_timestamp,
     name varchar(255),
     total_event_sum numeric(19,2),
     user_id bigint
         constraint fk31rxexkqqbeymnpw4d3bf9vsy
             references users,
     shopping_list_id bigint
+);
+
+create table event_member
+(
+    id bigserial not null
+        constraint event_member_pkey
+            primary key,
+    create_date timestamp default current_timestamp,
+    modify_date timestamp default current_timestamp,
+    saldo numeric(19, 2) default 0.00,
+    event_id    bigint
+        constraint fk8e54pd1io5a7gbp6x1io4vkft
+            references event,
+    user_id     bigint
+        constraint fkoobns1hxage1y1gcnf9ol8y2m
+            references users
+);
+
+create table does.events_members
+(
+    event_id        bigint not null
+        constraint fk265xqmjoy0dc03sbni7n60oi2
+            references event,
+    event_member_id bigint not null
+        constraint fks2yng8cie6pnvvhunn4cji4v3
+            references event_member
 );
 
 create table if not exists events_users
@@ -69,12 +95,12 @@ create table if not exists expense
     id bigserial not null
         constraint expense_pkey
             primary key,
-    create_date timestamp,
-    modify_date timestamp,
+    create_date timestamp default current_timestamp,
+    modify_date timestamp default current_timestamp,
     bill_photo varchar(255),
     comment varchar(255),
-    expense_date timestamp,
-    total_expense_sum numeric(19,2),
+    expense_date timestamp default current_timestamp,
+    total_expense_sum numeric(19,2) default 0.00,
     buyer_id bigint
         constraint fk2wm2hsnaeugfskywd72bsfx2c
             references users,
@@ -88,9 +114,9 @@ create table if not exists direct_payer
     id bigserial not null
         constraint direct_payer_pkey
             primary key,
-    create_date timestamp,
-    modify_date timestamp,
-    summa double precision,
+    create_date timestamp default current_timestamp,
+    modify_date timestamp default current_timestamp,
+    summa numeric(19,2) default 0.00,
     expense_id bigint
         constraint fkn7ogtverci9obeokrp4d8d1jg
             references expense,
@@ -104,9 +130,9 @@ create table if not exists partitial_payer
     id bigserial not null
         constraint partitial_payer_pkey
             primary key,
-    create_date timestamp,
-    modify_date timestamp,
-    coefficient double precision,
+    create_date timestamp default current_timestamp,
+    modify_date timestamp default current_timestamp,
+    coefficient numeric(19,2) default 1.00,
     expense_id bigint
         constraint fkbry2b6ee2rkvhi01rlq8r6x0j
             references expense,
@@ -120,8 +146,8 @@ create table if not exists shopping_list
     id bigserial not null
         constraint shopping_list_pkey
             primary key,
-    create_date timestamp,
-    modify_date timestamp,
+    create_date timestamp default current_timestamp,
+    modify_date timestamp default current_timestamp,
     comment varchar(255),
     enabled_flag boolean,
     event_id bigint
@@ -138,8 +164,8 @@ create table if not exists shopping_list_item
     id bigserial not null
         constraint shopping_list_item_pkey
             primary key,
-    create_date timestamp,
-    modify_date timestamp,
+    create_date timestamp default current_timestamp,
+    modify_date timestamp default current_timestamp,
     name varchar(255),
     quantity varchar(255),
     shoppinglistitem_id bigint
