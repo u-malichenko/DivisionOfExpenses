@@ -48,7 +48,10 @@ public class EventService {
     }
 
 
-    public Event saveEvent(Event event){
+    public Event saveEvent(Event event, String username){
+        User user = userRepository.findByUsername(username).get();
+        event.setEventManager(user);
+        event.addUserToEventUserList(user);
         return eventRepository.save(event);
     }
 

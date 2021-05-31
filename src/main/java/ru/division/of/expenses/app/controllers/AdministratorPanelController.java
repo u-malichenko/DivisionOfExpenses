@@ -27,7 +27,7 @@ public class AdministratorPanelController {
     @GetMapping
     public List<EventDto> findAll(
             @RequestParam(name = "page", defaultValue = "1") int page,
-            @RequestParam(name = "size", defaultValue = "10") int size
+            @RequestParam(name = "size", defaultValue = "15") int size
 
     ) {
         if (page <= 0) {

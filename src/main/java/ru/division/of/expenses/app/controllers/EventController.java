@@ -22,8 +22,8 @@ public class EventController {
 
 
     @PostMapping
-    public Event saveEvent(@RequestBody Event event) {
-        return eventService.saveEvent(event);
+    public Event saveEvent(@RequestBody Event event, Principal principal) {
+        return eventService.saveEvent(event, principal.getName());
     }
 
 
@@ -62,7 +62,7 @@ public class EventController {
     public List<EventDto> findEventsByParticipantUsername(
             Principal principal,
             @RequestParam(name = "page", defaultValue = "1") int page,
-            @RequestParam(name = "size", defaultValue = "5") int size
+            @RequestParam(name = "size", defaultValue = "10") int size
     ){
         if (page <= 0) {
             page = 1;
