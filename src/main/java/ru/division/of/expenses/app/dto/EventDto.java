@@ -26,6 +26,7 @@ public class EventDto {
     private BigDecimal totalEventSum;
     private List<String> eventUserLIst;
     private Integer amountOfExpense;
+    private List<ExpenseDto> expenseList;
 
     public EventDto(Event event) {
         this.id = event.getId();
@@ -35,6 +36,9 @@ public class EventDto {
         this.amountOfExpense = event.getExpenseList().size();
         this.eventUserLIst = event.getEventUserList().stream()
                 .map(User::getUsername)
+                .collect(Collectors.toList());
+        this.expenseList = event.getExpenseList().stream()
+                .map(ExpenseDto::new)
                 .collect(Collectors.toList());
     }
 }

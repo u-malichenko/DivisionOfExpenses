@@ -10,7 +10,9 @@ import ru.division.of.expenses.app.controllers.ExpenseController;
 import ru.division.of.expenses.app.dto.ExpenseDto;
 import ru.division.of.expenses.app.exceptions_handling.ExpenseNotFoundException;
 import ru.division.of.expenses.app.models.Expense;
+import ru.division.of.expenses.app.repositoryes.EventRepository;
 import ru.division.of.expenses.app.repositoryes.ExpenseRepository;
+import ru.division.of.expenses.app.repositoryes.UserRepository;
 import ru.division.of.expenses.app.utils.EmptyJsonResponse;
 
 import java.util.List;
@@ -21,6 +23,8 @@ import java.util.stream.Collectors;
 public class ExpenseService {
 
     private final ExpenseRepository expenseRepository;
+    private final UserRepository userRepository;
+    private final EventRepository eventRepository;
 
     public List<ExpenseDto> findAll(
             int page,
@@ -74,6 +78,12 @@ public class ExpenseService {
             System.out.println(e);
         }
         return expense;
+    }
+
+    public void saveAndAddToEvent(String username, Long eventId, Expense expense){
+        expense.setBuyer(userRepository.findByUsername(username).get());
+        expense.setEvent(eventRepository.findById(eventId).get());
+        expenseRepository.save(expense);
     }
 
 

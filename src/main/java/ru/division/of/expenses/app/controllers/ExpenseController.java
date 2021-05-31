@@ -9,6 +9,7 @@ import ru.division.of.expenses.app.models.Expense;
 import ru.division.of.expenses.app.services.EventService;
 import ru.division.of.expenses.app.services.ExpenseService;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -46,6 +47,14 @@ public class ExpenseController {
     @PostMapping
     public Expense saveExpense(@RequestBody Expense expense) {
         return expenseService.saveExpense(expense);
+    }
+
+    @PostMapping("/addToEvent/{eventId}")
+    public void saveAndAddToEvent(
+            Principal principal,
+            @PathVariable Long eventId,
+            @RequestBody Expense expense){
+        expenseService.saveAndAddToEvent(principal.getName(), eventId, expense);
     }
 
     @PutMapping

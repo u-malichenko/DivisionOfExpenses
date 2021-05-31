@@ -80,6 +80,8 @@ public class EventController {
             Principal principal){
         return eventService.addUserToEventUserList(principal.getName(), eventId);
     }
+
+
 //    @GetMapping("/byParticipant")
 //    public List<EventDto> findEventsByParticipantUsername(
 //            Principal principal,
