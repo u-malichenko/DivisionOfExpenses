@@ -18,6 +18,7 @@ import ru.division.of.expenses.app.repositoryes.UserRepository;
 import ru.division.of.expenses.app.utils.EmptyJsonResponse;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -70,6 +71,9 @@ public class EventService {
             eventFromDB.setTotalEventSum(event.getTotalEventSum());}
             if(event.getEventUserList() != null){
             eventFromDB.setEventUserList(event.getEventUserList());}
+            if(event.getEventManager() != null){
+                eventFromDB.setEventManager(event.getEventManager());
+            }
             return new ResponseEntity<Event>(eventRepository.save(eventFromDB), HttpStatus.OK);
         }else{
             return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.OK);
@@ -163,7 +167,11 @@ public class EventService {
         return updateEvent(event);
     }
 
-    private Event findEventByIdBasic(Long id){
+    public List<String> findEventUserUsernameById(Long eventId){
+       return eventRepository.findEventUserUsernameById(eventId);
+    }
+
+    public Event findEventByIdBasic(Long id){
         Event event = new Event();
         try {
             event = eventRepository.findById(id)

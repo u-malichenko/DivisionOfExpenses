@@ -12,7 +12,9 @@ import ru.division.of.expenses.app.models.Event;
 import ru.division.of.expenses.app.models.Expense;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public interface EventRepository extends JpaRepository<Event, Long>, JpaSpecificationExecutor<Event> {
@@ -58,6 +60,12 @@ public interface EventRepository extends JpaRepository<Event, Long>, JpaSpecific
             value = "SELECT em.username FROM Event e JOIN e.eventManager em WHERE e.id =:id"
     )
     String findEventManagerUsernameById(@Param("id") Long id);
+
+
+    @Query(
+            value = "SELECT em.username FROM Event e JOIN e.eventUserList em WHERE e.id = :eventId"
+    )
+    List<String> findEventUserUsernameById(@Param("eventId") Long eventId);
 
 //    @Query(
 //            value = "SELECT e FROM Event e WHERE e.id =:id"

@@ -57,6 +57,15 @@ public class ExpenseController {
         expenseService.saveAndAddToEvent(principal.getName(), eventId, expense);
     }
 
+
+    // добавление трат к эвенту без принципала, через Дто.
+    @PostMapping("/addToEventNoPrinciple/{eventId}")
+    public void saveAndAddToEventNoPrinciple(
+            @PathVariable Long eventId,
+            @RequestBody ExpenseDto expenseDto){
+        expenseService.saveAndAddToEventNoPrinciple(eventId, expenseDto);
+    }
+
     @PutMapping
     public ResponseEntity<?> updateExpense(@RequestBody Expense expense){
         return expenseService.updateExpense(expense);

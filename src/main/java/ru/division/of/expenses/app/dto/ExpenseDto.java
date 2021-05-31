@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import ru.division.of.expenses.app.models.*;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,6 +17,7 @@ public class ExpenseDto {
     private Long id;
     private String buyer;
     private String comment;
+    private String event;
     private BigDecimal totalExpenseSum;
     private Integer numberOfExpenseParticipants;
 
@@ -23,10 +26,13 @@ public class ExpenseDto {
         if (expense.getBuyer() != null){
             this.buyer = expense.getBuyer().getUsername();
         }
+        if (expense.getEvent() != null){
+            this.event = expense.getEvent().getName();
+        }
         this.comment = expense.getComment();
         this.totalExpenseSum = expense.getTotalExpenseSum();
-        this.numberOfExpenseParticipants = this.buyer.isEmpty() ? 0 : 1 +
+        this.numberOfExpenseParticipants = this.buyer == null ? 0 : 1 +
                 expense.getDirectPayersList().size() +
-                expense.getDirectPayersList().size();
+                expense.getPartitialPayersList().size();
     }
 }

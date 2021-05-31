@@ -6,14 +6,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import ru.division.of.expenses.app.controllers.ExpenseController;
 import ru.division.of.expenses.app.dto.ExpenseDto;
 import ru.division.of.expenses.app.exceptions_handling.ExpenseNotFoundException;
+import ru.division.of.expenses.app.models.Event;
 import ru.division.of.expenses.app.models.Expense;
-import ru.division.of.expenses.app.repositoryes.EventRepository;
 import ru.division.of.expenses.app.repositoryes.ExpenseRepository;
 import ru.division.of.expenses.app.repositoryes.UserRepository;
 import ru.division.of.expenses.app.utils.EmptyJsonResponse;
+import ru.division.of.expenses.app.utils.MappingExpenseDtoToExpenseUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,7 +24,9 @@ public class ExpenseService {
 
     private final ExpenseRepository expenseRepository;
     private final UserRepository userRepository;
-    private final EventRepository eventRepository;
+//    private final EventRepository eventRepository;
+    private final EventService eventService;
+    private final MappingExpenseDtoToExpenseUtils mappingExpenseDtoToExpenseUtils;
 
     public List<ExpenseDto> findAll(
             int page,
@@ -82,8 +84,20 @@ public class ExpenseService {
 
     public void saveAndAddToEvent(String username, Long eventId, Expense expense){
         expense.setBuyer(userRepository.findByUsername(username).get());
-        expense.setEvent(eventRepository.findById(eventId).get());
+        expense.setEvent(eventService.findEventByIdBasic(eventId));
         expenseRepository.save(expense);
+    }
+
+    public void saveAndAddToEventNoPrinciple(Long eventId, ExpenseDto expenseDto){
+       List<String> stringList = eventService.findEventUserUsernameById(eventId);
+       if(!stringList.contains(expenseDto.getBuyer())){
+           Event event = eventService.findEventByIdBasic(eventId);
+           event.getEventUserList().add(userRepository.findByUsername(expenseDto.getBuyer()).get());
+           eventService.updateEvent(event);
+       }
+       Expense expense = mappingExpenseDtoToExpenseUtils.mapToExpense(expenseDto);
+       expense.setEvent(eventService.findEventByIdBasic(eventId));
+       expenseRepository.save(expense);
     }
 
 
