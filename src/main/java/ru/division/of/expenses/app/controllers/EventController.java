@@ -73,6 +73,13 @@ public class EventController {
                 size
         );
     }
+
+    @GetMapping("/addToUserList/{eventId}")
+    public ResponseEntity<?> addUserToEventUserList(
+            @PathVariable Long eventId,
+            Principal principal){
+        return eventService.addUserToEventUserList(principal.getName(), eventId);
+    }
 //    @GetMapping("/byParticipant")
 //    public List<EventDto> findEventsByParticipantUsername(
 //            Principal principal,

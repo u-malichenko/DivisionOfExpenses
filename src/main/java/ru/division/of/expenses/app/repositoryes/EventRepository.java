@@ -59,8 +59,8 @@ public interface EventRepository extends JpaRepository<Event, Long>, JpaSpecific
     )
     String findEventManagerUsernameById(@Param("id") Long id);
 
-    @Query(
-            value = "SELECT e FROM Event e WHERE e.id =:id"
-    )
-    Optional<Event> findEventById(@Param("id") Long id);
+//    @Query(
+//            value = "SELECT e FROM Event e WHERE e.id =:id"
+//    )
+//    Optional<Event> findEventById(@Param("id") Long id);
 }

@@ -12,7 +12,9 @@ import ru.division.of.expenses.app.dto.ExpenseDto;
 import ru.division.of.expenses.app.exceptions_handling.EventNotFoundException;
 import ru.division.of.expenses.app.models.Event;
 import ru.division.of.expenses.app.models.Expense;
+import ru.division.of.expenses.app.models.User;
 import ru.division.of.expenses.app.repositoryes.EventRepository;
+import ru.division.of.expenses.app.repositoryes.UserRepository;
 import ru.division.of.expenses.app.utils.EmptyJsonResponse;
 
 import java.util.List;
@@ -23,6 +25,7 @@ import java.util.stream.Collectors;
 public class EventService {
 
     private final EventRepository eventRepository;
+    private final UserRepository userRepository;
 
     public ResponseEntity<?> findEventById(Long id) {
         EventDto eventDto = new EventDto(findEventByIdBasic(id));
@@ -62,6 +65,8 @@ public class EventService {
             eventFromDB.setDescription(event.getDescription());}
             if (event.getTotalEventSum() != null){
             eventFromDB.setTotalEventSum(event.getTotalEventSum());}
+            if(event.getEventUserList() != null){
+            eventFromDB.setEventUserList(event.getEventUserList());}
             return new ResponseEntity<Event>(eventRepository.save(eventFromDB), HttpStatus.OK);
         }else{
             return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.OK);
@@ -146,6 +151,13 @@ public class EventService {
                 .stream()
                 .map(EventDto::new)
                 .collect(Collectors.toList());
+    }
+
+    public ResponseEntity<?> addUserToEventUserList(String username, Long eventId){
+        User user = userRepository.findByUsername(username).get();
+        Event event = findEventByIdBasic(eventId);
+        event.addUserToEventUserList(user);
+        return updateEvent(event);
     }
 
     private Event findEventByIdBasic(Long id){
