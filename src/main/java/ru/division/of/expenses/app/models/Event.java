@@ -43,8 +43,4 @@ public class Event extends AbstractEntity {
     @OneToOne
     private ShoppingList shoppingList;
 
-    public boolean addUserToEventUserList(User user){
-        return eventUserList.add(user);
-    }
-
 }

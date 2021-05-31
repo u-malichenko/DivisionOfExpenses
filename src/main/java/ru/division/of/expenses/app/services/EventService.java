@@ -51,7 +51,7 @@ public class EventService {
     public Event saveEvent(Event event, String username){
         User user = userRepository.findByUsername(username).get();
         event.setEventManager(user);
-        event.addUserToEventUserList(user);
+        event.getEventUserList().add(user);
         return eventRepository.save(event);
     }
 
@@ -159,7 +159,7 @@ public class EventService {
     public ResponseEntity<?> addUserToEventUserList(String username, Long eventId){
         User user = userRepository.findByUsername(username).get();
         Event event = findEventByIdBasic(eventId);
-        event.addUserToEventUserList(user);
+        event.getEventUserList().add(user);
         return updateEvent(event);
     }
 
