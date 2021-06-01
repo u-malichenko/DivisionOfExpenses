@@ -9,6 +9,7 @@ import ru.division.of.expenses.app.models.Expense;
 import ru.division.of.expenses.app.services.EventService;
 import ru.division.of.expenses.app.services.ExpenseService;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -40,12 +41,29 @@ public class ExpenseController {
         if (page <= 0) {
             page = 1;
         }
-        return eventService.findExpenseById(id, page, size);
+        return eventService.findExpenseByEventId(id, page, size);
     }
 
     @PostMapping
     public Expense saveExpense(@RequestBody Expense expense) {
         return expenseService.saveExpense(expense);
+    }
+
+    @PostMapping("/addToEvent/{eventId}")
+    public void saveAndAddToEvent(
+            Principal principal,
+            @PathVariable Long eventId,
+            @RequestBody Expense expense){
+        expenseService.saveAndAddToEvent(principal.getName(), eventId, expense);
+    }
+
+
+    // добавление трат к эвенту без принципала, через Дто.
+    @PostMapping("/addToEventNoPrinciple/{eventId}")
+    public void saveAndAddToEventNoPrinciple(
+            @PathVariable Long eventId,
+            @RequestBody ExpenseDto expenseDto){
+        expenseService.saveAndAddToEventNoPrinciple(eventId, expenseDto);
     }
 
     @PutMapping
