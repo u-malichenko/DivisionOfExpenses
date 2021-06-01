@@ -3,6 +3,7 @@ package ru.division.of.expenses.app.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.parameters.P;
@@ -169,6 +170,10 @@ public class EventService {
 
     public List<String> findEventUserUsernameById(Long eventId){
        return eventRepository.findEventUserUsernameById(eventId);
+    }
+
+    public String findEventManagerUsernameByExpenseId(Long expenseId){
+        return eventRepository.findEventManagerUsernameByExpenseId(expenseId);
     }
 
     public Event findEventByIdBasic(Long id){

@@ -70,4 +70,11 @@ public class ExpenseController {
     public ResponseEntity<?> updateExpense(@RequestBody Expense expense){
         return expenseService.updateExpense(expense);
     }
+
+    @DeleteMapping("/{expenseId}")
+    public void deleteExpenseByPrincipal(
+            Principal principal,
+            @PathVariable Long expenseId){
+        expenseService.deleteExpenseByPrincipal(principal.getName(), expenseId);
+    }
 }

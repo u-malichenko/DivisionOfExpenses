@@ -100,5 +100,19 @@ public class ExpenseService {
        expenseRepository.save(expense);
     }
 
+    // Удаление Траты только байером этой Траты
+    // или менеджером Евента, к которому относится данная Трата.
+    public void deleteExpenseByPrincipal(String username, Long expenseId) {
+        if(username.equals(expenseRepository.findBuyerUsernameByExpenseId(expenseId)) ||
+        username.equals(eventService.findEventManagerUsernameByExpenseId(expenseId))){
+            deleteExpense(expenseId);
+        }
+    }
+
+    public void deleteExpense(Long expenseId) {
+        Expense expense = findExpenseByIdBasic(expenseId);
+        expenseRepository.delete(expense);
+    }
+
 
 }

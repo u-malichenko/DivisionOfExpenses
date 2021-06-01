@@ -14,12 +14,6 @@ import java.math.BigDecimal;
 public class MappingExpenseDtoToExpenseUtils {
 
     private final UserRepository userRepository;
-//    private Long id;
-//    private String buyer;
-//    private String comment;
-//    private String event;
-//    private BigDecimal totalExpenseSum;
-//    private Integer numberOfExpenseParticipants;
 
     public Expense mapToExpense(ExpenseDto expenseDto){
 
