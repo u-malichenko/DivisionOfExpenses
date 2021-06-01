@@ -7,10 +7,15 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import ru.division.of.expenses.app.dto.EventDto;
 import ru.division.of.expenses.app.models.Event;
 import ru.division.of.expenses.app.models.Expense;
+import ru.division.of.expenses.app.models.User;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public interface EventRepository extends JpaRepository<Event, Long>, JpaSpecificationExecutor<Event> {
@@ -18,7 +23,7 @@ public interface EventRepository extends JpaRepository<Event, Long>, JpaSpecific
             value = "SELECT * FROM event WHERE user_id = :userId",
             nativeQuery = true
     )
-    Page<Event> findEventsByUserId(
+    Page<Event> findEventsByManagerId(
             @Param("userId") Long id,
             Pageable pageable
     );
@@ -34,5 +39,43 @@ public interface EventRepository extends JpaRepository<Event, Long>, JpaSpecific
     @Query(
             value = "SELECT e.expenseList FROM Event e WHERE e.id = :id"
     )
-    Page<Expense> findExpenseById(@Param("id") Long id, Pageable pageable);
+    Page<Expense> findExpenseByEventId(@Param("id") Long id, Pageable pageable);
+
+    @Query(
+            value = "SELECT e FROM Event e WHERE e.eventManager.username =:username"
+    )
+    Page<Event> findEventsByManagerUsername(
+            @Param("username") String username,
+            Pageable pageable
+    );
+
+    @Query(
+            value = "SELECT e FROM Event e JOIN e.eventUserList eu WHERE eu.username =:username"
+    )
+    Page<Event> findEventsByParticipantUsername(
+            @Param("username") String username,
+            Pageable pageable
+    );
+
+    @Query(
+            value = "SELECT em.username FROM Event e JOIN e.eventManager em WHERE e.id =:id"
+    )
+    String findEventManagerUsernameById(@Param("id") Long id);
+
+
+    @Query(
+            value = "SELECT em.username FROM Event e JOIN e.eventUserList em WHERE e.id = :eventId"
+    )
+    List<String> findEventUserUsernameById(@Param("eventId") Long eventId);
+
+
+    @Query(
+            value = "SELECT em.user.username FROM Event e JOIN e.eventMembers em WHERE e.id = :eventId"
+    )
+    List<String> findEventMemberUsernameById(Long eventId);
+
+//    @Query(
+//            value = "SELECT e FROM Event e WHERE e.id =:id"
+//    )
+//    Optional<Event> findEventById(@Param("id") Long id);
 }

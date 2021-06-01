@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.division.of.expenses.app.models.Event;
+import ru.division.of.expenses.app.models.EventMember;
 import ru.division.of.expenses.app.models.User;
 
 import java.math.BigDecimal;
@@ -23,7 +24,7 @@ public class EventDto1 {
     private String description;
     private String managerUsername;
     private BigDecimal totalEventSum;
-    private List<String> eventUserLIst;
+    private List<String> eventUserList;
     private List<ExpenseDto> expenseList;
 
     public EventDto1(Event event) {
@@ -35,7 +36,7 @@ public class EventDto1 {
         if(event.getEventManager() != null){
             this.managerUsername = event.getEventManager().getUsername(); }
         this.totalEventSum = event.getTotalEventSum();
-        this.eventUserLIst = event.getEventUserList().stream()
+        this.eventUserList = event.getEventUserList().stream()
                 .map(User::getUsername)
                 .collect(Collectors.toList());
         this.expenseList = event.getExpenseList().stream()
