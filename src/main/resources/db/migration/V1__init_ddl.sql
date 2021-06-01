@@ -106,7 +106,7 @@ create table if not exists partitial_payer
             primary key,
     create_date timestamp default current_timestamp,
     modify_date timestamp default current_timestamp,
-    coefficient numeric(19, 2) default 0.00,
+    coefficient numeric(19, 2) default 1.00,
     expense_id  bigint
         constraint fk3fsnhfxxlmt0e9xa6s91ramr5
             references expense,
