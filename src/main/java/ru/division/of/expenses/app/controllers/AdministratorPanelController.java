@@ -36,6 +36,7 @@ public class AdministratorPanelController {
         return eventService.findAll(page, size);
     }
 
+
     // Поиск событий по менеджеру события, id
     @GetMapping("/byManagerId/{id}")
     public List<EventDto> findEventsByManagerId(
@@ -53,6 +54,7 @@ public class AdministratorPanelController {
         );
     }
 
+
     // поиск событий по участнику, id
     @GetMapping("/byParticipantId/{id}")
     public List<EventDto> findEventByParticipantId(
@@ -69,6 +71,7 @@ public class AdministratorPanelController {
                 size
         );
     }
+
 
     @PutMapping
     public ResponseEntity<?> updateEvent(@RequestBody Event event){

@@ -198,4 +198,8 @@ public class EventService {
     public List<String> findEventMemberUsernameById(Long eventId) {
         return eventRepository.findEventMemberUsernameById(eventId);
     }
+
+    public String findEventManagerUsernameByExpenseId(Long expenseId){
+        return eventRepository.findEventManagerUsernameByExpenseId(expenseId);
+    }
 }

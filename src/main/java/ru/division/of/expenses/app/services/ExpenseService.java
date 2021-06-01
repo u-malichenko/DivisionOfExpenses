@@ -118,16 +118,18 @@ public class ExpenseService {
     }
 
 
-    public void deleteExpense(Long id) {
-        try {
-            Expense expense = expenseRepository.findById(id)
-                    .orElseThrow(
-                            () -> new EventNotFoundException("Expense: " + id + " not found.")
-                    );
-            expenseRepository.delete(expense);
-        } catch (EventNotFoundException e) {
-            System.out.println(e);
+    // Удаление Траты только байером этой Траты
+    // или менеджером Евента, к которому относится данная Трата.
+    public void deleteExpenseByPrincipal(String username, Long expenseId) {
+        if(username.equals(expenseRepository.findBuyerUsernameByExpenseId(expenseId)) ||
+                username.equals(eventService.findEventManagerUsernameByExpenseId(expenseId))){
+            deleteExpense(expenseId);
         }
+    }
+
+    public void deleteExpense(Long expenseId) {
+        Expense expense = findExpenseByIdBasic(expenseId);
+        expenseRepository.delete(expense);
 
     }
 }

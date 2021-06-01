@@ -63,7 +63,12 @@ public class ExpenseController {
         expenseService.saveAndAddToEvent(principal.getName(), eventId, expense);
     }
 
-
+//    @DeleteMapping("/{expenseId}")
+//    public void deleteExpenseByPrincipal(
+//            Principal principal,
+//            @PathVariable Long expenseId){
+//        expenseService.deleteExpenseByPrincipal(principal.getName(), expenseId);
+//    }
     // добавление трат к эвенту без принципала, через Дто.
     @PostMapping("/addByEventId/{eventId}")
     public void saveAndAddToEventNoPrinciple(
@@ -75,6 +80,16 @@ public class ExpenseController {
     @PutMapping
     public ResponseEntity<?> updateExpense(@RequestBody Expense expense){
         return expenseService.updateExpense(expense);
+    }
+
+
+    // Удаление Траты только байером этой Траты
+    // или менеджером Евента, к которому относится данная Трата.
+    @DeleteMapping("/{expenseId}")
+    public void deleteExpenseByPrincipal(
+            Principal principal,
+            @PathVariable Long expenseId){
+        expenseService.deleteExpenseByPrincipal(principal.getName(), expenseId);
     }
 
 
