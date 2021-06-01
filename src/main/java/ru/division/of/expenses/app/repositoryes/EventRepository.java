@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import ru.division.of.expenses.app.dto.EventDto;
 import ru.division.of.expenses.app.models.Event;
 import ru.division.of.expenses.app.models.Expense;
+import ru.division.of.expenses.app.models.User;
 
 import java.util.Collection;
 import java.util.List;
@@ -66,6 +67,12 @@ public interface EventRepository extends JpaRepository<Event, Long>, JpaSpecific
             value = "SELECT em.username FROM Event e JOIN e.eventUserList em WHERE e.id = :eventId"
     )
     List<String> findEventUserUsernameById(@Param("eventId") Long eventId);
+
+
+    @Query(
+            value = "SELECT em.user.username FROM Event e JOIN e.eventMembers em WHERE e.id = :eventId"
+    )
+    List<String> findEventMemberUsernameById(Long eventId);
 
 //    @Query(
 //            value = "SELECT e FROM Event e WHERE e.id =:id"

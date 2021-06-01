@@ -7,9 +7,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.division.of.expenses.app.dto.ExpenseDto;
+import ru.division.of.expenses.app.exceptions_handling.EventNotFoundException;
 import ru.division.of.expenses.app.exceptions_handling.ExpenseNotFoundException;
 import ru.division.of.expenses.app.models.Event;
+import ru.division.of.expenses.app.models.EventMember;
 import ru.division.of.expenses.app.models.Expense;
+import ru.division.of.expenses.app.models.User;
+import ru.division.of.expenses.app.repositoryes.EventMemberRepository;
 import ru.division.of.expenses.app.repositoryes.ExpenseRepository;
 import ru.division.of.expenses.app.repositoryes.UserRepository;
 import ru.division.of.expenses.app.utils.EmptyJsonResponse;
@@ -24,9 +28,10 @@ public class ExpenseService {
 
     private final ExpenseRepository expenseRepository;
     private final UserRepository userRepository;
-//    private final EventRepository eventRepository;
+    //    private final EventRepository eventRepository;
     private final EventService eventService;
     private final MappingExpenseDtoToExpenseUtils mappingExpenseDtoToExpenseUtils;
+    private final EventMemberRepository eventMemberRepository;
 
     public List<ExpenseDto> findAll(
             int page,
@@ -49,56 +54,80 @@ public class ExpenseService {
     }
 
 
-    public Expense saveExpense(Expense expense){
+    public Expense saveExpense(Expense expense) {
         return expenseRepository.save(expense);
     }
 
 
-    public ResponseEntity<?> updateExpense(Expense expense){
+    public ResponseEntity<?> updateExpense(Expense expense) {
         Expense expenseFromDB = findExpenseByIdBasic(expense.getId());
 
-        if(expenseFromDB.getId() != null){
+        if (expenseFromDB.getId() != null) {
             expenseFromDB.setExpenseDate(expense.getExpenseDate());
             expenseFromDB.setTotalExpenseSum(expense.getTotalExpenseSum());
             expenseFromDB.setComment(expense.getComment());
             expenseFromDB.setBuyer(expense.getBuyer());
             return new ResponseEntity<Expense>(expenseRepository.save(expenseFromDB), HttpStatus.OK);
-        }else {
+        } else {
             return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.OK);
         }
     }
 
-    private Expense findExpenseByIdBasic(Long id){
+    private Expense findExpenseByIdBasic(Long id) {
         Expense expense = new Expense();
         try {
             expense = expenseRepository.findById(id)
                     .orElseThrow(
                             () -> new ExpenseNotFoundException("Event: " + id + " not found.")
                     );
-        }catch (ExpenseNotFoundException e){
+        } catch (ExpenseNotFoundException e) {
 //            e.printStackTrace();
             System.out.println(e);
         }
         return expense;
     }
 
-    public void saveAndAddToEvent(String username, Long eventId, Expense expense){
+    public void saveAndAddToEvent(String username, Long eventId, Expense expense) {
         expense.setBuyer(userRepository.findByUsername(username).get());
         expense.setEvent(eventService.findEventByIdBasic(eventId));
         expenseRepository.save(expense);
     }
 
-    public void saveAndAddToEventNoPrinciple(Long eventId, ExpenseDto expenseDto){
-       List<String> stringList = eventService.findEventUserUsernameById(eventId);
-       if(!stringList.contains(expenseDto.getBuyer())){
-           Event event = eventService.findEventByIdBasic(eventId);
-           event.getEventUserList().add(userRepository.findByUsername(expenseDto.getBuyer()).get());
-           eventService.updateEvent(event);
-       }
-       Expense expense = mappingExpenseDtoToExpenseUtils.mapToExpense(expenseDto);
-       expense.setEvent(eventService.findEventByIdBasic(eventId));
-       expenseRepository.save(expense);
+    public void saveAndAddToEventNoPrinciple(Long eventId, ExpenseDto expenseDto) {
+        List<String> eventUserUsernameList = eventService.findEventUserUsernameById(eventId);
+        List<String> eventMemberUserUsername = eventService.findEventMemberUsernameById(eventId);
+        if (!eventUserUsernameList.contains(expenseDto.getBuyer())) {
+            Event event = eventService.findEventByIdBasic(eventId);
+            event.getEventUserList().add(userRepository.findByUsername(expenseDto.getBuyer()).get());
+            eventService.updateEvent(event);
+        }
+        if (!eventMemberUserUsername.contains(expenseDto.getBuyer())) {
+            Event event = eventService.findEventByIdBasic(eventId);
+
+            User expenseBuyer = userRepository.findByUsername(expenseDto.getBuyer()).get();
+            EventMember eventMember = new EventMember();
+            eventMember.setUser(expenseBuyer);
+            eventMember.setEvent(event);
+            eventMemberRepository.save(eventMember);
+            event.getEventMembers().add(eventMember);
+            eventService.updateEvent(event);
+        }
+        Expense expense = mappingExpenseDtoToExpenseUtils.mapToExpense(expenseDto);
+        expense.setEvent(eventService.findEventByIdBasic(eventId));
+        expenseRepository.save(expense);
     }
 
 
+    public void deleteExpense(Long id) {
+        try {
+            Expense expense = expenseRepository.findById(id)
+                    .orElseThrow(
+                            () -> new EventNotFoundException("Expense: " + id + " not found.")
+                    );
+            expenseRepository.delete(expense);
+        } catch (EventNotFoundException e) {
+            System.out.println(e);
+        }
+
+    }
 }

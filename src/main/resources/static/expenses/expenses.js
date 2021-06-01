@@ -15,8 +15,17 @@ angular.module('app')
 
         $scope.goToExpenseId = function (expenseId) {
             sharedParam.setExpenseId(expenseId);
-            console.log('goToExpenseId $location.path(\'/expense\'); expenseId ='+sharedParam.getExpenseId);
+            console.log('goToExpenseId $location.path(\'/expense\'); expenseId ='+sharedParam.getExpenseId());
             $location.path('/expense');
+        }
+
+        $scope.deleteExpenseId = function (expenseId) {
+            sharedParam.setExpenseId(expenseId);
+            console.log('deleteExpenseId $location.path(\'/expense\'); expenseId ='+sharedParam.getExpenseId());
+            $http({
+                url: API_ENDPOINT + '/api/v1/expense/' + sharedParam.getExpenseId(),
+                method: 'DELETE'
+            });
         }
 
         $scope.addExpense = function () {

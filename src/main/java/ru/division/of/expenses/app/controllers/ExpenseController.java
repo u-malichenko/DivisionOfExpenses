@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.division.of.expenses.app.dto.ExpenseDto;
+import ru.division.of.expenses.app.models.Event;
 import ru.division.of.expenses.app.models.Expense;
 import ru.division.of.expenses.app.services.EventService;
 import ru.division.of.expenses.app.services.ExpenseService;
@@ -23,6 +24,11 @@ public class ExpenseController {
     @GetMapping("/{id}")
     public ResponseEntity<?> findById(@PathVariable Long id){
         return expenseService.findById(id);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteExpense(@PathVariable Long id){
+        expenseService.deleteExpense(id);
     }
 
     @GetMapping
@@ -45,8 +51,8 @@ public class ExpenseController {
     }
 
     @PostMapping
-    public Expense saveExpense(@RequestBody Expense expense) {
-        return expenseService.saveExpense(expense);
+    public void saveExpense(@RequestBody Expense expense) {
+        expenseService.saveExpense(expense);
     }
 
     @PostMapping("/addToEvent/{eventId}")
@@ -59,7 +65,7 @@ public class ExpenseController {
 
 
     // добавление трат к эвенту без принципала, через Дто.
-    @PostMapping("/addToEventNoPrinciple/{eventId}")
+    @PostMapping("/addByEventId/{eventId}")
     public void saveAndAddToEventNoPrinciple(
             @PathVariable Long eventId,
             @RequestBody ExpenseDto expenseDto){
@@ -70,4 +76,6 @@ public class ExpenseController {
     public ResponseEntity<?> updateExpense(@RequestBody Expense expense){
         return expenseService.updateExpense(expense);
     }
+
+
 }

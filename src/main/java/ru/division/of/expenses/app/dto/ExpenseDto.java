@@ -6,8 +6,7 @@ import lombok.NoArgsConstructor;
 import ru.division.of.expenses.app.models.*;
 
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Calendar;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,6 +17,7 @@ public class ExpenseDto {
     private String buyer;
     private String comment;
     private String event;
+    private Calendar expenseDate;
     private BigDecimal totalExpenseSum;
     private Integer numberOfExpenseParticipants;
 
@@ -30,6 +30,7 @@ public class ExpenseDto {
             this.event = expense.getEvent().getName();
         }
         this.comment = expense.getComment();
+        this.expenseDate=expense.getExpenseDate();
         this.totalExpenseSum = expense.getTotalExpenseSum();
         this.numberOfExpenseParticipants = this.buyer == null ? 0 : 1 +
                 expense.getDirectPayersList().size() +

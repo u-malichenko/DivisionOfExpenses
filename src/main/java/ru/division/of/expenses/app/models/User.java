@@ -26,9 +26,7 @@ public class User extends AbstractEntity {
 
     @ManyToMany
     @JoinTable(
-            name = "users_roles",
-            joinColumns = @JoinColumn(name = "role_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
+            name = "users_roles")
     private Collection<Role> roles = new ArrayList<>();
 
 

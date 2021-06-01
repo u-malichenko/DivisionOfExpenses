@@ -15,7 +15,7 @@
         <div class="form-group col-md-6">
             <label for="eventDateTime">eventDateTime</label>
             <input type="date" ng-model="event.eventDateTime" id="eventDateTime" class="form-control"
-                   placeholder={{event.eventDateTime}}>
+                   value={{event.eventDateTime  | date:'dd.MM.yyyy'}}>
         </div>
 
 
@@ -29,7 +29,7 @@
         <div class="form-group col-md-6">
             <label for="totalEventSum">totalEventSum</label>
             <input type="number" ng-model="event.totalEventSum" id="totalEventSum" class="form-control"
-                   placeholder={{event.totalEventSum}}>
+                   value="{{event.totalEventSum}}" >
         </div>
 
 

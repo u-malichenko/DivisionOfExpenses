@@ -23,14 +23,14 @@ public class EventController {
 
 
     @PostMapping
-    public Event saveEvent(@RequestBody Event event, Principal principal) {
-        return eventService.saveEvent(event, principal.getName());
+    public void saveEvent(@RequestBody Event event, Principal principal) {
+        eventService.saveEvent(event, principal.getName());
     }
 
 
     @PutMapping
-    public ResponseEntity<?> updateEventByPrincipal(@RequestBody Event event, Principal principal){
-        return eventService.updateEventByPrincipal(event, principal.getName());
+    public void updateEventByPrincipal(@RequestBody Event event, Principal principal){
+        eventService.updateEventByPrincipal(event, principal.getName());
     }
 
 
@@ -81,6 +81,8 @@ public class EventController {
             Principal principal){
         return eventService.addUserToEventUserList(principal.getName(), eventId);
     }
+
+
 
 
 //    @GetMapping("/byParticipant")

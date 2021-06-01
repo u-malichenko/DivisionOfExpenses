@@ -29,10 +29,10 @@ public class Expense extends AbstractEntity {
     @Column
     private BigDecimal totalExpenseSum;
 
-    @OneToMany(mappedBy = "expense")
+    @OneToMany(cascade=CascadeType.ALL, mappedBy = "expense")
     private List<DirectPayer> directPayersList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "expense")
+    @OneToMany(cascade=CascadeType.ALL, mappedBy = "expense")
     private List<PartitialPayer> partitialPayersList = new ArrayList<>();
 
     @ManyToOne

@@ -33,6 +33,7 @@ public class MappingExpenseDtoToExpenseUtils {
         }
         expense.setTotalExpenseSum(expenseDto.getTotalExpenseSum());
         expense.setComment(expenseDto.getComment());
+        expense.setExpenseDate(expenseDto.getExpenseDate());
 
         return expense;
 

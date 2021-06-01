@@ -8,11 +8,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import ru.division.of.expenses.app.dto.EventDto;
+import ru.division.of.expenses.app.dto.EventDto1;
 import ru.division.of.expenses.app.dto.ExpenseDto;
 import ru.division.of.expenses.app.exceptions_handling.EventNotFoundException;
 import ru.division.of.expenses.app.models.Event;
+import ru.division.of.expenses.app.models.EventMember;
 import ru.division.of.expenses.app.models.Expense;
 import ru.division.of.expenses.app.models.User;
+import ru.division.of.expenses.app.repositoryes.EventMemberRepository;
 import ru.division.of.expenses.app.repositoryes.EventRepository;
 import ru.division.of.expenses.app.repositoryes.UserRepository;
 import ru.division.of.expenses.app.utils.EmptyJsonResponse;
@@ -27,11 +30,12 @@ public class EventService {
 
     private final EventRepository eventRepository;
     private final UserRepository userRepository;
+    private final EventMemberRepository eventMemberRepository;
 
     public ResponseEntity<?> findEventById(Long id) {
-        EventDto eventDto = new EventDto(findEventByIdBasic(id));
-        if (eventDto.getId() != null) {
-            return new ResponseEntity<EventDto>(eventDto, HttpStatus.OK);
+        EventDto1 eventDto1 = new EventDto1(findEventByIdBasic(id));
+        if (eventDto1.getId() != null) {
+            return new ResponseEntity<EventDto1>(eventDto1, HttpStatus.OK);
         } else {
             return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.OK);
         }
@@ -53,7 +57,13 @@ public class EventService {
         User user = userRepository.findByUsername(username).get();
         event.setEventManager(user);
         event.getEventUserList().add(user);
-        return eventRepository.save(event);
+        EventMember eventMember=new EventMember();
+        eventMember.setUser(user);
+        event.getEventMembers().add(eventMember);
+        Event savedEvent= eventRepository.save(event);
+        eventMember.setEvent(savedEvent);
+        eventMemberRepository.save(eventMember);
+        return savedEvent;
     }
 
 //    public EventDto saveEventDto(Event event){
@@ -185,4 +195,7 @@ public class EventService {
         return event;
     }
 
+    public List<String> findEventMemberUsernameById(Long eventId) {
+        return eventRepository.findEventMemberUsernameById(eventId);
+    }
 }

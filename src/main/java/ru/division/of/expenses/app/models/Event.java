@@ -16,16 +16,12 @@ public class Event extends AbstractEntity {
     @ManyToMany
     @JoinTable(
             name = "events_users",
-            joinColumns = @JoinColumn(name = "event_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "event_id"))
     private Collection<User> eventUserList = new ArrayList<>();
 
 
-    @ManyToMany
-    @JoinTable(
-            name = "events_members",
-            joinColumns = @JoinColumn(name = "event_id"),
-            inverseJoinColumns = @JoinColumn(name = "event_member_id"))
+    @OneToMany(mappedBy="event", cascade=CascadeType.ALL)
     private Collection<EventMember> eventMembers = new ArrayList<>();
 
     @Column
@@ -43,7 +39,7 @@ public class Event extends AbstractEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User eventManager; //так неудобно искать тут по юзеру, мб по айди? зачем тут юзер? мб мы его можем вытягивать по айди?
+    private User eventManager;
 
     @Column
     private BigDecimal totalEventSum;
