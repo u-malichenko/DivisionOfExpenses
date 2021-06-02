@@ -82,27 +82,6 @@ public class EventController {
         return eventService.addUserToEventUserList(principal.getName(), eventId);
     }
 
-
-
-
-//    @GetMapping("/byParticipant")
-//    public List<EventDto> findEventsByParticipantUsername(
-//            Principal principal,
-//            @RequestParam(name = "page", defaultValue = "1") int page,
-//            @RequestParam(name = "size", defaultValue = "5") int size
-//    ){
-//        if (page <= 0) {
-//            page = 1;
-//        }
-//        return eventService.findEventsByParticipantUsername(
-//                principal.getName(),
-//                page,
-//                size
-//        );
-//    }
-
-
-
     /////////////////////////////////////////////////////////////////////////////////////////
 
     //    @PostMapping("/dto")

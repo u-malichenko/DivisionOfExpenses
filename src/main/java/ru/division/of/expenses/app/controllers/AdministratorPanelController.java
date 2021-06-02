@@ -78,9 +78,14 @@ public class AdministratorPanelController {
         return eventService.updateEvent(event);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/event/{id}")
     public void deleteEvent(@PathVariable Long id){
         eventService.deleteEvent(id);
+    }
+
+    @DeleteMapping("/expense/{id}")
+    public void deleteExpense(@PathVariable Long id){
+        expenseService.deleteExpense(id);
     }
 
 }

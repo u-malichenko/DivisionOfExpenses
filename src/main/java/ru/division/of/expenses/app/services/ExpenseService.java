@@ -28,7 +28,6 @@ public class ExpenseService {
 
     private final ExpenseRepository expenseRepository;
     private final UserRepository userRepository;
-    //    private final EventRepository eventRepository;
     private final EventService eventService;
     private final MappingExpenseDtoToExpenseUtils mappingExpenseDtoToExpenseUtils;
     private final EventMemberRepository eventMemberRepository;
