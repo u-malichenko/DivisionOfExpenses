@@ -2,15 +2,13 @@ package ru.division.of.expenses.app.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 import ru.division.of.expenses.app.dto.EventDto;
 import ru.division.of.expenses.app.models.Event;
-import ru.division.of.expenses.app.models.User;
 import ru.division.of.expenses.app.services.EventService;
+import ru.division.of.expenses.app.services.DivisionOfExpenseService;
 import java.security.Principal;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,64 +21,28 @@ public class EventController {
         return eventService.findEventById(id);
     }
 
-    @GetMapping
-    public List<EventDto> findAll(
-            @RequestParam(name = "page", defaultValue = "1") int page,
-            @RequestParam(name = "size", defaultValue = "10") int size
-
-    ) {
-        if (page <= 0) {
-            page = 1;
-        }
-        return eventService.findAll(page, size);
-    }
 
     @PostMapping
-    public Event saveEvent(@RequestBody Event event) {
-        return eventService.saveEvent(event);
+    public void saveEvent(@RequestBody Event event, Principal principal) {
+        eventService.saveEvent(event, principal.getName());
     }
 
-//    @PostMapping("/dto")
-//    public EventDto saveEventDto(@RequestBody Event event) {
-//        return eventService.saveEventDto(event);
-//    }
 
     @PutMapping
-    public ResponseEntity<?> updateEvent(@RequestBody Event event){
-        return eventService.updateEvent(event);
+    public void updateEventByPrincipal(@RequestBody Event event, Principal principal){
+        eventService.updateEventByPrincipal(event, principal.getName());
     }
+
 
     @DeleteMapping("/{id}")
-    public void deleteEvent(@PathVariable Long id){
-        eventService.deleteEvent(id);
+    public void deleteEventByPrincipal(@PathVariable Long id, Principal principal){
+        eventService.deleteEventByPrincipal(id, principal.getName());
     }
 
-    // Поиск событий по менеджеру
-    @GetMapping("/byUserId/{id}")
-    public List<EventDto> findEventsByUserId(
-            @PathVariable("id") Long id,
-            @RequestParam(name = "page", defaultValue = "1") int page,
-            @RequestParam(name = "size", defaultValue = "5") int size
-    ) {
-        if (page <= 0) {
-            page = 1;
-        }
-        return eventService.findEventsByUserId(
-                id,
-                page,
-                size
-        );
-    }
 
-//Петя, привет!
-// я бы сделал как-то типа так:
-//    @GetMapping
-//    public List<EventDto> getCurrentUserOrders(Principal principal) {
-//        return eventService.findAllEventsByOwnerName(principal.getName()).stream().map(EventDto::new).collect(Collectors.toList());
-//    }
-
+    //  Поиск событий по менеджеру события, Principal
     @GetMapping("/byManager")
-    public List<EventDto> findEventsByUserId(
+    public List<EventDto> findEventsByManagerUsername(
             Principal principal,
             @RequestParam(name = "page", defaultValue = "1") int page,
             @RequestParam(name = "size", defaultValue = "5") int size
@@ -88,47 +50,66 @@ public class EventController {
         if (page <= 0) {
             page = 1;
         }
-        principal.getName();
-        User user = (User)((UsernamePasswordAuthenticationToken)principal).getPrincipal();
-        return eventService.findEventsByUserId(
-                user.getId(),
+        return eventService.findEventsByManagerUsername(
+                principal.getName(),
                 page,
                 size
         );
     }
 
-//    @GetMapping("/byManager")
-//    public List<EventDto> findEventsByUserId(
-//            @AuthenticationPrincipal User user,
+    // Поиск событий по участнику, Principal
+    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    @GetMapping
+    public List<EventDto> findEventsByParticipantUsername(
+            Principal principal,
+            @RequestParam(name = "page", defaultValue = "1") int page,
+            @RequestParam(name = "size", defaultValue = "10") int size
+    ){
+        if (page <= 0) {
+            page = 1;
+        }
+        return eventService.findEventsByParticipantUsername(
+                principal.getName(),
+                page,
+                size
+        );
+    }
+
+    @GetMapping("/addToUserList/{eventId}")
+    public ResponseEntity<?> addUserToEventUserList(
+            @PathVariable Long eventId,
+            Principal principal){
+        return eventService.addUserToEventUserList(principal.getName(), eventId);
+    }
+
+
+
+
+//    @GetMapping("/byParticipant")
+//    public List<EventDto> findEventsByParticipantUsername(
+//            Principal principal,
 //            @RequestParam(name = "page", defaultValue = "1") int page,
 //            @RequestParam(name = "size", defaultValue = "5") int size
-//    ) {
+//    ){
 //        if (page <= 0) {
 //            page = 1;
 //        }
-//        return eventService.findEventsByUserId(
-//                user.getId(),
+//        return eventService.findEventsByParticipantUsername(
+//                principal.getName(),
 //                page,
 //                size
 //        );
 //    }
 
-    // поиск событий по любому участнику.
-    @GetMapping("/byParticipantId/{id}")
-    public List<EventDto> findEventByParticipantId(
-            @PathVariable("id") Long id,
-            @RequestParam(name = "page", defaultValue = "1") int page,
-            @RequestParam(name = "size", defaultValue = "5") int size
-    ){
-        if (page <= 0) {
-            page = 1;
-        }
-        return eventService.findEventByParticipantId(
-                id,
-                page,
-                size
-        );
-    }
+
+
+    /////////////////////////////////////////////////////////////////////////////////////////
+
+    //    @PostMapping("/dto")
+//    public EventDto saveEventDto(@RequestBody Event event) {
+//        return eventService.saveEventDto(event);
+//    }
+
 
 
 }

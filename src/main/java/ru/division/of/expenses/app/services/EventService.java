@@ -5,16 +5,23 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import ru.division.of.expenses.app.dto.EventDto;
+import ru.division.of.expenses.app.dto.EventDto1;
 import ru.division.of.expenses.app.dto.ExpenseDto;
 import ru.division.of.expenses.app.exceptions_handling.EventNotFoundException;
 import ru.division.of.expenses.app.models.Event;
+import ru.division.of.expenses.app.models.EventMember;
 import ru.division.of.expenses.app.models.Expense;
+import ru.division.of.expenses.app.models.User;
+import ru.division.of.expenses.app.repositoryes.EventMemberRepository;
 import ru.division.of.expenses.app.repositoryes.EventRepository;
+import ru.division.of.expenses.app.repositoryes.UserRepository;
 import ru.division.of.expenses.app.utils.EmptyJsonResponse;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,12 +29,13 @@ import java.util.stream.Collectors;
 public class EventService {
 
     private final EventRepository eventRepository;
-    private final UserService userService;
+    private final UserRepository userRepository;
+    private final EventMemberRepository eventMemberRepository;
 
     public ResponseEntity<?> findEventById(Long id) {
-        EventDto eventDto = new EventDto(findEventByIdBasic(id));
-        if (eventDto.getId() != null) {
-            return new ResponseEntity<EventDto>(eventDto, HttpStatus.OK);
+        EventDto1 eventDto1 = new EventDto1(findEventByIdBasic(id));
+        if (eventDto1.getId() != null) {
+            return new ResponseEntity<EventDto1>(eventDto1, HttpStatus.OK);
         } else {
             return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.OK);
         }
@@ -45,8 +53,17 @@ public class EventService {
     }
 
 
-    public Event saveEvent(Event event){
-        return eventRepository.save(event);
+    public Event saveEvent(Event event, String username){
+        User user = userRepository.findByUsername(username).get();
+        event.setEventManager(user);
+        event.getEventUserList().add(user);
+        EventMember eventMember=new EventMember();
+        eventMember.setUser(user);
+        event.getEventMembers().add(eventMember);
+        Event savedEvent= eventRepository.save(event);
+        eventMember.setEvent(savedEvent);
+        eventMemberRepository.save(eventMember);
+        return savedEvent;
     }
 
 //    public EventDto saveEventDto(Event event){
@@ -56,40 +73,85 @@ public class EventService {
     public ResponseEntity<?> updateEvent(Event event){
         Event eventFromDB = findEventByIdBasic(event.getId());
         if(eventFromDB.getId() != null){
-            eventFromDB.setName(event.getName());
-            eventFromDB.setDescription(event.getDescription());
-            eventFromDB.setTotalEventSum(event.getTotalEventSum());
+            if(event.getName() != null){
+            eventFromDB.setName(event.getName());}
+            if(event.getDescription() != null){
+            eventFromDB.setDescription(event.getDescription());}
+            if (event.getTotalEventSum() != null){
+            eventFromDB.setTotalEventSum(event.getTotalEventSum());}
+            if(event.getEventUserList() != null){
+            eventFromDB.setEventUserList(event.getEventUserList());}
+            if(event.getEventManager() != null){
+                eventFromDB.setEventManager(event.getEventManager());
+            }
             return new ResponseEntity<Event>(eventRepository.save(eventFromDB), HttpStatus.OK);
         }else{
             return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.OK);
         }
     }
 
+    public ResponseEntity<?> updateEventByPrincipal(Event event, String username){
+        if(!username.equals(eventRepository.findEventManagerUsernameById(event.getId()))){
+            return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.OK);
+        }
+        return updateEvent(event);
+    }
+
+
+    public void deleteEventByPrincipal(Long id, String username) {
+        if(!username.equals(eventRepository.findEventManagerUsernameById(id))){
+            return;
+        }
+        deleteEvent(id);
+    }
 
     public void deleteEvent(Long id) {
         Event eventFromDB = findEventByIdBasic(id);
             eventRepository.delete(eventFromDB);
     }
 
-    public List<EventDto> findEventsByUserId(
+    public List<EventDto> findEventsByManagerId(
             Long id,
             int page,
             int size
     ) {
-        Page<Event> events = eventRepository.findEventsByUserId(id, PageRequest.of(page - 1, size));
+        Page<Event> events = eventRepository.findEventsByManagerId(id, PageRequest.of(page - 1, size));
         return events
                 .stream()
                 .map(EventDto::new)
                 .collect(Collectors.toList());
     }
 
-    public List<ExpenseDto> findExpenseById(
+    public List<EventDto> findEventsByManagerUsername(
+            String username,
+            int page,
+            int size
+    ){
+        Page<Event> events = eventRepository.findEventsByManagerUsername(username, PageRequest.of(page - 1, size));
+        return events
+                .stream()
+                .map((EventDto::new))
+                .collect(Collectors.toList());
+    }
+
+    public List<EventDto> findEventsByParticipantUsername(
+            String username,
+            int page,
+            int size
+    ){
+        Page<Event> events = eventRepository.findEventsByParticipantUsername(username, PageRequest.of(page - 1, size));
+        return events
+                .stream()
+                .map((EventDto::new))
+                .collect(Collectors.toList());
+    }
+
+    public List<ExpenseDto> findExpenseByEventId(
             Long id,
             int page,
             int size
     ){
-        Page<Expense> expenses = eventRepository.findExpenseById(id, PageRequest.of(page - 1, size));
-        System.out.println(expenses);
+        Page<Expense> expenses = eventRepository.findExpenseByEventId(id, PageRequest.of(page - 1, size));
         return expenses
                 .stream()
                 .map(ExpenseDto::new)
@@ -108,18 +170,32 @@ public class EventService {
                 .collect(Collectors.toList());
     }
 
-    private Event findEventByIdBasic(Long id){
+    public ResponseEntity<?> addUserToEventUserList(String username, Long eventId){
+        User user = userRepository.findByUsername(username).get();
+        Event event = findEventByIdBasic(eventId);
+        event.getEventUserList().add(user);
+        return updateEvent(event);
+    }
+
+    public List<String> findEventUserUsernameById(Long eventId){
+       return eventRepository.findEventUserUsernameById(eventId);
+    }
+
+    public Event findEventByIdBasic(Long id){
         Event event = new Event();
         try {
             event = eventRepository.findById(id)
                     .orElseThrow(
                             () -> new EventNotFoundException("Event: " + id + " not found.")
                     );
-        }catch (EventNotFoundException e){
+        }catch (EventNotFoundException e) {
 //            e.printStackTrace();
             System.out.println(e);
         }
         return event;
     }
 
+    public List<String> findEventMemberUsernameById(Long eventId) {
+        return eventRepository.findEventMemberUsernameById(eventId);
+    }
 }

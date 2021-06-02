@@ -7,19 +7,18 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
+@Table(name = "event_member")
 @Data
-@Table(name = "direct_payer")
-public class DirectPayer extends AbstractEntity {
+public class EventMember extends AbstractEntity{
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
     @Column
-    private BigDecimal summa;
+    private BigDecimal saldo;
 
     @ManyToOne
-    @JoinColumn(name = "expense_id")
-    private Expense expense;
+    private Event event;
 
 }
