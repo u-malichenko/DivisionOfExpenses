@@ -88,4 +88,9 @@ public class AdministratorPanelController {
         expenseService.deleteExpense(id);
     }
 
+    @DeleteMapping("/user/{id}")
+    public void deleteEventByPrincipal(@PathVariable Long id){
+        userService.deleteUser(id);
+    }
+
 }

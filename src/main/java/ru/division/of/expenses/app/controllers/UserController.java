@@ -8,15 +8,15 @@ import ru.division.of.expenses.app.dto.UserDto;
 import ru.division.of.expenses.app.models.Event;
 import ru.division.of.expenses.app.models.User;
 import ru.division.of.expenses.app.services.UserService;
-
 import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/v1/user")
+@RequestMapping("/api/v1/user")
 public class UserController {
 
     private final UserService userService;
+
 
     @GetMapping("/{id}")
     public Optional<User> findUserBYId(@PathVariable Long id){

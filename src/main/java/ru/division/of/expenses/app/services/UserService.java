@@ -3,23 +3,31 @@ package ru.division.of.expenses.app.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.division.of.expenses.app.dto.EventDto;
 import ru.division.of.expenses.app.dto.UserDto;
+import ru.division.of.expenses.app.dto.UserRegistrationDto;
+import ru.division.of.expenses.app.exceptions_handling.UserAlreadyExistsException;
+import ru.division.of.expenses.app.exceptions_handling.UserNotFoundException;
 import ru.division.of.expenses.app.models.Event;
 import ru.division.of.expenses.app.models.Role;
 import ru.division.of.expenses.app.models.User;
 import ru.division.of.expenses.app.repositoryes.UserRepository;
+import ru.division.of.expenses.app.utils.EmptyJsonResponse;
 import ru.division.of.expenses.app.utils.MappingEventUtils;
 import ru.division.of.expenses.app.utils.MappingUserUtils;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -29,8 +37,33 @@ import java.util.stream.Collectors;
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
     private final MappingUserUtils mappingUserUtils;
     private final MappingEventUtils mappingEventUtils;
+
+    public ResponseEntity<?> createUser(UserRegistrationDto userRegistrationDto){
+        List<String> usernameList = userRepository.findAllUsername();
+        try {
+            if(usernameList.contains(userRegistrationDto.getUsername())){
+                throw new UserAlreadyExistsException("User " + userRegistrationDto.getUsername() + " is already exists");
+            }
+        }catch (UserAlreadyExistsException e) {
+//            e.printStackTrace();
+            System.out.println(e);
+            return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.OK);
+        }
+        User user = new User();
+        user.setFirstName(userRegistrationDto.getFirstname());
+        user.setUsername(userRegistrationDto.getUsername());
+        user.setLastName(userRegistrationDto.getLastname());
+        user.setPassword(passwordEncoder.encode(userRegistrationDto.getPassword()));
+        return new ResponseEntity<User>(userRepository.save(user), HttpStatus.OK);
+    }
+
+    public void deleteUser(Long userId) {
+        User user = findUserByIdBasic(userId);
+        userRepository.delete(user);
+    }
 
     public Page<User> findAllUsers(
             int page,
@@ -84,6 +117,34 @@ public class UserService implements UserDetailsService {
             int size
     ){
         return userRepository.findEventListById(id, PageRequest.of(page, size)).map(mappingEventUtils::mapToEventDto);
+    }
+
+    public User findUserByIdBasic(Long id){
+        User user = new User();
+        try {
+            user = userRepository.findById(id)
+                    .orElseThrow(
+                            () -> new UserNotFoundException("User with id=" + id + " not found.")
+                    );
+        }catch (UserNotFoundException e) {
+//            e.printStackTrace();
+            System.out.println(e);
+        }
+        return user;
+    }
+
+    public User findByUsernameBasic(String username){
+        User user = new User();
+        try {
+            user = userRepository.findByUsername(username)
+                    .orElseThrow(
+                            () -> new UsernameNotFoundException(String.format("User '%s' not found", username))
+                    );
+        }catch (UsernameNotFoundException e) {
+//            e.printStackTrace();
+            System.out.println(e);
+        }
+        return user;
     }
 
     @Override
