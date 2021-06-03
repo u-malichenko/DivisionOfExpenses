@@ -1,7 +1,6 @@
 package ru.division.of.expenses.app.models;
 
 import lombok.Data;
-import lombok.ToString;
 
 import javax.persistence.*;
 import java.math.BigDecimal;

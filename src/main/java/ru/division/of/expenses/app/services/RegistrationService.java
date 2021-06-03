@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.division.of.expenses.app.dto.UserRegistrationDto;
+import ru.division.of.expenses.app.exceptions_handling.EmailAlreadyExistsException;
 import ru.division.of.expenses.app.exceptions_handling.UserAlreadyExistsException;
 import ru.division.of.expenses.app.models.User;
 import ru.division.of.expenses.app.repositoryes.UserRepository;
@@ -31,11 +32,22 @@ public class RegistrationService {
             System.out.println(e);
             return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.OK);
         }
+        List<String> emailList = userRepository.findAllEmail();
+        try{
+            if(emailList.contains(userRegistrationDto.getEmail())){
+                throw new EmailAlreadyExistsException("Email " + userRegistrationDto.getEmail() + " is already exists");
+            }
+        }catch (EmailAlreadyExistsException e){
+//            e.printStackTrace();
+            System.out.println(e);
+            return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.OK);
+        }
         User user = new User();
         user.setFirstName(userRegistrationDto.getFirstname());
         user.setUsername(userRegistrationDto.getUsername());
         user.setLastName(userRegistrationDto.getLastname());
         user.setPassword(passwordEncoder.encode(userRegistrationDto.getPassword()));
+        user.setEmail(userRegistrationDto.getEmail());
         return new ResponseEntity<User>(userRepository.save(user), HttpStatus.OK);
     }
 }
