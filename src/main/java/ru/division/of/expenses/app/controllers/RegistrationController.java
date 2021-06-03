@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.division.of.expenses.app.dto.UserRegistrationDto;
+import ru.division.of.expenses.app.services.RegistrationService;
 import ru.division.of.expenses.app.services.UserService;
 
 @RestController
@@ -11,7 +12,8 @@ import ru.division.of.expenses.app.services.UserService;
 @RequestMapping("/registration")
 public class RegistrationController {
 
-    private final UserService userService;
+//    private final UserService userService;
+    private final RegistrationService registrationService;
 
     @PostMapping
     public void registration(
@@ -21,7 +23,8 @@ public class RegistrationController {
         if (bindingResult.hasErrors()) {
             return;
         }
-        userService.createUser(userRegistrationDto);
+//        userService.createUser(userRegistrationDto);
+        registrationService.createUser(userRegistrationDto);
     }
 
 }

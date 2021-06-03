@@ -37,28 +37,28 @@ import java.util.stream.Collectors;
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+//    private final PasswordEncoder passwordEncoder;
     private final MappingUserUtils mappingUserUtils;
     private final MappingEventUtils mappingEventUtils;
 
-    public ResponseEntity<?> createUser(UserRegistrationDto userRegistrationDto){
-        List<String> usernameList = userRepository.findAllUsername();
-        try {
-            if(usernameList.contains(userRegistrationDto.getUsername())){
-                throw new UserAlreadyExistsException("User " + userRegistrationDto.getUsername() + " is already exists");
-            }
-        }catch (UserAlreadyExistsException e) {
-//            e.printStackTrace();
-            System.out.println(e);
-            return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.OK);
-        }
-        User user = new User();
-        user.setFirstName(userRegistrationDto.getFirstname());
-        user.setUsername(userRegistrationDto.getUsername());
-        user.setLastName(userRegistrationDto.getLastname());
-        user.setPassword(passwordEncoder.encode(userRegistrationDto.getPassword()));
-        return new ResponseEntity<User>(userRepository.save(user), HttpStatus.OK);
-    }
+//    public ResponseEntity<?> createUser(UserRegistrationDto userRegistrationDto){
+//        List<String> usernameList = userRepository.findAllUsername();
+//        try {
+//            if(usernameList.contains(userRegistrationDto.getUsername())){
+//                throw new UserAlreadyExistsException("User " + userRegistrationDto.getUsername() + " is already exists");
+//            }
+//        }catch (UserAlreadyExistsException e) {
+////            e.printStackTrace();
+//            System.out.println(e);
+//            return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.OK);
+//        }
+//        User user = new User();
+//        user.setFirstName(userRegistrationDto.getFirstname());
+//        user.setUsername(userRegistrationDto.getUsername());
+//        user.setLastName(userRegistrationDto.getLastname());
+//        user.setPassword(passwordEncoder.encode(userRegistrationDto.getPassword()));
+//        return new ResponseEntity<User>(userRepository.save(user), HttpStatus.OK);
+//    }
 
     public void deleteUser(Long userId) {
         User user = findUserByIdBasic(userId);
