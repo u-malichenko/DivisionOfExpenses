@@ -1,13 +1,13 @@
-INSERT INTO users (first_name, last_name, password, username) VALUES ( 'bob', 'bombaster', '$2y$12$03d0usVKKgPvmgt4dMfGLuyFgHUzTZw8w8vhrjR98ppMBRrpTbvTa', 'bob');
-INSERT INTO users (first_name, last_name, password, username) VALUES ( 'john', 'johnson', '$2y$12$03d0usVKKgPvmgt4dMfGLuyFgHUzTZw8w8vhrjR98ppMBRrpTbvTa', 'john');
-INSERT INTO users (first_name, last_name, password, username) VALUES ( 'silver', 'star', '$2y$12$03d0usVKKgPvmgt4dMfGLuyFgHUzTZw8w8vhrjR98ppMBRrpTbvTa', 'silver');
-INSERT INTO users (first_name, last_name, password, username) VALUES ( 'samurai', 'silver', '$2y$12$03d0usVKKgPvmgt4dMfGLuyFgHUzTZw8w8vhrjR98ppMBRrpTbvTa', 'samurai');
-INSERT INTO users (first_name, last_name, password, username) VALUES ( 'vi', 'unknown', '$2y$12$03d0usVKKgPvmgt4dMfGLuyFgHUzTZw8w8vhrjR98ppMBRrpTbvTa', 'vi');
-INSERT INTO users (first_name, last_name, password, username) VALUES ( 'panam', 'petrova', '$2y$12$03d0usVKKgPvmgt4dMfGLuyFgHUzTZw8w8vhrjR98ppMBRrpTbvTa', 'panam');
-INSERT INTO users (first_name, last_name, password, username) VALUES ( 'jack', 'ivanov', '$2y$12$03d0usVKKgPvmgt4dMfGLuyFgHUzTZw8w8vhrjR98ppMBRrpTbvTa', 'jack');
-INSERT INTO users (first_name, last_name, password, username) VALUES ( 'soul', 'sidorov', '$2y$12$03d0usVKKgPvmgt4dMfGLuyFgHUzTZw8w8vhrjR98ppMBRrpTbvTa', 'soul');
-INSERT INTO users (first_name, last_name, password, username) VALUES ( 'mitch', 'kuznezov', '$2y$12$03d0usVKKgPvmgt4dMfGLuyFgHUzTZw8w8vhrjR98ppMBRrpTbvTa', 'mitch');
-INSERT INTO users (first_name, last_name, password, username) VALUES ( 'goro', 'takimura', '$2y$12$03d0usVKKgPvmgt4dMfGLuyFgHUzTZw8w8vhrjR98ppMBRrpTbvTa', 'goro');
+INSERT INTO users (email, first_name, last_name, password, username) VALUES ('01@mail.ru','bob', 'bombaster', '$2y$12$03d0usVKKgPvmgt4dMfGLuyFgHUzTZw8w8vhrjR98ppMBRrpTbvTa', 'bob');
+INSERT INTO users (email, first_name, last_name, password, username) VALUES ('02@mail.ru','john', 'johnson', '$2y$12$03d0usVKKgPvmgt4dMfGLuyFgHUzTZw8w8vhrjR98ppMBRrpTbvTa', 'john');
+INSERT INTO users (email, first_name, last_name, password, username) VALUES ('03@mail.ru','silver', 'star', '$2y$12$03d0usVKKgPvmgt4dMfGLuyFgHUzTZw8w8vhrjR98ppMBRrpTbvTa', 'silver');
+INSERT INTO users (email, first_name, last_name, password, username) VALUES ('04@mail.ru','samurai', 'silver', '$2y$12$03d0usVKKgPvmgt4dMfGLuyFgHUzTZw8w8vhrjR98ppMBRrpTbvTa', 'samurai');
+INSERT INTO users (email, first_name, last_name, password, username) VALUES ('05@mail.ru','vi', 'unknown', '$2y$12$03d0usVKKgPvmgt4dMfGLuyFgHUzTZw8w8vhrjR98ppMBRrpTbvTa', 'vi');
+INSERT INTO users (email, first_name, last_name, password, username) VALUES ('06@mail.ru','panam', 'petrova', '$2y$12$03d0usVKKgPvmgt4dMfGLuyFgHUzTZw8w8vhrjR98ppMBRrpTbvTa', 'panam');
+INSERT INTO users (email, first_name, last_name, password, username) VALUES ('07@mail.ru','jack', 'ivanov', '$2y$12$03d0usVKKgPvmgt4dMfGLuyFgHUzTZw8w8vhrjR98ppMBRrpTbvTa', 'jack');
+INSERT INTO users (email, first_name, last_name, password, username) VALUES ('08@mail.ru','soul', 'sidorov', '$2y$12$03d0usVKKgPvmgt4dMfGLuyFgHUzTZw8w8vhrjR98ppMBRrpTbvTa', 'soul');
+INSERT INTO users (email, first_name, last_name, password, username) VALUES ('09@mail.ru','mitch', 'kuznezov', '$2y$12$03d0usVKKgPvmgt4dMfGLuyFgHUzTZw8w8vhrjR98ppMBRrpTbvTa', 'mitch');
+INSERT INTO users (email, first_name, last_name, password, username) VALUES ('10@mail.ru','goro', 'takimura', '$2y$12$03d0usVKKgPvmgt4dMfGLuyFgHUzTZw8w8vhrjR98ppMBRrpTbvTa', 'goro');
 
 INSERT INTO roles ( name) VALUES ( 'ROLE_USER');
 INSERT INTO roles ( name) VALUES ( 'ROLE_ADMIN');
