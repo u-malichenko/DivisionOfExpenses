@@ -4,6 +4,7 @@ import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.division.of.expenses.app.model.RegistrationTicket;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,4 +19,11 @@ public class UserRegistrationDto {
     private String username;
     @NotNull
     private String password;
+
+    public UserRegistrationDto(RegistrationTicket registrationTicket) {
+        this.firstname = registrationTicket.getFirstName();
+        this.lastname = registrationTicket.getLastName();
+        this.username = registrationTicket.getUsername();
+        this.password = registrationTicket.getPassword();
+    }
 }

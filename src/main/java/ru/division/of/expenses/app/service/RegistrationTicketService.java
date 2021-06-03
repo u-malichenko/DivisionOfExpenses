@@ -25,7 +25,7 @@ public class RegistrationTicketService {
         registrationTicketRepository.save(registrationTicket);
     }
 
-    public void checkAndRemoveOldTickets(){
+    private void checkAndRemoveOldTickets(){
         Calendar calendar=new GregorianCalendar();
         calendar.add(Calendar.HOUR, -1);
         List<RegistrationTicket> oldTicketList=registrationTicketRepository.findOldTickets(calendar);
@@ -35,5 +35,9 @@ public class RegistrationTicketService {
     public RegistrationTicket checkRegistrationTicket(String checkingTicket) throws CheckingTicketNotFoundException {
         checkAndRemoveOldTickets();
         return registrationTicketRepository.findByCheckingticket(checkingTicket).orElseThrow(() -> new CheckingTicketNotFoundException(String.format("User '%s' not found", checkingTicket)));
+    }
+
+    public void delete(RegistrationTicket registrationTicket) {
+        registrationTicketRepository.delete(registrationTicket);
     }
 }
