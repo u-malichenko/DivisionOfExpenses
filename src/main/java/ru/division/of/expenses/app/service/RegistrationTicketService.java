@@ -4,6 +4,7 @@ package ru.division.of.expenses.app.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import ru.division.of.expenses.app.dto.UserRegistrationDto;
 import ru.division.of.expenses.app.exceptionhandling.CheckingTicketNotFoundException;
 import ru.division.of.expenses.app.model.RegistrationTicket;
 import ru.division.of.expenses.app.repository.RegistrationTicketRepository;
@@ -19,10 +20,10 @@ public class RegistrationTicketService {
 
     private final RegistrationTicketRepository registrationTicketRepository;
 
-    public void save(RegistrationTicket registrationTicket){
+    public RegistrationTicket save(RegistrationTicket registrationTicket){
         checkAndRemoveOldTickets();
         registrationTicket.setCheckingticket(UUID.randomUUID().toString());
-        registrationTicketRepository.save(registrationTicket);
+        return registrationTicketRepository.save(registrationTicket);
     }
 
     private void checkAndRemoveOldTickets(){
@@ -39,5 +40,15 @@ public class RegistrationTicketService {
 
     public void delete(RegistrationTicket registrationTicket) {
         registrationTicketRepository.delete(registrationTicket);
+    }
+
+    public RegistrationTicket save(UserRegistrationDto userRegistrationDto) {
+        RegistrationTicket registrationTicket=new RegistrationTicket();
+        registrationTicket.setUsername(userRegistrationDto.getUsername());
+        registrationTicket.setFirstName(userRegistrationDto.getFirstname());
+        registrationTicket.setLastName(userRegistrationDto.getLastname());
+        registrationTicket.setPassword(userRegistrationDto.getPassword());
+        registrationTicket.setEmail(userRegistrationDto.getEmail());
+        return save(registrationTicket);
     }
 }

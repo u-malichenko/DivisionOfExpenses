@@ -19,11 +19,14 @@ public class UserRegistrationDto {
     private String username;
     @NotNull
     private String password;
+    @NotNull
+    private String email;
 
     public UserRegistrationDto(RegistrationTicket registrationTicket) {
         this.firstname = registrationTicket.getFirstName();
         this.lastname = registrationTicket.getLastName();
         this.username = registrationTicket.getUsername();
         this.password = registrationTicket.getPassword();
+        this.email = registrationTicket.getEmail();
     }
 }

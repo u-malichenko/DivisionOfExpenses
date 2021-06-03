@@ -21,4 +21,8 @@ RegistrationTicketRepository extends JpaRepository<RegistrationTicket, Long>, Jp
     List<RegistrationTicket> findOldTickets(@Param("oneHourAgo")Calendar oneHourAgo);
 
     Optional<RegistrationTicket> findByCheckingticket(String checkingTicket);
+
+    Optional<RegistrationTicket> findByUsername(String username);
+
+    Optional<RegistrationTicket> findByEmail(String email);
 }
