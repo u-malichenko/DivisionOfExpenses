@@ -20,6 +20,7 @@ public class RegistrationTicketService {
     private final RegistrationTicketRepository registrationTicketRepository;
 
     public void save(RegistrationTicket registrationTicket){
+        checkAndRemoveOldTickets();
         registrationTicket.setCheckingticket(UUID.randomUUID().toString());
         registrationTicketRepository.save(registrationTicket);
     }
