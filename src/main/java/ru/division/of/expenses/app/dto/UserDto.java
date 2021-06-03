@@ -3,9 +3,9 @@ package ru.division.of.expenses.app.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.division.of.expenses.app.models.Event;
-import ru.division.of.expenses.app.models.Role;
-import ru.division.of.expenses.app.models.User;
+import ru.division.of.expenses.app.model.Event;
+import ru.division.of.expenses.app.model.Role;
+import ru.division.of.expenses.app.model.User;
 import java.util.List;
 import java.util.stream.Collectors;
 
