@@ -5,7 +5,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import ru.division.of.expenses.app.dto.EventDto;
 import ru.division.of.expenses.app.dto.EventDto1;
@@ -17,11 +16,9 @@ import ru.division.of.expenses.app.models.Expense;
 import ru.division.of.expenses.app.models.User;
 import ru.division.of.expenses.app.repositoryes.EventMemberRepository;
 import ru.division.of.expenses.app.repositoryes.EventRepository;
-import ru.division.of.expenses.app.repositoryes.UserRepository;
 import ru.division.of.expenses.app.utils.EmptyJsonResponse;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,7 +26,8 @@ import java.util.stream.Collectors;
 public class EventService {
 
     private final EventRepository eventRepository;
-    private final UserRepository userRepository;
+//    private final UserRepository userRepository;
+    private final UserService userService;
     private final EventMemberRepository eventMemberRepository;
 
     public ResponseEntity<?> findEventById(Long id) {
@@ -54,7 +52,8 @@ public class EventService {
 
 
     public Event saveEvent(Event event, String username){
-        User user = userRepository.findByUsername(username).get();
+//        User user = userRepository.findByUsername(username).get();
+        User user = userService.findByUsernameBasic(username);
         event.setEventManager(user);
         event.getEventUserList().add(user);
         EventMember eventMember=new EventMember();
@@ -171,7 +170,8 @@ public class EventService {
     }
 
     public ResponseEntity<?> addUserToEventUserList(String username, Long eventId){
-        User user = userRepository.findByUsername(username).get();
+//        User user = userRepository.findByUsername(username).get();
+        User user = userService.findByUsernameBasic(username);
         Event event = findEventByIdBasic(eventId);
         event.getEventUserList().add(user);
         return updateEvent(event);
@@ -195,7 +195,12 @@ public class EventService {
         return event;
     }
 
+
     public List<String> findEventMemberUsernameById(Long eventId) {
         return eventRepository.findEventMemberUsernameById(eventId);
+    }
+
+    public String findEventManagerUsernameByExpenseId(Long expenseId){
+        return eventRepository.findEventManagerUsernameByExpenseId(expenseId);
     }
 }

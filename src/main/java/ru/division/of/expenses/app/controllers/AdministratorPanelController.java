@@ -36,6 +36,7 @@ public class AdministratorPanelController {
         return eventService.findAll(page, size);
     }
 
+
     // Поиск событий по менеджеру события, id
     @GetMapping("/byManagerId/{id}")
     public List<EventDto> findEventsByManagerId(
@@ -52,6 +53,7 @@ public class AdministratorPanelController {
                 size
         );
     }
+
 
     // поиск событий по участнику, id
     @GetMapping("/byParticipantId/{id}")
@@ -70,14 +72,25 @@ public class AdministratorPanelController {
         );
     }
 
+
     @PutMapping
     public ResponseEntity<?> updateEvent(@RequestBody Event event){
         return eventService.updateEvent(event);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/event/{id}")
     public void deleteEvent(@PathVariable Long id){
         eventService.deleteEvent(id);
+    }
+
+    @DeleteMapping("/expense/{id}")
+    public void deleteExpense(@PathVariable Long id){
+        expenseService.deleteExpense(id);
+    }
+
+    @DeleteMapping("/user/{id}")
+    public void deleteEventByPrincipal(@PathVariable Long id){
+        userService.deleteUser(id);
     }
 
 }

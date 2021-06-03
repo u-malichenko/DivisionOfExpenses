@@ -1,11 +1,9 @@
 package ru.division.of.expenses.app.controllers;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.division.of.expenses.app.dto.ExpenseDto;
-import ru.division.of.expenses.app.models.Event;
 import ru.division.of.expenses.app.models.Expense;
 import ru.division.of.expenses.app.services.EventService;
 import ru.division.of.expenses.app.services.ExpenseService;
@@ -24,11 +22,6 @@ public class ExpenseController {
     @GetMapping("/{id}")
     public ResponseEntity<?> findById(@PathVariable Long id){
         return expenseService.findById(id);
-    }
-
-    @DeleteMapping("/{id}")
-    public void deleteExpense(@PathVariable Long id){
-        expenseService.deleteExpense(id);
     }
 
     @GetMapping
@@ -63,7 +56,6 @@ public class ExpenseController {
         expenseService.saveAndAddToEvent(principal.getName(), eventId, expense);
     }
 
-
     // добавление трат к эвенту без принципала, через Дто.
     @PostMapping("/addByEventId/{eventId}")
     public void saveAndAddToEventNoPrinciple(
@@ -75,6 +67,16 @@ public class ExpenseController {
     @PutMapping
     public ResponseEntity<?> updateExpense(@RequestBody Expense expense){
         return expenseService.updateExpense(expense);
+    }
+
+
+    // Удаление Траты только байером этой Траты
+    // или менеджером Евента, к которому относится данная Трата.
+    @DeleteMapping("/{expenseId}")
+    public void deleteExpenseByPrincipal(
+            Principal principal,
+            @PathVariable Long expenseId){
+        expenseService.deleteExpenseByPrincipal(principal.getName(), expenseId);
     }
 
 

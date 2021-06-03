@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.division.of.expenses.app.dto.EventDto;
 import ru.division.of.expenses.app.models.Event;
 import ru.division.of.expenses.app.services.EventService;
-import ru.division.of.expenses.app.services.DivisionOfExpenseService;
 import java.security.Principal;
 import java.util.List;
 
@@ -81,27 +80,6 @@ public class EventController {
             Principal principal){
         return eventService.addUserToEventUserList(principal.getName(), eventId);
     }
-
-
-
-
-//    @GetMapping("/byParticipant")
-//    public List<EventDto> findEventsByParticipantUsername(
-//            Principal principal,
-//            @RequestParam(name = "page", defaultValue = "1") int page,
-//            @RequestParam(name = "size", defaultValue = "5") int size
-//    ){
-//        if (page <= 0) {
-//            page = 1;
-//        }
-//        return eventService.findEventsByParticipantUsername(
-//                principal.getName(),
-//                page,
-//                size
-//        );
-//    }
-
-
 
     /////////////////////////////////////////////////////////////////////////////////////////
 
