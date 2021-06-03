@@ -12,6 +12,10 @@ import ru.division.of.expenses.app.service.RegistrationService;
 import ru.division.of.expenses.app.service.RegistrationTicketService;
 import ru.division.of.expenses.app.util.EmailSendingUtility;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/registration")
@@ -34,11 +38,14 @@ public class RegistrationController {
             return new ResponseEntity<String>("User with this email or username is already exist", HttpStatus.NOT_ACCEPTABLE);
         } else {
             RegistrationTicket registrationTicket = registrationTicketService.save(userRegistrationDto);
-            String theme="registration on Division of Expense";
-            String message="to complete registration\n" +
-                    " you should follow link below\n" +
-                    "http://localhost:8189/registration/"+registrationTicket.getCheckingticket();
-            emailSendingUtility.sendEmail(registrationTicket.getEmail(),theme, message);
+            Calendar timeBefore = new GregorianCalendar();
+            timeBefore.add(Calendar.HOUR, +1);
+            String theme = "registration on Division of Expense";
+            String message = "Welcome to Division of Expenses.\n Please, visit next link: http://localhost:8189/registration/" +
+                    registrationTicket.getCheckingticket() +
+                    " it will be active before " +
+                    new SimpleDateFormat("yyyyMMdd_HHmmss").format(timeBefore.getTime());
+            emailSendingUtility.sendEmail(registrationTicket.getEmail(), theme, message);
             return new ResponseEntity<String>("", HttpStatus.ACCEPTED);
         }
 
