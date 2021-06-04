@@ -1,4 +1,4 @@
-package ru.division.of.expenses.app.repositoryes;
+package ru.division.of.expenses.app.repository;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -6,8 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import ru.division.of.expenses.app.models.Event;
-import ru.division.of.expenses.app.models.User;
+import ru.division.of.expenses.app.model.Event;
+import ru.division.of.expenses.app.model.User;
 
 import java.util.List;
 import java.util.Optional;
@@ -47,4 +47,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
             value = "SELECT u.email FROM User u"
     )
     List<String> findAllEmail();
+
+    Optional<User> findByEmail(String email);
 }

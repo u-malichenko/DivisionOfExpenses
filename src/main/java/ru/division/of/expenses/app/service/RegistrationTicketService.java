@@ -42,6 +42,11 @@ public class RegistrationTicketService {
         registrationTicketRepository.delete(registrationTicket);
     }
 
+    public void deleteByUsername(String username){
+        RegistrationTicket registrationTicket = registrationTicketRepository.findByUsername(username).get();
+        registrationTicketRepository.delete(registrationTicket);
+    }
+
     public RegistrationTicket save(UserRegistrationDto userRegistrationDto) {
         RegistrationTicket registrationTicket=new RegistrationTicket();
         registrationTicket.setUsername(userRegistrationDto.getUsername());

@@ -16,6 +16,7 @@ import ru.division.of.expenses.app.exceptionhandling.UserNotFoundException;
 import ru.division.of.expenses.app.model.Event;
 import ru.division.of.expenses.app.model.Role;
 import ru.division.of.expenses.app.model.User;
+
 import ru.division.of.expenses.app.repository.UserRepository;
 import ru.division.of.expenses.app.util.MappingEventUtils;
 import ru.division.of.expenses.app.util.MappingUserUtils;
