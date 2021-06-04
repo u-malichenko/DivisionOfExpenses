@@ -23,8 +23,8 @@ INSERT INTO users_roles (user_id, roles_id) VALUES (8, 1);
 INSERT INTO users_roles (user_id, roles_id) VALUES (9, 1);
 INSERT INTO users_roles (user_id, roles_id) VALUES (10, 1);
 
-INSERT INTO event ( description, event_date_time, name, total_event_sum, user_id, shopping_list_id) VALUES ('event_description 1', '2021-06-29 21:00:00.000000', 'first_event', 0.00, 1, null);
-INSERT INTO event ( description, event_date_time, name, total_event_sum, user_id, shopping_list_id) VALUES ('event_description 2', '2021-06-22 21:00:00.000000', 'second_event', 0.00, 1, null);
+INSERT INTO event ( description, event_date_time, name, total_event_sum, user_id, shopping_list_id) VALUES ('event_description 1', '2021-06-29 21:00:00.000000', 'first_event', 5990.00, 1, null);
+INSERT INTO event ( description, event_date_time, name, total_event_sum, user_id, shopping_list_id) VALUES ('event_description 2', '2021-06-22 21:00:00.000000', 'second_event', 13332.00, 1, null);
 
 INSERT INTO event_member ( saldo, event_id, user_id) VALUES (0.00, 1, 1);
 INSERT INTO event_member ( saldo, event_id, user_id) VALUES (0.00, 1, 4);
