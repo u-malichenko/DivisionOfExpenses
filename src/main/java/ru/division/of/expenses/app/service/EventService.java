@@ -29,6 +29,7 @@ public class EventService {
 //    private final UserRepository userRepository;
     private final UserService userService;
     private final EventMemberRepository eventMemberRepository;
+    private final DivisionOfExpenseService divisionOfExpenseService;
 
     public ResponseEntity<?> findEventById(Long id) {
         EventDto1 eventDto1 = new EventDto1(findEventByIdBasic(id));
@@ -62,6 +63,7 @@ public class EventService {
         Event savedEvent= eventRepository.save(event);
         eventMember.setEvent(savedEvent);
         eventMemberRepository.save(eventMember);
+        divisionOfExpenseService.calculateEvent(savedEvent);
         return savedEvent;
     }
 
@@ -83,7 +85,9 @@ public class EventService {
             if(event.getEventManager() != null){
                 eventFromDB.setEventManager(event.getEventManager());
             }
-            return new ResponseEntity<Event>(eventRepository.save(eventFromDB), HttpStatus.OK);
+            Event savedEvent=eventRepository.save(eventFromDB);
+            divisionOfExpenseService.calculateEvent(savedEvent);
+            return new ResponseEntity<Event>(savedEvent, HttpStatus.OK);
         }else{
             return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.OK);
         }
