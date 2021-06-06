@@ -17,20 +17,20 @@ import java.util.stream.Collectors;
 public class EventDto {
 
     private Long id;
-    private String name;
-    private Calendar eventDateTime;
+    private String title;
+    private Calendar date;
     private BigDecimal totalEventSum;
-    private List<String> eventUserLIst;
+    private List<String> eventUserList;
     private Integer amountOfExpense;
     private List<ExpenseDto> expenseList;
 
     public EventDto(Event event) {
         this.id = event.getId();
-        this.name = event.getName();
-        this.eventDateTime = event.getEventDateTime();
+        this.title = event.getTitle();
+        this.date = event.getDate();
         this.totalEventSum = event.getTotalEventSum();
         this.amountOfExpense = event.getExpenseList().size();
-        this.eventUserLIst = event.getEventUserList().stream()
+        this.eventUserList = event.getEventUserList().stream()
                 .map(User::getUsername)
                 .collect(Collectors.toList());
         this.expenseList = event.getExpenseList().stream()

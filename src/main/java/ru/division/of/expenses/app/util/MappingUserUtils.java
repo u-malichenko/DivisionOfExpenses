@@ -21,7 +21,7 @@ public class MappingUserUtils {
                 .map(Role::getName)
                 .collect(Collectors.toList()));
         userDto.setEvents(user.getEventList().stream()
-        .map(Event::getName)
+        .map(Event::getTitle)
         .collect(Collectors.toList()));
         return userDto;
     }

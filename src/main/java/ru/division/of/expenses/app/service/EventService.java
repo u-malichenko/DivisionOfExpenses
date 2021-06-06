@@ -74,8 +74,8 @@ public class EventService {
     public ResponseEntity<?> updateEvent(Event event){
         Event eventFromDB = findEventByIdBasic(event.getId());
         if(eventFromDB.getId() != null){
-            if(event.getName() != null){
-            eventFromDB.setName(event.getName());}
+            if(event.getTitle() != null){
+            eventFromDB.setTitle(event.getTitle());}
             if(event.getDescription() != null){
             eventFromDB.setDescription(event.getDescription());}
             if (event.getTotalEventSum() != null){

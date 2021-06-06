@@ -23,11 +23,11 @@ public class Event extends AbstractEntity {
     @OneToMany(mappedBy="event", cascade=CascadeType.ALL)
     private Collection<EventMember> eventMembers = new ArrayList<>();
 
-    @Column
-    private Calendar eventDateTime;
+    @Column(name = "event_date_time")
+    private Calendar date;
 
-    @Column
-    private String name;
+    @Column(name = "name")
+    private String title;
 
     @Column
     private String description;

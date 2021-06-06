@@ -27,7 +27,7 @@ public class ExpenseDto {
             this.buyer = expense.getBuyer().getUsername();
         }
         if (expense.getEvent() != null){
-            this.event = expense.getEvent().getName();
+            this.event = expense.getEvent().getTitle();
         }
         this.comment = expense.getComment();
         this.expenseDate=expense.getExpenseDate();
