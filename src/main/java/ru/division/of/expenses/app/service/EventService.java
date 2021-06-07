@@ -5,9 +5,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.division.of.expenses.app.dto.EventDto;
 import ru.division.of.expenses.app.dto.EventDto1;
+import ru.division.of.expenses.app.dto.EventDtoForEditPage;
 import ru.division.of.expenses.app.dto.ExpenseDto;
 import ru.division.of.expenses.app.exceptionhandling.EventNotFoundException;
 import ru.division.of.expenses.app.model.Event;
@@ -17,7 +19,9 @@ import ru.division.of.expenses.app.model.User;
 import ru.division.of.expenses.app.repository.EventMemberRepository;
 import ru.division.of.expenses.app.repository.EventRepository;
 import ru.division.of.expenses.app.util.EmptyJsonResponse;
+import ru.division.of.expenses.app.util.MappingEventUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,15 +30,25 @@ import java.util.stream.Collectors;
 public class EventService {
 
     private final EventRepository eventRepository;
-//    private final UserRepository userRepository;
+    //    private final UserRepository userRepository;
     private final UserService userService;
     private final EventMemberRepository eventMemberRepository;
     private final DivisionOfExpenseService divisionOfExpenseService;
+    private final MappingEventUtils mappingEventUtils;
 
     public ResponseEntity<?> findEventById(Long id) {
         EventDto1 eventDto1 = new EventDto1(findEventByIdBasic(id));
         if (eventDto1.getId() != null) {
             return new ResponseEntity<EventDto1>(eventDto1, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.OK);
+        }
+    }
+
+    public ResponseEntity<?> findEventDtoForEditPageById(Long id) {
+        EventDtoForEditPage eventDtoForEditPage = new EventDtoForEditPage(findEventByIdBasic(id));
+        if (eventDtoForEditPage.getId() != null) {
+            return new ResponseEntity<EventDtoForEditPage>(eventDtoForEditPage, HttpStatus.OK);
         } else {
             return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.OK);
         }
@@ -93,16 +107,31 @@ public class EventService {
         }
     }
 
-    public ResponseEntity<?> updateEventByPrincipal(Event event, String username){
-        if(!username.equals(eventRepository.findEventManagerUsernameById(event.getId()))){
+    public ResponseEntity<?> updateEventByPrincipal(Event event, String username) {
+        if (!username.equals(eventRepository.findEventManagerUsernameById(event.getId()))) {
             return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.OK);
         }
         return updateEvent(event);
     }
 
+    public ResponseEntity<?> updateEventByEventDtoForEditPageByPrincipal(EventDtoForEditPage eventDtoForEditPage, String username) {
+        if (!username.equals(eventRepository.findEventManagerUsernameById(eventDtoForEditPage.getId()))) {
+            return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.OK);
+        }
+        Event eventFromDB = findEventByIdBasic(eventDtoForEditPage.getId());
+        List<User> userList = new ArrayList<>();
+        for (String eventUserUsername : eventDtoForEditPage.getEventUserList()
+        ) {
+            User user = userService.findByUsername(eventUserUsername).orElseThrow(() -> new UsernameNotFoundException("User with nickname " + eventUserUsername + " not found"));
+            userList.add(user);
+        }
+        Event event = mappingEventUtils.mapEventDtoForEditPageToEvent(eventFromDB, eventDtoForEditPage, userList);
+        return updateEvent(event);
+    }
+
 
     public void deleteEventByPrincipal(Long id, String username) {
-        if(!username.equals(eventRepository.findEventManagerUsernameById(id))){
+        if (!username.equals(eventRepository.findEventManagerUsernameById(id))) {
             return;
         }
         deleteEvent(id);
