@@ -39,7 +39,6 @@ public class MappingExpenseDtoToExpenseUtils {
         expense.setComment(expenseDto.getComment());
         expense.setExpenseDate(expenseDto.getExpenseDate());
         if(expense.getPartitialPayersList() != null) {
-//            for (PartitialPayer partitialPayer : partitialPayersRepository.findPartitialPayerByExpenseId(expense.getId())) {
             for (PartitialPayer partitialPayer : partitialPayersRepository.findByExpense(expense).get()) {
                 partitialPayersRepository.delete(partitialPayer);
             }
@@ -49,11 +48,12 @@ public class MappingExpenseDtoToExpenseUtils {
             PartitialPayer partitialPayer = new PartitialPayer();
             partitialPayer.setUser(userRepository.findByUsername(o.getKey()).get());
             partitialPayer.setCoefficient(o.getValue());
+            newPartitialPayerList.add(partitialPayer);
             partitialPayer.setExpense(expense);
             partitialPayersRepository.save(partitialPayer);
-            newPartitialPayerList.add(partitialPayer);
+//            newPartitialPayerList.add(partitialPayer);
         }
-        expense.setPartitialPayersList(newPartitialPayerList);
+//        expense.setPartitialPayersList(newPartitialPayerList);
 
         if(expense.getDirectPayersList() != null) {
             for (DirectPayer directPayer : directPayersRepository.findByExpense(expense).get()) {
@@ -66,12 +66,14 @@ public class MappingExpenseDtoToExpenseUtils {
             DirectPayer directPayer = new DirectPayer();
             directPayer.setUser(userRepository.findByUsername(o.getKey()).get());
             directPayer.setSumma(o.getValue());
+            newDirectPayerList.add(directPayer);
             directPayer.setExpense(expense);
             directPayersRepository.save(directPayer);
-            newDirectPayerList.add(directPayer);
+//            newDirectPayerList.add(directPayer);
         }
 
-        expense.setDirectPayersList(newDirectPayerList);
+//        expense.setDirectPayersList(newDirectPayerList);
+
         return expense;
 
     }
