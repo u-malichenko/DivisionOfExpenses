@@ -29,8 +29,8 @@ public class EventController {
     }
 
     @PatchMapping
-    public void updateEvent(@RequestBody EventDtoForEditPage EventDtoForEditPage, Principal principal) {
-        eventService.updateEventByEventDtoForEditPageByPrincipal(EventDtoForEditPage, principal.getName());
+    public ResponseEntity<?> updateEvent(@RequestBody EventDtoForEditPage EventDtoForEditPage, Principal principal) {
+        return eventService.updateEventByEventDtoForEditPageByPrincipal(EventDtoForEditPage, principal.getName());
     }
 
     @DeleteMapping("/{id}")

@@ -5,7 +5,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.division.of.expenses.app.dto.EventDto;
 import ru.division.of.expenses.app.dto.EventDto1;
@@ -124,8 +123,9 @@ public class EventService {
     }
 
     public ResponseEntity<?> updateEventByEventDtoForEditPageByPrincipal(EventDtoForEditPage eventDtoForEditPage, String username) {
+        ResponseEntity<?> responseEntity;
         if (!username.equals(eventRepository.findEventManagerUsernameById(eventDtoForEditPage.getId()))) {
-            return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.OK);
+            return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.NO_CONTENT);
         }
         Event eventFromDB = findEventByIdBasic(eventDtoForEditPage.getId());
         List<User> userList = null;
@@ -133,12 +133,16 @@ public class EventService {
             userList = new ArrayList<>();
             for (String eventUserUsername : eventDtoForEditPage.getEventUserList()
             ) {
-                User user = userService.findByUsername(eventUserUsername).orElseThrow(() -> new UsernameNotFoundException("User with nickname " + eventUserUsername + " not found"));
+                User user = userService.findByUsername(eventUserUsername).orElse(null);
+                if (user == null) {
+                    return new ResponseEntity<String>("user with nickname " + eventUserUsername + " not found", HttpStatus.NO_CONTENT);
+                }
                 userList.add(user);
             }
         }
         Event event = mappingEventUtils.mapEventDtoForEditPageToEvent(eventFromDB, eventDtoForEditPage, userList);
-        return updateEvent(event);
+        responseEntity = updateEvent(event);
+        return responseEntity;
     }
 
 
