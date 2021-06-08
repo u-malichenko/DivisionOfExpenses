@@ -25,13 +25,7 @@ public class EventController {
 
     @PostMapping
     public void saveEvent(@RequestBody Event event, Principal principal) {
-        eventService.saveEvent(event, principal.getName());
-    }
-
-
-    @PutMapping
-    public void updateEventByPrincipal(@RequestBody Event event, Principal principal) {
-        eventService.updateEventByPrincipal(event, principal.getName());
+        eventService.saveEventReturnDto(event, principal.getName());
     }
 
     @PatchMapping
@@ -39,12 +33,16 @@ public class EventController {
         eventService.updateEventByEventDtoForEditPageByPrincipal(EventDtoForEditPage, principal.getName());
     }
 
-
     @DeleteMapping("/{id}")
     public void deleteEventByPrincipal(@PathVariable Long id, Principal principal) {
         eventService.deleteEventByPrincipal(id, principal.getName());
     }
 
+
+    @PutMapping
+    public void updateEventByPrincipal(@RequestBody Event event, Principal principal) {
+        eventService.updateEventByPrincipal(event, principal.getName());
+    }
 
     //  Поиск событий по менеджеру события, Principal
     @GetMapping("/byManager")

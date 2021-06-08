@@ -34,6 +34,11 @@ public class MappingEventUtils {
         event.setDescription(eventDtoForEditPage.getDescription());
         if (!userList.isEmpty()) event.setEventUserList(userList);
         return event;
-
     }
+
+    public EventDtoForEditPage mapToEventDtoForEditPage(Event event) {
+        EventDtoForEditPage eventDtoForEditPage = new EventDtoForEditPage(event);
+        return eventDtoForEditPage;
+    }
+
 }

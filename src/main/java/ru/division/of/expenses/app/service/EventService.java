@@ -66,43 +66,52 @@ public class EventService {
     }
 
 
-    public Event saveEvent(Event event, String username){
+    public Event saveEvent(Event event, String username) {
 //        User user = userRepository.findByUsername(username).get();
         User user = userService.findByUsernameBasic(username);
         event.setEventManager(user);
         event.getEventUserList().add(user);
-        EventMember eventMember=new EventMember();
+        EventMember eventMember = new EventMember();
         eventMember.setUser(user);
         event.getEventMembers().add(eventMember);
-        Event savedEvent= eventRepository.save(event);
+        Event savedEvent = eventRepository.save(event);
         eventMember.setEvent(savedEvent);
         eventMemberRepository.save(eventMember);
         divisionOfExpenseService.calculateEvent(savedEvent);
         return savedEvent;
     }
 
+    public EventDtoForEditPage saveEventReturnDto(Event event, String username) {
+        Event savedEvent = saveEvent(event, username);
+        return mappingEventUtils.mapToEventDtoForEditPage(event);
+    }
+
 //    public EventDto saveEventDto(Event event){
 //        return new EventDto(eventRepository.save(event));
 //    }
 
-    public ResponseEntity<?> updateEvent(Event event){
+    public ResponseEntity<?> updateEvent(Event event) {
         Event eventFromDB = findEventByIdBasic(event.getId());
-        if(eventFromDB.getId() != null){
-            if(event.getTitle() != null){
-            eventFromDB.setTitle(event.getTitle());}
-            if(event.getDescription() != null){
-            eventFromDB.setDescription(event.getDescription());}
-            if (event.getTotalEventSum() != null){
-            eventFromDB.setTotalEventSum(event.getTotalEventSum());}
-            if(event.getEventUserList() != null){
-            eventFromDB.setEventUserList(event.getEventUserList());}
-            if(event.getEventManager() != null){
+        if (eventFromDB.getId() != null) {
+            if (event.getTitle() != null) {
+                eventFromDB.setTitle(event.getTitle());
+            }
+            if (event.getDescription() != null) {
+                eventFromDB.setDescription(event.getDescription());
+            }
+            if (event.getTotalEventSum() != null) {
+                eventFromDB.setTotalEventSum(event.getTotalEventSum());
+            }
+            if (event.getEventUserList() != null) {
+                eventFromDB.setEventUserList(event.getEventUserList());
+            }
+            if (event.getEventManager() != null) {
                 eventFromDB.setEventManager(event.getEventManager());
             }
-            Event savedEvent=eventRepository.save(eventFromDB);
+            Event savedEvent = eventRepository.save(eventFromDB);
             divisionOfExpenseService.calculateEvent(savedEvent);
             return new ResponseEntity<Event>(savedEvent, HttpStatus.OK);
-        }else{
+        } else {
             return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.OK);
         }
     }
@@ -142,7 +151,7 @@ public class EventService {
 
     public void deleteEvent(Long id) {
         Event eventFromDB = findEventByIdBasic(id);
-            eventRepository.delete(eventFromDB);
+        eventRepository.delete(eventFromDB);
     }
 
     public List<EventDto> findEventsByManagerId(
@@ -161,7 +170,7 @@ public class EventService {
             String username,
             int page,
             int size
-    ){
+    ) {
         Page<Event> events = eventRepository.findEventsByManagerUsername(username, PageRequest.of(page - 1, size));
         return events
                 .stream()
@@ -173,7 +182,7 @@ public class EventService {
             String username,
             int page,
             int size
-    ){
+    ) {
         Page<Event> events = eventRepository.findEventsByParticipantUsername(username, PageRequest.of(page - 1, size));
         return events
                 .stream()
@@ -185,7 +194,7 @@ public class EventService {
             Long id,
             int page,
             int size
-    ){
+    ) {
         Page<Expense> expenses = eventRepository.findExpenseByEventId(id, PageRequest.of(page - 1, size));
         return expenses
                 .stream()
@@ -197,7 +206,7 @@ public class EventService {
             Long id,
             int page,
             int size
-    ){
+    ) {
         Page<Event> events = eventRepository.findEventByParticipantId(id, PageRequest.of(page - 1, size));
         return events
                 .stream()
@@ -205,7 +214,7 @@ public class EventService {
                 .collect(Collectors.toList());
     }
 
-    public ResponseEntity<?> addUserToEventUserList(String username, Long eventId){
+    public ResponseEntity<?> addUserToEventUserList(String username, Long eventId) {
 //        User user = userRepository.findByUsername(username).get();
         User user = userService.findByUsernameBasic(username);
         Event event = findEventByIdBasic(eventId);
@@ -213,18 +222,18 @@ public class EventService {
         return updateEvent(event);
     }
 
-    public List<String> findEventUserUsernameById(Long eventId){
-       return eventRepository.findEventUserUsernameById(eventId);
+    public List<String> findEventUserUsernameById(Long eventId) {
+        return eventRepository.findEventUserUsernameById(eventId);
     }
 
-    public Event findEventByIdBasic(Long id){
+    public Event findEventByIdBasic(Long id) {
         Event event = new Event();
         try {
             event = eventRepository.findById(id)
                     .orElseThrow(
                             () -> new EventNotFoundException("Event: " + id + " not found.")
                     );
-        }catch (EventNotFoundException e) {
+        } catch (EventNotFoundException e) {
 //            e.printStackTrace();
             System.out.println(e);
         }
@@ -236,7 +245,7 @@ public class EventService {
         return eventRepository.findEventMemberUsernameById(eventId);
     }
 
-    public String findEventManagerUsernameByExpenseId(Long expenseId){
+    public String findEventManagerUsernameByExpenseId(Long expenseId) {
         return eventRepository.findEventManagerUsernameByExpenseId(expenseId);
     }
 }
