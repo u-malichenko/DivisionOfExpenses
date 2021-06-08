@@ -109,9 +109,10 @@ public class EventService {
             }
             Event savedEvent = eventRepository.save(eventFromDB);
             divisionOfExpenseService.calculateEvent(savedEvent);
-            return new ResponseEntity<Event>(savedEvent, HttpStatus.OK);
+            EventDtoForEditPage eventDtoForEditPage = new EventDtoForEditPage(savedEvent);
+            return new ResponseEntity<EventDtoForEditPage>(eventDtoForEditPage, HttpStatus.OK);
         } else {
-            return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.OK);
+            return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.NOT_ACCEPTABLE);
         }
     }
 
