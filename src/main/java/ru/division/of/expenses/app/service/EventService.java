@@ -119,11 +119,14 @@ public class EventService {
             return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.OK);
         }
         Event eventFromDB = findEventByIdBasic(eventDtoForEditPage.getId());
-        List<User> userList = new ArrayList<>();
-        for (String eventUserUsername : eventDtoForEditPage.getEventUserList()
-        ) {
-            User user = userService.findByUsername(eventUserUsername).orElseThrow(() -> new UsernameNotFoundException("User with nickname " + eventUserUsername + " not found"));
-            userList.add(user);
+        List<User> userList = null;
+        if (!eventDtoForEditPage.getEventUserList().isEmpty()) {
+            userList = new ArrayList<>();
+            for (String eventUserUsername : eventDtoForEditPage.getEventUserList()
+            ) {
+                User user = userService.findByUsername(eventUserUsername).orElseThrow(() -> new UsernameNotFoundException("User with nickname " + eventUserUsername + " not found"));
+                userList.add(user);
+            }
         }
         Event event = mappingEventUtils.mapEventDtoForEditPageToEvent(eventFromDB, eventDtoForEditPage, userList);
         return updateEvent(event);
