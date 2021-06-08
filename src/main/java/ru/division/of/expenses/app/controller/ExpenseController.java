@@ -65,8 +65,8 @@ public class ExpenseController {
     }
 
     @PutMapping
-    public ResponseEntity<?> updateExpense(@RequestBody Expense expense){
-        return expenseService.updateExpense(expense);
+    public ResponseEntity<?> updateExpense(@RequestBody ExpenseDto expenseDto) {
+        return expenseService.updateExpense(expenseDto);
     }
 
 

@@ -18,8 +18,8 @@ import java.util.stream.Collectors;
 public class EventDto1 {
 
     private Long id;
-    private String name;
-    private Calendar eventDateTime;
+    private String title;
+    private Calendar date;
     private String description;
     private String managerUsername;
     private BigDecimal totalEventSum;
@@ -29,8 +29,8 @@ public class EventDto1 {
     public EventDto1(Event event) {
 
         this.id = event.getId();
-        this.name = event.getName();
-        this.eventDateTime = event.getEventDateTime();
+        this.title = event.getTitle();
+        this.date = event.getDate();
         this.description = event.getDescription();
         if(event.getEventManager() != null){
             this.managerUsername = event.getEventManager().getUsername(); }

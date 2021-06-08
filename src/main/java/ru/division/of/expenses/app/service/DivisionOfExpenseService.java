@@ -36,18 +36,7 @@ public class DivisionOfExpenseService {
             for (EventMember eventMember : eventMemberList
             ) {
                 if (eventMember.getUser().equals(directPayer.getUser()))
-//                    eventMember
-//                            .setSaldo
-//                                    (
-//                                            eventMember
-//                                                    .getSaldo()
-//                                                    .add
-//                                                            (
-//                                                                    directPayer
-//                                                                            .getSumma()
-//                                                            )
-//                                    );
-                eventMember.setSaldo(eventMember.getSaldo().add(directPayer.getSumma()));
+                    eventMember.setSaldo(eventMember.getSaldo().add(directPayer.getSumma()));
             }
         }
         List<PartitialPayer> partitialPayersList = expense.getPartitialPayersList();
@@ -59,21 +48,7 @@ public class DivisionOfExpenseService {
             for (EventMember eventMember : eventMemberList
             ) {
                 if (eventMember.getUser().equals(partitialPayer.getUser()))
-//                    eventMember
-//                            .setSaldo(
-//                                    eventMember.getSaldo()
-//                                            .add(
-//                                                    summa.divide
-//                                                            (
-//                                                                    BigDecimal.valueOf(partitialListSize)
-//                                                            )
-//                                                            .multiply
-//                                                                    (
-//                                                                            partitialPayer.getCoefficient()
-//                                                                    )
-//                                            )
-//                            );
-                eventMember.setSaldo(eventMember.getSaldo().add(summa.divide(BigDecimal.valueOf(partitialListSize)).multiply(partitialPayer.getCoefficient())));
+                    eventMember.setSaldo(eventMember.getSaldo().add(summa.divide(BigDecimal.valueOf(partitialListSize)).multiply(partitialPayer.getCoefficient())));
             }
 
         }
@@ -81,14 +56,6 @@ public class DivisionOfExpenseService {
         for (EventMember eventMember : eventMemberList
         ) {
             if (eventMember.getUser().equals(buyer))
-//                eventMember.setSaldo(
-//                        eventMember
-//                                .getSaldo()
-//                                .subtract(
-//                                        expense
-//                                                .getTotalExpenseSum()
-//                                )
-//                );
                 eventMember.setSaldo(eventMember.getSaldo().subtract(expense.getTotalExpenseSum()));
         }
         System.out.println("hi");
@@ -97,7 +64,7 @@ public class DivisionOfExpenseService {
 
     private void resetEventMemberSaldo(Collection<EventMember> eventMemberList) {
         for (EventMember eventMember : eventMemberList
-        ){
+        ) {
             eventMember.setSaldo(new BigDecimal("0.00"));
         }
     }

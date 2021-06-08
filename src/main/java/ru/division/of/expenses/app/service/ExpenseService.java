@@ -30,6 +30,7 @@ public class ExpenseService {
     private final EventService eventService;
     private final MappingExpenseDtoToExpenseUtils mappingExpenseDtoToExpenseUtils;
     private final EventMemberRepository eventMemberRepository;
+    private final DivisionOfExpenseService divisionOfExpenseService;
 
     public List<ExpenseDto> findAll(
             int page,
@@ -53,7 +54,9 @@ public class ExpenseService {
 
 
     public Expense saveExpense(Expense expense) {
-        return expenseRepository.save(expense);
+        Expense newExpense=expenseRepository.save(expense);
+        divisionOfExpenseService.calculateEvent(newExpense.getEvent());
+        return newExpense;
     }
 
 
@@ -65,10 +68,16 @@ public class ExpenseService {
             expenseFromDB.setTotalExpenseSum(expense.getTotalExpenseSum());
             expenseFromDB.setComment(expense.getComment());
             expenseFromDB.setBuyer(expense.getBuyer());
-            return new ResponseEntity<Expense>(expenseRepository.save(expenseFromDB), HttpStatus.OK);
+            expenseRepository.save(expenseFromDB);
+            return new ResponseEntity<String>("Expense was successfully updated", HttpStatus.ACCEPTED);
         } else {
-            return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.OK);
+            return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.NOT_ACCEPTABLE);
         }
+    }
+
+    public ResponseEntity<?> updateExpense(ExpenseDto expenseDto) {
+        Expense expense = mappingExpenseDtoToExpenseUtils.mapToExpense(expenseDto);
+        return updateExpense(expense);
     }
 
     private Expense findExpenseByIdBasic(Long id) {
@@ -88,6 +97,7 @@ public class ExpenseService {
     public void saveAndAddToEvent(String username, Long eventId, Expense expense) {
         expense.setBuyer(userRepository.findByUsername(username).get());
         expense.setEvent(eventService.findEventByIdBasic(eventId));
+        divisionOfExpenseService.calculateEvent(expense.getEvent());
         expenseRepository.save(expense);
     }
 
@@ -127,7 +137,8 @@ public class ExpenseService {
 
     public void deleteExpense(Long expenseId) {
         Expense expense = findExpenseByIdBasic(expenseId);
+        Event event=expense.getEvent();
         expenseRepository.delete(expense);
-
+        divisionOfExpenseService.calculateEvent(event);
     }
 }

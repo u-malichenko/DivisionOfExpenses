@@ -4,8 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.division.of.expenses.app.dto.EventDto;
+import ru.division.of.expenses.app.dto.EventDtoForEditPage;
 import ru.division.of.expenses.app.model.Event;
 import ru.division.of.expenses.app.service.EventService;
+
 import java.security.Principal;
 import java.util.List;
 
@@ -17,27 +19,30 @@ public class EventController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> findEventById(@PathVariable Long id) {
-        return eventService.findEventById(id);
+        return eventService.findEventDtoForEditPageById(id);
     }
 
 
     @PostMapping
     public void saveEvent(@RequestBody Event event, Principal principal) {
-        eventService.saveEvent(event, principal.getName());
+        eventService.saveEventReturnDto(event, principal.getName());
+    }
+
+    @PatchMapping
+    public void updateEvent(@RequestBody EventDtoForEditPage EventDtoForEditPage, Principal principal) {
+        eventService.updateEventByEventDtoForEditPageByPrincipal(EventDtoForEditPage, principal.getName());
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteEventByPrincipal(@PathVariable Long id, Principal principal) {
+        eventService.deleteEventByPrincipal(id, principal.getName());
     }
 
 
     @PutMapping
-    public void updateEventByPrincipal(@RequestBody Event event, Principal principal){
+    public void updateEventByPrincipal(@RequestBody Event event, Principal principal) {
         eventService.updateEventByPrincipal(event, principal.getName());
     }
-
-
-    @DeleteMapping("/{id}")
-    public void deleteEventByPrincipal(@PathVariable Long id, Principal principal){
-        eventService.deleteEventByPrincipal(id, principal.getName());
-    }
-
 
     //  Поиск событий по менеджеру события, Principal
     @GetMapping("/byManager")

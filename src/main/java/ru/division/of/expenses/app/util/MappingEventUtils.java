@@ -1,12 +1,17 @@
 package ru.division.of.expenses.app.util;
 
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.division.of.expenses.app.dto.EventDto;
+import ru.division.of.expenses.app.dto.EventDtoForEditPage;
 import ru.division.of.expenses.app.model.Event;
+import ru.division.of.expenses.app.model.User;
+
+import java.util.List;
 
 @Component
+@AllArgsConstructor
 public class MappingEventUtils {
-
 
     public EventDto mapToEventDto(Event event){
 
@@ -17,10 +22,24 @@ public class MappingEventUtils {
         ////////////////////////////////////
         EventDto eventDto = new EventDto();
         eventDto.setId(event.getId());
-        eventDto.setName(event.getName());
-        eventDto.setEventDateTime(event.getEventDateTime());
+        eventDto.setTitle(event.getTitle());
+        eventDto.setDate(event.getDate());
         eventDto.setTotalEventSum(event.getTotalEventSum());
 //        eventDto.setManagerUsername(event.getEventManager().getUsername());
         return eventDto;
     }
+
+    public Event mapEventDtoForEditPageToEvent(Event event, EventDtoForEditPage eventDtoForEditPage, List<User> userList) {
+        event.setTitle(eventDtoForEditPage.getTitle());
+        event.setDescription(eventDtoForEditPage.getDescription());
+        event.setDate(eventDtoForEditPage.getDate());
+        if (!userList.isEmpty()) event.setEventUserList(userList);
+        return event;
+    }
+
+    public EventDtoForEditPage mapToEventDtoForEditPage(Event event) {
+        EventDtoForEditPage eventDtoForEditPage = new EventDtoForEditPage(event);
+        return eventDtoForEditPage;
+    }
+
 }
