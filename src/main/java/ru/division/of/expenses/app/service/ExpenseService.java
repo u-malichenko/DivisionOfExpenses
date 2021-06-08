@@ -68,10 +68,16 @@ public class ExpenseService {
             expenseFromDB.setTotalExpenseSum(expense.getTotalExpenseSum());
             expenseFromDB.setComment(expense.getComment());
             expenseFromDB.setBuyer(expense.getBuyer());
-            return new ResponseEntity<Expense>(expenseRepository.save(expenseFromDB), HttpStatus.OK);
+            expenseRepository.save(expenseFromDB);
+            return new ResponseEntity<String>("Expense was successfully updated", HttpStatus.ACCEPTED);
         } else {
-            return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.OK);
+            return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.NOT_ACCEPTABLE);
         }
+    }
+
+    public ResponseEntity<?> updateExpense(ExpenseDto expenseDto) {
+        Expense expense = mappingExpenseDtoToExpenseUtils.mapToExpense(expenseDto);
+        return updateExpense(expense);
     }
 
     private Expense findExpenseByIdBasic(Long id) {
