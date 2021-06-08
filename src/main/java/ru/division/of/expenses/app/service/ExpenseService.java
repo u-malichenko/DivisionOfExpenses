@@ -77,7 +77,10 @@ public class ExpenseService {
 
     public ResponseEntity<?> updateExpense(ExpenseDto expenseDto) {
         Expense expense = mappingExpenseDtoToExpenseUtils.mapToExpense(expenseDto);
-        return updateExpense(expense);
+        if(expenseRepository.save(expense) != null){
+            return new ResponseEntity<String>("Expense was successfully updated", HttpStatus.ACCEPTED);
+        }
+        return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.NOT_ACCEPTABLE);
     }
 
     private Expense findExpenseByIdBasic(Long id) {
