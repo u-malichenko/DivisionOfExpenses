@@ -1,6 +1,7 @@
 package ru.division.of.expenses.app.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.division.of.expenses.app.dto.EventDto;
@@ -13,28 +14,33 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 @RequestMapping("/api/v1/event")
 public class EventController {
     private final EventService eventService;
 
     @GetMapping("/{id}")
     public ResponseEntity<?> findEventById(@PathVariable Long id) {
+        log.info("incoming Event GET Request by id: " + id);
         return eventService.findEventDtoForEditPageById(id);
     }
 
 
     @PostMapping
     public void saveEvent(@RequestBody Event event, Principal principal) {
+        log.info("Incoming Event save POST REQUEST event: " + event);
         eventService.saveEventReturnDto(event, principal.getName());
     }
 
     @PatchMapping
-    public ResponseEntity<?> updateEvent(@RequestBody EventDtoForEditPage EventDtoForEditPage, Principal principal) {
-        return eventService.updateEventByEventDtoForEditPageByPrincipal(EventDtoForEditPage, principal.getName());
+    public ResponseEntity<?> updateEvent(@RequestBody EventDtoForEditPage eventDtoForEditPage, Principal principal) {
+        log.info("Incoming Event update PATCH REQUEST eventDtoForEditPage: " + eventDtoForEditPage);
+        return eventService.updateEventByEventDtoForEditPageByPrincipal(eventDtoForEditPage, principal.getName());
     }
 
     @DeleteMapping("/{id}")
     public void deleteEventByPrincipal(@PathVariable Long id, Principal principal) {
+        log.warn("incoming Event DELETE Request by id: " + id);
         eventService.deleteEventByPrincipal(id, principal.getName());
     }
 

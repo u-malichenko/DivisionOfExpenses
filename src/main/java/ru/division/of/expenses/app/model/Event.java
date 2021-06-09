@@ -1,7 +1,6 @@
 package ru.division.of.expenses.app.model;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -47,4 +46,18 @@ public class Event extends AbstractEntity {
     @OneToOne
     private ShoppingList shoppingList;
 
+    @Override
+    public String toString() {
+        return "Event{\n" +
+                "eventUserList=" + eventUserList +
+                "\n, eventMembers=" + eventMembers +
+                "\n, date=" + date.getTime() +
+                "\n, title='" + title + '\'' +
+                "\n, description='" + description + '\'' +
+                "\n, expenseList=" + expenseList +
+                "\n, eventManager=" + eventManager +
+                "\n, totalEventSum=" + totalEventSum +
+                "\n, shoppingList=" + shoppingList + "\n" +
+                '}';
+    }
 }
