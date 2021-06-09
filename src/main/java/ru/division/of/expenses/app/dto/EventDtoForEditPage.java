@@ -38,4 +38,16 @@ public class EventDtoForEditPage {
 
     }
 
+    @Override
+    public String toString() {
+        return "EventDtoForEditPage{" +
+                "\nid=" + id +
+                "\n, title='" + title + '\'' +
+                "\n, description='" + description + '\'' +
+                "\n, date=" + date.getTime() +
+                "\n, totalEventSum=" + totalEventSum +
+                "\n, eventUserList=" + eventUserList +
+                "\n, amountOfExpense=" + amountOfExpense + "\n" +
+                '}';
+    }
 }
