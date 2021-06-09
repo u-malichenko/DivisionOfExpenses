@@ -6,6 +6,7 @@ import ru.division.of.expenses.app.model.*;
 import ru.division.of.expenses.app.repository.EventRepository;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Collection;
 import java.util.List;
 
@@ -48,7 +49,7 @@ public class DivisionOfExpenseService {
             for (EventMember eventMember : eventMemberList
             ) {
                 if (eventMember.getUser().equals(partitialPayer.getUser()))
-                    eventMember.setSaldo(eventMember.getSaldo().add(summa.divide(BigDecimal.valueOf(partitialListSize)).multiply(partitialPayer.getCoefficient())));
+                    eventMember.setSaldo(eventMember.getSaldo().add(summa.divide(BigDecimal.valueOf(partitialListSize), 2, RoundingMode.HALF_UP).multiply(partitialPayer.getCoefficient())));
             }
 
         }

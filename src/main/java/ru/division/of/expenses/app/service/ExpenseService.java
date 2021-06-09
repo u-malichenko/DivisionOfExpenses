@@ -68,6 +68,7 @@ public class ExpenseService {
             expenseFromDB.setTotalExpenseSum(expense.getTotalExpenseSum());
             expenseFromDB.setComment(expense.getComment());
             expenseFromDB.setBuyer(expense.getBuyer());
+            divisionOfExpenseService.calculateExpense(expenseFromDB, expenseFromDB.getEvent().getEventMembers());
             expenseRepository.save(expenseFromDB);
             return new ResponseEntity<String>("Expense was successfully updated", HttpStatus.ACCEPTED);
         } else {
