@@ -98,9 +98,7 @@ public class EventService {
             if (event.getDescription() != null) {
                 eventFromDB.setDescription(event.getDescription());
             }
-            if (event.getTotalEventSum() != null) {
-                eventFromDB.setTotalEventSum(event.getTotalEventSum());
-            }
+
             if (event.getEventUserList() != null) {
                 eventFromDB.setEventUserList(event.getEventUserList());
             }
