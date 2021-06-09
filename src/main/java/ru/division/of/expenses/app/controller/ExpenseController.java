@@ -91,7 +91,7 @@ public class ExpenseController {
 
     // Удаление Траты только байером этой Траты
     // или менеджером Евента, к которому относится данная Трата.
-    @DeleteMapping("/{expenseId}")
+    @DeleteMapping("/{id}")
     public void deleteExpenseByPrincipal(
             Principal principal,
             @PathVariable Long id) {
