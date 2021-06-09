@@ -67,4 +67,11 @@ public class RegistrationController {
         return new ResponseEntity<String>("User was successfully created", HttpStatus.CREATED);
     }
 
+    @DeleteMapping("/{username}")
+    public void removeRegistrationTicketByUsername(
+            @PathVariable String username
+    ){
+        registrationTicketService.deleteByUsername(username);
+    }
+
 }

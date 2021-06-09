@@ -64,9 +64,24 @@ public class ExpenseController {
         expenseService.saveAndAddToEventNoPrinciple(eventId, expenseDto);
     }
 
-    @PutMapping
-    public ResponseEntity<?> updateExpense(@RequestBody ExpenseDto expenseDto) {
-        return expenseService.updateExpense(expenseDto);
+//    @PutMapping
+//    public ResponseEntity<?> updateExpense(
+//            @RequestBody ExpenseDto expenseDto)
+//    {
+//
+//        ResponseEntity<?> responseEntity = expenseService.updateExpense(expenseDto);
+////        return expenseService.updateExpense(expenseDto);
+//        return responseEntity;
+//    }
+
+    @PatchMapping
+    public ResponseEntity<?> updateExpense(
+            @RequestBody ExpenseDto expenseDto)
+    {
+
+        ResponseEntity<?> responseEntity = expenseService.updateExpense(expenseDto);
+//        return expenseService.updateExpense(expenseDto);
+        return responseEntity;
     }
 
 

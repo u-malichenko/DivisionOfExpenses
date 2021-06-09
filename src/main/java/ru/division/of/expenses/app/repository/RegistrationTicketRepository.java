@@ -25,4 +25,5 @@ RegistrationTicketRepository extends JpaRepository<RegistrationTicket, Long>, Jp
     Optional<RegistrationTicket> findByUsername(String username);
 
     Optional<RegistrationTicket> findByEmail(String email);
+
 }
