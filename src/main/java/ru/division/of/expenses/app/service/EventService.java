@@ -7,17 +7,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import ru.division.of.expenses.app.dto.EventDto;
-import ru.division.of.expenses.app.dto.EventDto1;
-import ru.division.of.expenses.app.dto.EventDtoForEditPage;
-import ru.division.of.expenses.app.dto.ExpenseDto;
+import ru.division.of.expenses.app.dto.*;
 import ru.division.of.expenses.app.exceptionhandling.EventNotFoundException;
-import ru.division.of.expenses.app.model.Event;
-import ru.division.of.expenses.app.model.EventMember;
-import ru.division.of.expenses.app.model.Expense;
-import ru.division.of.expenses.app.model.User;
-import ru.division.of.expenses.app.repository.EventMemberRepository;
-import ru.division.of.expenses.app.repository.EventRepository;
+import ru.division.of.expenses.app.model.*;
+import ru.division.of.expenses.app.repository.*;
 import ru.division.of.expenses.app.util.EmptyJsonResponse;
 import ru.division.of.expenses.app.util.MappingEventUtils;
 
@@ -33,7 +26,10 @@ public class EventService {
     //    private final UserRepository userRepository;
     private final UserService userService;
     private final EventMemberRepository eventMemberRepository;
+    private final ExpenseRepository expenseRepository;
     private final DivisionOfExpenseService divisionOfExpenseService;
+    private final PartitialPayersRepository partitialPayersRepository;
+    private final DirectPayersRepository directPayersRepository;
     private final MappingEventUtils mappingEventUtils;
 
     public ResponseEntity<?> findEventById(Long id) {
@@ -125,7 +121,7 @@ public class EventService {
 
     public ResponseEntity<?> updateEventByEventDtoForEditPageByPrincipal(EventDtoForEditPage eventDtoForEditPage, String username) {
         if (!username.equals(eventRepository.findEventManagerUsernameById(eventDtoForEditPage.getId()))) {
-            return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.OK);
+            return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.METHOD_NOT_ALLOWED);
         }
         Event eventFromDB = findEventByIdBasic(eventDtoForEditPage.getId());
         List<User> userList = null;
@@ -219,7 +215,50 @@ public class EventService {
         User user = userService.findByUsernameBasic(username);
         Event event = findEventByIdBasic(eventId);
         event.getEventUserList().add(user);
+        EventMember eventMember = new EventMember();
+        eventMember.setUser(user);
+        eventMember.setEvent(event);
+        eventMemberRepository.save(eventMember);
         return updateEvent(event);
+    }
+
+    public void removeUserFromEventUserList(UserDtoRemove userDtoRemove, Long eventId){
+        User user = userService.findByUsernameBasic(userDtoRemove.getUsername());
+        Event event = findEventByIdBasic(eventId);
+        event.getEventUserList().remove(user);
+        EventMember eventMember = eventMemberRepository.findEventMemberByEventAndUser(event, user).get();
+        eventMemberRepository.delete(eventMember);
+        List<Expense> expenseList = expenseRepository.findExpenseByEvent(event);
+        for(Expense expense : expenseList){
+            PartitialPayer partitialPayer = null;
+            try {
+                partitialPayer = partitialPayersRepository.findPartitialPayerByExpenseAndUser(expense, user)
+                        .orElseThrow(
+                                () -> new EventNotFoundException("Not found")
+                        );
+                partitialPayersRepository.delete(partitialPayer);
+            } catch (EventNotFoundException e) {
+//                e.printStackTrace();
+            }
+            DirectPayer directPayer = null;
+            try {
+                directPayer = directPayersRepository.findDirectPayerByExpenseAndUser(expense, user)
+                        .orElseThrow(
+                                () -> new EventNotFoundException("Not found")
+                        );
+                directPayersRepository.delete(directPayer);
+            } catch (EventNotFoundException e) {
+//                e.printStackTrace();
+            }
+        }
+        for(Expense expense : expenseList){
+            if(expense.getBuyer().getUsername().equals(user.getUsername())){
+                expenseRepository.delete(expense);
+            }
+        }
+
+
+        updateEvent(event);
     }
 
     public List<String> findEventUserUsernameById(Long eventId) {

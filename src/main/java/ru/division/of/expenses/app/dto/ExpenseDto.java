@@ -48,5 +48,11 @@ public class ExpenseDto {
         for (PartitialPayer partitialPayer : expense.getPartitialPayersList()) {
             partitialPayerMap.put(partitialPayer.getUser().getUsername(), partitialPayer.getCoefficient());
         }
+        if(directPayerMap.containsKey(buyer)){
+            this.numberOfExpenseParticipants--;
+        }
+        if (partitialPayerMap.containsKey(buyer)){
+            this.numberOfExpenseParticipants--;
+        }
     }
 }

@@ -20,6 +20,7 @@ public class EventDto {
     private String title;
     private Calendar date;
     private BigDecimal totalEventSum;
+    private String eventManager;
     private List<String> eventUserList;
     private Integer amountOfExpense;
     private List<ExpenseDto> expenseList;
@@ -28,6 +29,7 @@ public class EventDto {
         this.id = event.getId();
         this.title = event.getTitle();
         this.date = event.getDate();
+        this.eventManager = event.getEventManager().getUsername();
         this.totalEventSum = event.getTotalEventSum();
         this.amountOfExpense = event.getExpenseList().size();
         this.eventUserList = event.getEventUserList().stream()

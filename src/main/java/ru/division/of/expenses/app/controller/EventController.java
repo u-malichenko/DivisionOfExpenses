@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.division.of.expenses.app.dto.EventDto;
 import ru.division.of.expenses.app.dto.EventDtoForEditPage;
+import ru.division.of.expenses.app.dto.UserDtoRemove;
 import ru.division.of.expenses.app.model.Event;
 import ru.division.of.expenses.app.service.EventService;
 
@@ -84,6 +85,12 @@ public class EventController {
             @PathVariable Long eventId,
             Principal principal){
         return eventService.addUserToEventUserList(principal.getName(), eventId);
+    }
+
+    @PatchMapping("/removeFromUserList/{eventId}")
+    public void removeUserFromEventUserList(@RequestBody UserDtoRemove userDtoRemove,
+                                            @PathVariable Long eventId){
+        eventService.removeUserFromEventUserList(userDtoRemove, eventId);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////

@@ -21,6 +21,7 @@ public class EventDtoForEditPage {
     private String title;
     private String description;
     private Calendar date;
+    private String eventManager;
     private BigDecimal totalEventSum;
     private List<String> eventUserList;
     private Integer amountOfExpense;
@@ -29,6 +30,7 @@ public class EventDtoForEditPage {
         this.id = event.getId();
         this.title = event.getTitle();
         this.date = event.getDate();
+        this.eventManager = event.getEventManager().getUsername();
         this.totalEventSum = event.getTotalEventSum();
         this.amountOfExpense = event.getExpenseList().size();
         this.eventUserList = event.getEventUserList().stream()
