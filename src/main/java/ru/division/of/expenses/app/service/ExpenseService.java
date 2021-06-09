@@ -64,11 +64,14 @@ public class ExpenseService {
         Expense expenseFromDB = findExpenseByIdBasic(expense.getId());
 
         if (expenseFromDB.getId() != null) {
+            divisionOfExpenseService.rollbackSaldoChangingExpenseBeforeUpdate(expenseFromDB);
             expenseFromDB.setExpenseDate(expense.getExpenseDate());
             expenseFromDB.setTotalExpenseSum(expense.getTotalExpenseSum());
             expenseFromDB.setComment(expense.getComment());
             expenseFromDB.setBuyer(expense.getBuyer());
-            divisionOfExpenseService.calculateExpense(expenseFromDB, expenseFromDB.getEvent().getEventMembers());
+            expenseFromDB.setPartitialPayersList(expense.getPartitialPayersList());
+            expenseFromDB.setDirectPayersList(expense.getDirectPayersList());
+            divisionOfExpenseService.calculateExpense(expenseFromDB);
             expenseRepository.save(expenseFromDB);
             return new ResponseEntity<String>("Expense was successfully updated", HttpStatus.ACCEPTED);
         } else {
