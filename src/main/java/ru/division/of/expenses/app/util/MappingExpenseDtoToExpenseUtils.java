@@ -51,9 +51,7 @@ public class MappingExpenseDtoToExpenseUtils {
             newPartitialPayerList.add(partitialPayer);
             partitialPayer.setExpense(expense);
             partitialPayersRepository.save(partitialPayer);
-//            newPartitialPayerList.add(partitialPayer);
         }
-//        expense.setPartitialPayersList(newPartitialPayerList);
 
         if(expense.getDirectPayersList() != null) {
             for (DirectPayer directPayer : directPayersRepository.findByExpense(expense).get()) {
@@ -69,10 +67,8 @@ public class MappingExpenseDtoToExpenseUtils {
             newDirectPayerList.add(directPayer);
             directPayer.setExpense(expense);
             directPayersRepository.save(directPayer);
-//            newDirectPayerList.add(directPayer);
         }
 
-//        expense.setDirectPayersList(newDirectPayerList);
 
         return expense;
 
