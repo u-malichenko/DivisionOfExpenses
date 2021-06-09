@@ -12,8 +12,6 @@ import ru.division.of.expenses.app.repository.PartitialPayersRepository;
 import ru.division.of.expenses.app.repository.UserRepository;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 @Component
@@ -43,12 +41,10 @@ public class MappingExpenseDtoToExpenseUtils {
                 partitialPayersRepository.delete(partitialPayer);
             }
         }
-        List<PartitialPayer> newPartitialPayerList = new ArrayList<>();
         for (Map.Entry<String, BigDecimal> o : expenseDto.getPartitialPayerMap().entrySet()) {
             PartitialPayer partitialPayer = new PartitialPayer();
             partitialPayer.setUser(userRepository.findByUsername(o.getKey()).get());
             partitialPayer.setCoefficient(o.getValue());
-            newPartitialPayerList.add(partitialPayer);
             partitialPayer.setExpense(expense);
             partitialPayersRepository.save(partitialPayer);
         }
@@ -59,12 +55,10 @@ public class MappingExpenseDtoToExpenseUtils {
             }
         }
 
-        List<DirectPayer> newDirectPayerList = new ArrayList<>();
         for (Map.Entry<String, BigDecimal> o : expenseDto.getDirectPayerMap().entrySet()){
             DirectPayer directPayer = new DirectPayer();
             directPayer.setUser(userRepository.findByUsername(o.getKey()).get());
             directPayer.setSumma(o.getValue());
-            newDirectPayerList.add(directPayer);
             directPayer.setExpense(expense);
             directPayersRepository.save(directPayer);
         }
