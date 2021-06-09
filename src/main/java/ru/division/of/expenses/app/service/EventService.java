@@ -14,6 +14,7 @@ import ru.division.of.expenses.app.repository.*;
 import ru.division.of.expenses.app.util.EmptyJsonResponse;
 import ru.division.of.expenses.app.util.MappingEventUtils;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -218,6 +219,7 @@ public class EventService {
         EventMember eventMember = new EventMember();
         eventMember.setUser(user);
         eventMember.setEvent(event);
+        eventMember.setSaldo(new BigDecimal(0.00));
         eventMemberRepository.save(eventMember);
         return updateEvent(event);
     }
