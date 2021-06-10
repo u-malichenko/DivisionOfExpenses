@@ -10,6 +10,7 @@ import ru.division.of.expenses.app.model.User;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor

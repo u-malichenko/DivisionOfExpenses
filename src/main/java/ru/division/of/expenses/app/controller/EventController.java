@@ -10,7 +10,11 @@ import ru.division.of.expenses.app.model.Event;
 import ru.division.of.expenses.app.service.EventService;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -30,8 +34,8 @@ public class EventController {
     }
 
     @PatchMapping
-    public void updateEvent(@RequestBody EventDtoForEditPage EventDtoForEditPage, Principal principal) {
-        eventService.updateEventByEventDtoForEditPageByPrincipal(EventDtoForEditPage, principal.getName());
+    public ResponseEntity<?> updateEvent(@RequestBody EventDtoForEditPage EventDtoForEditPage, Principal principal) {
+        return eventService.updateEventByEventDtoForEditPageByPrincipal(EventDtoForEditPage, principal.getName());
     }
 
     @DeleteMapping("/{id}")

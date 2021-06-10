@@ -64,10 +64,14 @@ public class ExpenseService {
         Expense expenseFromDB = findExpenseByIdBasic(expense.getId());
 
         if (expenseFromDB.getId() != null) {
+            divisionOfExpenseService.rollbackSaldoChangingExpenseBeforeUpdate(expenseFromDB);
             expenseFromDB.setExpenseDate(expense.getExpenseDate());
             expenseFromDB.setTotalExpenseSum(expense.getTotalExpenseSum());
             expenseFromDB.setComment(expense.getComment());
             expenseFromDB.setBuyer(expense.getBuyer());
+            expenseFromDB.setPartitialPayersList(expense.getPartitialPayersList());
+            expenseFromDB.setDirectPayersList(expense.getDirectPayersList());
+            divisionOfExpenseService.calculateExpense(expenseFromDB);
             expenseRepository.save(expenseFromDB);
             return new ResponseEntity<String>("Expense was successfully updated", HttpStatus.ACCEPTED);
         } else {
@@ -77,10 +81,11 @@ public class ExpenseService {
 
     public ResponseEntity<?> updateExpense(ExpenseDto expenseDto) {
         Expense expense = mappingExpenseDtoToExpenseUtils.mapToExpense(expenseDto);
-        if(expenseRepository.save(expense) != null){
-            return new ResponseEntity<String>("Expense was successfully updated", HttpStatus.ACCEPTED);
-        }
-        return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.NOT_ACCEPTABLE);
+//        if(expenseRepository.save(expense) != null){
+//            return new ResponseEntity<String>("Expense was successfully updated", HttpStatus.ACCEPTED);
+//        }
+//        return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.NOT_ACCEPTABLE);
+        return updateExpense(expense);
     }
 
     private Expense findExpenseByIdBasic(Long id) {
