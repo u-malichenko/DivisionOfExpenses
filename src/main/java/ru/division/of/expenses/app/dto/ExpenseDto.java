@@ -8,9 +8,8 @@ import ru.division.of.expenses.app.model.Expense;
 import ru.division.of.expenses.app.model.PartitialPayer;
 
 import java.math.BigDecimal;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -48,11 +47,19 @@ public class ExpenseDto {
         for (PartitialPayer partitialPayer : expense.getPartitialPayersList()) {
             partitialPayerMap.put(partitialPayer.getUser().getUsername(), partitialPayer.getCoefficient());
         }
+
+        List<String> directList = new ArrayList<>(directPayerMap.keySet());
+        List<String> partitialList = new ArrayList<>(partitialPayerMap.keySet());
+
         if(directPayerMap.containsKey(buyer)){
             this.numberOfExpenseParticipants--;
-        }
-        if (partitialPayerMap.containsKey(buyer)){
+        }else if (partitialPayerMap.containsKey(buyer)){
             this.numberOfExpenseParticipants--;
         }
+
+        List<String> result = partitialList.stream().filter(aObject ->
+                directList.contains(aObject)).collect(Collectors.toList());
+        this.numberOfExpenseParticipants = this.numberOfExpenseParticipants - result.size();
+
     }
 }
