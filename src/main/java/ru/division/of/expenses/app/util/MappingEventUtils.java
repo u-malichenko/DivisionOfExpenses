@@ -24,7 +24,7 @@ public class MappingEventUtils {
         eventDto.setId(event.getId());
         eventDto.setTitle(event.getTitle());
         eventDto.setDate(event.getDate());
-        eventDto.setTotalEventSum(event.getTotalEventSum());
+//        eventDto.setTotalEventSum(event.getTotalEventSum());
 //        eventDto.setManagerUsername(event.getEventManager().getUsername());
         return eventDto;
     }

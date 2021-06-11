@@ -19,6 +19,7 @@ import ru.division.of.expenses.app.util.EmptyJsonResponse;
 import ru.division.of.expenses.app.util.MappingExpenseDtoToExpenseUtils;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,24 +33,32 @@ public class ExpenseService {
     private final EventMemberRepository eventMemberRepository;
     private final DivisionOfExpenseService divisionOfExpenseService;
 
-    public List<ExpenseDto> findAll(
-            int page,
-            int size
-    ) {
-        Page<Expense> expenses = expenseRepository.findAll(PageRequest.of(page - 1, size));
+    public List<ExpenseDto> findAll(String username) {
+        List<Expense> buyerList = expenseRepository.findExpenseByBuyerUsername(username);
+        List<Expense> directPayerList = expenseRepository.findExpenseByDirectPayersListByUsername(username);
+        List<Expense> pertitialPayerList = expenseRepository.findExpenseByPartitialPayersListByUsername(username);
+        buyerList.addAll(directPayerList);
+        buyerList.addAll(pertitialPayerList);
+        Set<Expense> expenses = buyerList.stream().collect(Collectors.toSet());
         return expenses
                 .stream()
                 .map(ExpenseDto::new)
                 .collect(Collectors.toList());
     }
 
-    public ResponseEntity<?> findById(Long id) {
-        ExpenseDto expenseDto = new ExpenseDto(findExpenseByIdBasic(id));
-        if (expenseDto.getId() != null) {
-            return new ResponseEntity<ExpenseDto>(expenseDto, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.OK);
-        }
+    public ResponseEntity<?> findById(String username, Long expenseId) {
+            ExpenseDto expenseDto = new ExpenseDto(findExpenseByIdBasic(expenseId));
+            if (expenseDto.getId() != null) {
+                if(username.equals(expenseRepository.findBuyerUsernameByExpenseId(expenseId))
+                        || username.equals(eventService.findEventManagerUsernameByExpenseId(expenseId))
+                        || expenseRepository.findDirectPayerUsernameList(expenseId).contains(username)
+                        || expenseRepository.findPartitialPayerUsernameList(expenseId).contains(username)){
+                    return new ResponseEntity<ExpenseDto>(expenseDto, HttpStatus.OK);
+                }
+                return new ResponseEntity<>("You are not in", HttpStatus.NOT_FOUND);
+            } else {
+                return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.OK);
+            }
     }
 
 
@@ -79,13 +88,18 @@ public class ExpenseService {
         }
     }
 
-    public ResponseEntity<?> updateExpense(ExpenseDto expenseDto) {
+    public ResponseEntity<?> updateExpense(String username, ExpenseDto expenseDto) {
+        if(username.equals(expenseRepository.findBuyerUsernameByExpenseId(expenseDto.getId())) ||
+                username.equals(eventService.findEventManagerUsernameByExpenseId(expenseDto.getId()))){
         Expense expense = mappingExpenseDtoToExpenseUtils.mapToExpense(expenseDto);
 //        if(expenseRepository.save(expense) != null){
 //            return new ResponseEntity<String>("Expense was successfully updated", HttpStatus.ACCEPTED);
 //        }
 //        return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.NOT_ACCEPTABLE);
         return updateExpense(expense);
+        }else {
+            return new ResponseEntity<>("Update is not allowed", HttpStatus.NOT_ACCEPTABLE);
+        }
     }
 
     private Expense findExpenseByIdBasic(Long id) {
@@ -93,7 +107,7 @@ public class ExpenseService {
         try {
             expense = expenseRepository.findById(id)
                     .orElseThrow(
-                            () -> new ExpenseNotFoundException("Event: " + id + " not found.")
+                            () -> new ExpenseNotFoundException("Expense: " + id + " not found.")
                     );
         } catch (ExpenseNotFoundException e) {
 //            e.printStackTrace();
@@ -109,7 +123,12 @@ public class ExpenseService {
         expenseRepository.save(expense);
     }
 
-    public void saveAndAddToEventNoPrinciple(Long eventId, ExpenseDto expenseDto) {
+    public void saveAndAddToEventByPrinciple(String username, Long eventId, ExpenseDto expenseDto) {
+        List<String> eventUserList = eventService.findEventUserUsernameById(eventId);
+        if(!eventUserList.contains(username)){
+            System.out.println("NOT TO ADD");
+            return;
+        }
         List<String> eventUserUsernameList = eventService.findEventUserUsernameById(eventId);
         List<String> eventMemberUserUsername = eventService.findEventMemberUsernameById(eventId);
         if (!eventUserUsernameList.contains(expenseDto.getBuyer())) {
