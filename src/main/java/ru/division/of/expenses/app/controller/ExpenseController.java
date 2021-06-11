@@ -19,28 +19,23 @@ public class ExpenseController {
     private final ExpenseService expenseService;
     private final EventService eventService;
 
+
+    // менеджер События или участник Траты
     @GetMapping("/{id}")
-    public ResponseEntity<?> findById(@PathVariable Long id){
-        return expenseService.findById(id);
+    public ResponseEntity<?> findById(Principal principal,
+                                      @PathVariable Long id){
+        return expenseService.findById(principal.getName(), id);
     }
 
+    // участник трат
     @GetMapping
-    public List<ExpenseDto> findAll(@RequestParam(required = false, defaultValue = "1") int page ,
-                                 @RequestParam(required = false, defaultValue = "5") int size){
+    public List<ExpenseDto> findAll(Principal principal,
+                                    @RequestParam(required = false, defaultValue = "1") int page ,
+                                    @RequestParam(required = false, defaultValue = "20") int size){
         if (page <= 0) {
             page = 1;
         }
-        return expenseService.findAll(page, size);
-    }
-
-    @GetMapping("/ByEventId/{id}")
-    public List<ExpenseDto> findExpenseByEventId(@PathVariable Long id,
-                                            @RequestParam(required = false, defaultValue = "1") int page ,
-                                            @RequestParam(required = false, defaultValue = "5") int size){
-        if (page <= 0) {
-            page = 1;
-        }
-        return eventService.findExpenseByEventId(id, page, size);
+        return expenseService.findAll(principal.getName());
     }
 
     @PostMapping
@@ -48,39 +43,23 @@ public class ExpenseController {
         expenseService.saveExpense(expense);
     }
 
-    @PostMapping("/addToEvent/{eventId}")
-    public void saveAndAddToEvent(
+    // участник События
+    @PostMapping("/addByEventId/{eventId}")
+    public void saveAndAddToEventByPrinciple(
             Principal principal,
             @PathVariable Long eventId,
-            @RequestBody Expense expense){
-        expenseService.saveAndAddToEvent(principal.getName(), eventId, expense);
-    }
-
-    // добавление трат к эвенту без принципала, через Дто.
-    @PostMapping("/addByEventId/{eventId}")
-    public void saveAndAddToEventNoPrinciple(
-            @PathVariable Long eventId,
             @RequestBody ExpenseDto expenseDto){
-        expenseService.saveAndAddToEventNoPrinciple(eventId, expenseDto);
+        expenseService.saveAndAddToEventByPrinciple(principal.getName(), eventId, expenseDto);
     }
 
-//    @PutMapping
-//    public ResponseEntity<?> updateExpense(
-//            @RequestBody ExpenseDto expenseDto)
-//    {
-//
-//        ResponseEntity<?> responseEntity = expenseService.updateExpense(expenseDto);
-////        return expenseService.updateExpense(expenseDto);
-//        return responseEntity;
-//    }
-
+    // байер обновляемой траты или менеджер События
     @PatchMapping
-    public ResponseEntity<?> updateExpense(
+    public ResponseEntity<?> updateExpenseByPrincipal(
+            Principal principal,
             @RequestBody ExpenseDto expenseDto)
     {
 
-        ResponseEntity<?> responseEntity = expenseService.updateExpense(expenseDto);
-//        return expenseService.updateExpense(expenseDto);
+        ResponseEntity<?> responseEntity = expenseService.updateExpense(principal.getName(), expenseDto);
         return responseEntity;
     }
 
@@ -95,4 +74,30 @@ public class ExpenseController {
     }
 
 
+
+
+
+
+
+
+//////////////////////////////////////////////////////////////////
+
+    @GetMapping("/ByEventId/{id}")
+    public List<ExpenseDto> findExpenseByEventId(@PathVariable Long id,
+                                                 @RequestParam(required = false, defaultValue = "1") int page ,
+                                                 @RequestParam(required = false, defaultValue = "5") int size){
+        if (page <= 0) {
+            page = 1;
+        }
+        return eventService.findExpenseByEventId(id, page, size);
+    }
+
+    //
+    @PostMapping("/addToEvent/{eventId}")
+    public void saveAndAddToEvent(
+            Principal principal,
+            @PathVariable Long eventId,
+            @RequestBody Expense expense){
+        expenseService.saveAndAddToEvent(principal.getName(), eventId, expense);
+    }
 }

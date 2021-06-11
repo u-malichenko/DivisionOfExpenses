@@ -36,7 +36,8 @@ public class MappingExpenseDtoToExpenseUtils {
         expense.setTotalExpenseSum(expenseDto.getTotalExpenseSum());
         expense.setComment(expenseDto.getComment());
         expense.setExpenseDate(expenseDto.getExpenseDate());
-        if(expense.getPartitialPayersList() != null) {
+//        if(expense.getPartitialPayersList() != null) {
+        if(expense.getPartitialPayersList().size() > 0) {
             for (PartitialPayer partitialPayer : partitialPayersRepository.findByExpense(expense).get()) {
                 partitialPayersRepository.delete(partitialPayer);
             }
@@ -52,7 +53,8 @@ public class MappingExpenseDtoToExpenseUtils {
         }
 //        expense.setPartitialPayersList(newPartitialPayerList);
 
-        if(expense.getDirectPayersList() != null) {
+//        if(expense.getDirectPayersList() != null) {
+        if(expense.getDirectPayersList().size() > 0) {
             for (DirectPayer directPayer : directPayersRepository.findByExpense(expense).get()) {
                 directPayersRepository.delete(directPayer);
             }

@@ -25,7 +25,6 @@ import java.util.stream.Collectors;
 public class EventService {
 
     private final EventRepository eventRepository;
-    //    private final UserRepository userRepository;
     private final UserService userService;
     private final EventMemberRepository eventMemberRepository;
     private final ExpenseRepository expenseRepository;
@@ -43,7 +42,10 @@ public class EventService {
         }
     }
 
-    public ResponseEntity<?> findEventDtoForEditPageById(Long id) {
+    public ResponseEntity<?> findEventDtoForEditPageByIdByParticipant(String username, Long id) {
+        if(!eventRepository.findEventUserUsernameById(id).contains(username)){
+            return new ResponseEntity<String>("You are not a participant", HttpStatus.NOT_FOUND);
+        }
         EventDtoForEditPage eventDtoForEditPage = new EventDtoForEditPage(findEventByIdBasic(id));
         if (eventDtoForEditPage.getId() != null) {
             return new ResponseEntity<EventDtoForEditPage>(eventDtoForEditPage, HttpStatus.OK);
@@ -84,9 +86,6 @@ public class EventService {
         return mappingEventUtils.mapToEventDtoForEditPage(event);
     }
 
-//    public EventDto saveEventDto(Event event){
-//        return new EventDto(eventRepository.save(event));
-//    }
 
     public ResponseEntity<?> updateEvent(Event event) {
         Event eventFromDB = findEventByIdBasic(event.getId());
@@ -97,9 +96,9 @@ public class EventService {
             if (event.getDescription() != null) {
                 eventFromDB.setDescription(event.getDescription());
             }
-            if (event.getTotalEventSum() != null) {
-                eventFromDB.setTotalEventSum(event.getTotalEventSum());
-            }
+//            if (event.getTotalEventSum() != null) {
+//                eventFromDB.setTotalEventSum(event.getTotalEventSum());
+//            }
             if (event.getEventUserList() != null) {
                 eventFromDB.setEventUserList(event.getEventUserList());
             }
@@ -122,35 +121,13 @@ public class EventService {
         return updateEvent(event);
     }
 
-//    public ResponseEntity<?> updateEventByEventDtoForEditPageByPrincipal(EventDtoForEditPage eventDtoForEditPage, String username) {
-//        Set<String> eventUserSet = eventDtoForEditPage.getEventUserList().stream().collect(Collectors.toSet());
-//        if(eventUserSet.size() != eventDtoForEditPage.getEventUserList().size()){
-//            return new ResponseEntity<String>("Duplicate username", HttpStatus.NOT_ACCEPTABLE);
-//        }
-//        if (!username.equals(eventRepository.findEventManagerUsernameById(eventDtoForEditPage.getId()))) {
-//            return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.METHOD_NOT_ALLOWED);
-//        }
-//        Event eventFromDB = findEventByIdBasic(eventDtoForEditPage.getId());
-//        List<User> userList = null;
-//        if (!eventDtoForEditPage.getEventUserList().isEmpty()) {
-//            userList = new ArrayList<>();
-//            for (String eventUserUsername : eventDtoForEditPage.getEventUserList()
-//            ) {
-//                User user = userService.findByUsername(eventUserUsername).orElseThrow(() -> new UsernameNotFoundException("User with nickname " + eventUserUsername + " not found"));
-//                userList.add(user);
-//            }
-//        }
-//        Event event = mappingEventUtils.mapEventDtoForEditPageToEvent(eventFromDB, eventDtoForEditPage, userList);
-//        return updateEvent(event);
-//    }
-
-    public ResponseEntity<?> updateEventByEventDtoForEditPageByPrincipal(EventDtoForEditPage eventDtoForEditPage, String username) {
+    public ResponseEntity<?> updateEventByEventDtoForEditPageByManager(EventDtoForEditPage eventDtoForEditPage, String username) {
+        if (!username.equals(eventRepository.findEventManagerUsernameById(eventDtoForEditPage.getId()))) {
+            return new ResponseEntity<String>("You don't have any right to update", HttpStatus.METHOD_NOT_ALLOWED);
+        }
         Set<String> eventUserSet = eventDtoForEditPage.getEventUserList().stream().collect(Collectors.toSet());
         if(eventUserSet.size() != eventDtoForEditPage.getEventUserList().size()){
             return new ResponseEntity<String>("Duplicate username", HttpStatus.NOT_ACCEPTABLE);
-        }
-        if (!username.equals(eventRepository.findEventManagerUsernameById(eventDtoForEditPage.getId()))) {
-            return new ResponseEntity<String>("Not principal", HttpStatus.METHOD_NOT_ALLOWED);
         }
         Event eventFromDB = findEventByIdBasic(eventDtoForEditPage.getId());
         List<String> eventUserListDto = eventDtoForEditPage.getEventUserList();
@@ -183,7 +160,7 @@ public class EventService {
     }
 
 
-    public void deleteEventByPrincipal(Long id, String username) {
+    public void deleteEventByManager(Long id, String username) {
         if (!username.equals(eventRepository.findEventManagerUsernameById(id))) {
             return;
         }
@@ -219,7 +196,7 @@ public class EventService {
                 .collect(Collectors.toList());
     }
 
-    public List<EventDto> findEventsByParticipantUsername(
+    public List<EventDto> findEventsByParticipant(
             String username,
             int page,
             int size
@@ -328,7 +305,6 @@ public class EventService {
                             () -> new EventNotFoundException("Event: " + id + " not found.")
                     );
         } catch (EventNotFoundException e) {
-//            e.printStackTrace();
             System.out.println(e);
         }
         return event;

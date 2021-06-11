@@ -22,11 +22,28 @@ import java.util.stream.Collectors;
 public class EventController {
     private final EventService eventService;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> findEventById(@PathVariable Long id) {
-        return eventService.findEventDtoForEditPageById(id);
+    // Поиск событий по участнику
+    @GetMapping
+    public List<EventDto> findEventsByParticipant(
+            Principal principal,
+            @RequestParam(name = "page", defaultValue = "1") int page,
+            @RequestParam(name = "size", defaultValue = "10") int size
+    ){
+        if (page <= 0) {
+            page = 1;
+        }
+        return eventService.findEventsByParticipant(
+                principal.getName(),
+                page,
+                size
+        );
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> findEventByIdByParticipant(Principal principal,
+                                           @PathVariable Long id) {
+        return eventService.findEventDtoForEditPageByIdByParticipant(principal.getName(), id);
+    }
 
     @PostMapping
     public void saveEvent(@RequestBody Event event, Principal principal) {
@@ -34,15 +51,24 @@ public class EventController {
     }
 
     @PatchMapping
-    public ResponseEntity<?> updateEvent(@RequestBody EventDtoForEditPage EventDtoForEditPage, Principal principal) {
-        return eventService.updateEventByEventDtoForEditPageByPrincipal(EventDtoForEditPage, principal.getName());
+    public ResponseEntity<?> updateEventByManager(@RequestBody EventDtoForEditPage EventDtoForEditPage, Principal principal) {
+        return eventService.updateEventByEventDtoForEditPageByManager(EventDtoForEditPage, principal.getName());
     }
 
     @DeleteMapping("/{id}")
-    public void deleteEventByPrincipal(@PathVariable Long id, Principal principal) {
-        eventService.deleteEventByPrincipal(id, principal.getName());
+    public void deleteEventByManager(@PathVariable Long id, Principal principal) {
+        eventService.deleteEventByManager(id, principal.getName());
     }
 
+
+
+
+
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////////////////
 
     @PutMapping
     public void updateEventByPrincipal(@RequestBody Event event, Principal principal) {
@@ -66,23 +92,6 @@ public class EventController {
         );
     }
 
-    // Поиск событий по участнику, Principal
-    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    @GetMapping
-    public List<EventDto> findEventsByParticipantUsername(
-            Principal principal,
-            @RequestParam(name = "page", defaultValue = "1") int page,
-            @RequestParam(name = "size", defaultValue = "10") int size
-    ){
-        if (page <= 0) {
-            page = 1;
-        }
-        return eventService.findEventsByParticipantUsername(
-                principal.getName(),
-                page,
-                size
-        );
-    }
 
     @GetMapping("/addToUserList/{eventId}")
     public ResponseEntity<?> addUserToEventUserList(
@@ -96,13 +105,6 @@ public class EventController {
                                             @PathVariable Long eventId){
         eventService.removeUserFromEventUserList(userDtoRemove, eventId);
     }
-
-    /////////////////////////////////////////////////////////////////////////////////////////
-
-    //    @PostMapping("/dto")
-//    public EventDto saveEventDto(@RequestBody Event event) {
-//        return eventService.saveEventDto(event);
-//    }
 
 
 
