@@ -36,9 +36,9 @@ public class EventService {
     public ResponseEntity<?> findEventById(Long id) {
         EventDto1 eventDto1 = new EventDto1(findEventByIdBasic(id));
         if (eventDto1.getId() != null) {
-            return new ResponseEntity<EventDto1>(eventDto1, HttpStatus.OK);
+            return new ResponseEntity<EventDto1>(eventDto1, HttpStatus.ACCEPTED);
         } else {
-            return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.OK);
+            return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.NOT_ACCEPTABLE);
         }
     }
 
@@ -48,9 +48,9 @@ public class EventService {
         }
         EventDtoForEditPage eventDtoForEditPage = new EventDtoForEditPage(findEventByIdBasic(id));
         if (eventDtoForEditPage.getId() != null) {
-            return new ResponseEntity<EventDtoForEditPage>(eventDtoForEditPage, HttpStatus.OK);
+            return new ResponseEntity<EventDtoForEditPage>(eventDtoForEditPage, HttpStatus.ACCEPTED);
         } else {
-            return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.OK);
+            return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.NOT_ACCEPTABLE);
         }
     }
 
@@ -67,7 +67,6 @@ public class EventService {
 
 
     public Event saveEvent(Event event, String username) {
-//        User user = userRepository.findByUsername(username).get();
         User user = userService.findByUsernameBasic(username);
         event.setEventManager(user);
         event.getEventUserList().add(user);
@@ -108,9 +107,9 @@ public class EventService {
             Event savedEvent = eventRepository.save(eventFromDB);
             divisionOfExpenseService.calculateEvent(savedEvent);
 //            return new ResponseEntity<Event>(savedEvent, HttpStatus.OK);
-            return new ResponseEntity<String>("Well done", HttpStatus.OK);
+            return new ResponseEntity<String>("Well done", HttpStatus.ACCEPTED);
         } else {
-            return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.NOT_ACCEPTABLE);
         }
     }
 
@@ -123,7 +122,7 @@ public class EventService {
 
     public ResponseEntity<?> updateEventByEventDtoForEditPageByManager(EventDtoForEditPage eventDtoForEditPage, String username) {
         if (!username.equals(eventRepository.findEventManagerUsernameById(eventDtoForEditPage.getId()))) {
-            return new ResponseEntity<String>("You don't have any right to update", HttpStatus.METHOD_NOT_ALLOWED);
+            return new ResponseEntity<String>("You don't have any right to update", HttpStatus.NOT_FOUND);
         }
         Set<String> eventUserSet = eventDtoForEditPage.getEventUserList().stream().collect(Collectors.toSet());
         if(eventUserSet.size() != eventDtoForEditPage.getEventUserList().size()){

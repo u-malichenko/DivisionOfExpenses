@@ -1,8 +1,6 @@
 package ru.division.of.expenses.app.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -18,6 +16,7 @@ import ru.division.of.expenses.app.repository.UserRepository;
 import ru.division.of.expenses.app.util.EmptyJsonResponse;
 import ru.division.of.expenses.app.util.MappingExpenseDtoToExpenseUtils;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -39,7 +38,7 @@ public class ExpenseService {
         List<Expense> pertitialPayerList = expenseRepository.findExpenseByPartitialPayersListByUsername(username);
         buyerList.addAll(directPayerList);
         buyerList.addAll(pertitialPayerList);
-        Set<Expense> expenses = buyerList.stream().collect(Collectors.toSet());
+        Set<Expense> expenses = new HashSet<>(buyerList);
         return expenses
                 .stream()
                 .map(ExpenseDto::new)
@@ -53,11 +52,11 @@ public class ExpenseService {
                         || username.equals(eventService.findEventManagerUsernameByExpenseId(expenseId))
                         || expenseRepository.findDirectPayerUsernameList(expenseId).contains(username)
                         || expenseRepository.findPartitialPayerUsernameList(expenseId).contains(username)){
-                    return new ResponseEntity<ExpenseDto>(expenseDto, HttpStatus.OK);
+                    return new ResponseEntity<ExpenseDto>(expenseDto, HttpStatus.ACCEPTED);
                 }
                 return new ResponseEntity<>("You are not in", HttpStatus.NOT_FOUND);
             } else {
-                return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.NOT_FOUND);
+                return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.NOT_ACCEPTABLE);
             }
     }
 
@@ -122,7 +121,6 @@ public class ExpenseService {
     public void saveAndAddToEventByPrinciple(String username, Long eventId, ExpenseDto expenseDto) {
         List<String> eventUserList = eventService.findEventUserUsernameById(eventId);
         if(!eventUserList.contains(username)){
-            System.out.println("NOT TO ADD");
             return;
         }
         List<String> eventUserUsernameList = eventService.findEventUserUsernameById(eventId);
