@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import ru.division.of.expenses.app.model.DirectPayer;
 import ru.division.of.expenses.app.model.Expense;
 import ru.division.of.expenses.app.model.PartitialPayer;
+import ru.division.of.expenses.app.model.User;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,4 +22,9 @@ public interface PartitialPayersRepository extends JpaRepository<PartitialPayer,
     List<PartitialPayer> findPartitialPayerByExpenseId(@Param("expenseId") Long expenseId);
 
     Optional<List<PartitialPayer>> findByExpense(Expense expense);
+
+    @Query(
+            value = "SELECT pp FROM PartitialPayer pp WHERE pp.expense =:expense AND pp.user =:user"
+    )
+    Optional<PartitialPayer> findPartitialPayerByExpenseAndUser(@Param("expense") Expense expense, @Param("user") User user);
 }
