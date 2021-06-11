@@ -27,7 +27,7 @@ public class ExpenseController {
         return expenseService.findById(principal.getName(), id);
     }
 
-    // участник трат
+    // участник Трат
     @GetMapping
     public List<ExpenseDto> findAll(Principal principal,
                                     @RequestParam(required = false, defaultValue = "1") int page ,
@@ -36,11 +36,6 @@ public class ExpenseController {
             page = 1;
         }
         return expenseService.findAll(principal.getName());
-    }
-
-    @PostMapping
-    public void saveExpense(@RequestBody Expense expense) {
-        expenseService.saveExpense(expense);
     }
 
     // участник События
@@ -99,5 +94,10 @@ public class ExpenseController {
             @PathVariable Long eventId,
             @RequestBody Expense expense){
         expenseService.saveAndAddToEvent(principal.getName(), eventId, expense);
+    }
+
+    @PostMapping
+    public void saveExpense(@RequestBody Expense expense) {
+        expenseService.saveExpense(expense);
     }
 }

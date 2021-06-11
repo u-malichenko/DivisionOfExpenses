@@ -57,7 +57,7 @@ public class ExpenseService {
                 }
                 return new ResponseEntity<>("You are not in", HttpStatus.NOT_FOUND);
             } else {
-                return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.OK);
+                return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.NOT_FOUND);
             }
     }
 
@@ -91,12 +91,8 @@ public class ExpenseService {
     public ResponseEntity<?> updateExpense(String username, ExpenseDto expenseDto) {
         if(username.equals(expenseRepository.findBuyerUsernameByExpenseId(expenseDto.getId())) ||
                 username.equals(eventService.findEventManagerUsernameByExpenseId(expenseDto.getId()))){
-        Expense expense = mappingExpenseDtoToExpenseUtils.mapToExpense(expenseDto);
-//        if(expenseRepository.save(expense) != null){
-//            return new ResponseEntity<String>("Expense was successfully updated", HttpStatus.ACCEPTED);
-//        }
-//        return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.NOT_ACCEPTABLE);
-        return updateExpense(expense);
+            Expense expense = mappingExpenseDtoToExpenseUtils.mapToExpense(expenseDto);
+            return updateExpense(expense);
         }else {
             return new ResponseEntity<>("Update is not allowed", HttpStatus.NOT_ACCEPTABLE);
         }

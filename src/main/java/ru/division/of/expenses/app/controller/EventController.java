@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 public class EventController {
     private final EventService eventService;
 
-    // Поиск событий по участнику
+    // поиск Событий по участнику
     @GetMapping
     public List<EventDto> findEventsByParticipant(
             Principal principal,
@@ -39,6 +39,7 @@ public class EventController {
         );
     }
 
+    // участник События
     @GetMapping("/{id}")
     public ResponseEntity<?> findEventByIdByParticipant(Principal principal,
                                            @PathVariable Long id) {
@@ -50,11 +51,13 @@ public class EventController {
         eventService.saveEventReturnDto(event, principal.getName());
     }
 
+    // менеджер События
     @PatchMapping
     public ResponseEntity<?> updateEventByManager(@RequestBody EventDtoForEditPage EventDtoForEditPage, Principal principal) {
         return eventService.updateEventByEventDtoForEditPageByManager(EventDtoForEditPage, principal.getName());
     }
 
+    // менеджер события
     @DeleteMapping("/{id}")
     public void deleteEventByManager(@PathVariable Long id, Principal principal) {
         eventService.deleteEventByManager(id, principal.getName());

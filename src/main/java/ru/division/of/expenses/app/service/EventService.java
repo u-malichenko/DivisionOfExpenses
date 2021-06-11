@@ -110,7 +110,7 @@ public class EventService {
 //            return new ResponseEntity<Event>(savedEvent, HttpStatus.OK);
             return new ResponseEntity<String>("Well done", HttpStatus.OK);
         } else {
-            return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.OK);
+            return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.NOT_FOUND);
         }
     }
 
