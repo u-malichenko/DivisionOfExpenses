@@ -68,7 +68,7 @@ public class ExpenseService {
     }
 
 
-    public ResponseEntity<?> updateExpense(Expense expense) {
+    public Expense updateExpense(Expense expense) {
         Expense expenseFromDB = findExpenseByIdBasic(expense.getId());
 
         if (expenseFromDB.getId() != null) {
@@ -80,22 +80,53 @@ public class ExpenseService {
             expenseFromDB.setPartitialPayersList(expense.getPartitialPayersList());
             expenseFromDB.setDirectPayersList(expense.getDirectPayersList());
             divisionOfExpenseService.calculateExpense(expenseFromDB);
-            expenseRepository.save(expenseFromDB);
-            return new ResponseEntity<String>("Expense was successfully updated", HttpStatus.ACCEPTED);
+            return expenseRepository.save(expenseFromDB);
         } else {
-            return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.NOT_ACCEPTABLE);
+            return null;
         }
     }
 
     public ResponseEntity<?> updateExpense(String username, ExpenseDto expenseDto) {
         if(username.equals(expenseRepository.findBuyerUsernameByExpenseId(expenseDto.getId())) ||
                 username.equals(eventService.findEventManagerUsernameByExpenseId(expenseDto.getId()))){
-            Expense expense = mappingExpenseDtoToExpenseUtils.mapToExpense(expenseDto);
-            return updateExpense(expense);
-        }else {
-            return new ResponseEntity<>("Update is not allowed", HttpStatus.NOT_ACCEPTABLE);
+            Expense expense = mappingExpenseDtoToExpenseUtils.mapToExpenseFoUpdate(expenseDto);
+            Expense newExpense = updateExpense(expense);
+            if(newExpense != null){
+                mappingExpenseDtoToExpenseUtils.savePayersOfExpense(expenseDto, newExpense);
+                return new ResponseEntity<String>("Expense was successfully updated", HttpStatus.ACCEPTED);
+            }
         }
+            return new ResponseEntity<>("Update is not allowed", HttpStatus.NOT_ACCEPTABLE);
     }
+
+//    public ResponseEntity<?> updateExpense(Expense expense) {
+//        Expense expenseFromDB = findExpenseByIdBasic(expense.getId());
+//
+//        if (expenseFromDB.getId() != null) {
+//            divisionOfExpenseService.rollbackSaldoChangingExpenseBeforeUpdate(expenseFromDB);
+//            expenseFromDB.setExpenseDate(expense.getExpenseDate());
+//            expenseFromDB.setTotalExpenseSum(expense.getTotalExpenseSum());
+//            expenseFromDB.setComment(expense.getComment());
+//            expenseFromDB.setBuyer(expense.getBuyer());
+//            expenseFromDB.setPartitialPayersList(expense.getPartitialPayersList());
+//            expenseFromDB.setDirectPayersList(expense.getDirectPayersList());
+//            divisionOfExpenseService.calculateExpense(expenseFromDB);
+//            expenseRepository.save(expenseFromDB);
+//            return new ResponseEntity<String>("Expense was successfully updated", HttpStatus.ACCEPTED);
+//        } else {
+//            return new ResponseEntity<EmptyJsonResponse>(new EmptyJsonResponse(), HttpStatus.NOT_ACCEPTABLE);
+//        }
+//    }
+
+//    public ResponseEntity<?> updateExpense(String username, ExpenseDto expenseDto) {
+//        if(username.equals(expenseRepository.findBuyerUsernameByExpenseId(expenseDto.getId())) ||
+//                username.equals(eventService.findEventManagerUsernameByExpenseId(expenseDto.getId()))){
+//            Expense expense = mappingExpenseDtoToExpenseUtils.mapToExpense(expenseDto);
+//            return updateExpense(expense);
+//        }else {
+//            return new ResponseEntity<>("Update is not allowed", HttpStatus.NOT_ACCEPTABLE);
+//        }
+//    }
 
     private Expense findExpenseByIdBasic(Long id) {
         Expense expense = new Expense();
@@ -117,6 +148,34 @@ public class ExpenseService {
         divisionOfExpenseService.calculateEvent(expense.getEvent());
         expenseRepository.save(expense);
     }
+
+//    public void saveAndAddToEventByPrinciple(String username, Long eventId, ExpenseDto expenseDto) {
+//        List<String> eventUserList = eventService.findEventUserUsernameById(eventId);
+//        if(!eventUserList.contains(username)){
+//            return;
+//        }
+//        List<String> eventUserUsernameList = eventService.findEventUserUsernameById(eventId);
+//        List<String> eventMemberUserUsername = eventService.findEventMemberUsernameById(eventId);
+//        if (!eventUserUsernameList.contains(expenseDto.getBuyer())) {
+//            Event event = eventService.findEventByIdBasic(eventId);
+//            event.getEventUserList().add(userRepository.findByUsername(expenseDto.getBuyer()).get());
+//            eventService.updateEvent(event);
+//        }
+//        if (!eventMemberUserUsername.contains(expenseDto.getBuyer())) {
+//            Event event = eventService.findEventByIdBasic(eventId);
+//
+//            User expenseBuyer = userRepository.findByUsername(expenseDto.getBuyer()).get();
+//            EventMember eventMember = new EventMember();
+//            eventMember.setUser(expenseBuyer);
+//            eventMember.setEvent(event);
+//            eventMemberRepository.save(eventMember);
+//            event.getEventMembers().add(eventMember);
+//            eventService.updateEvent(event);
+//        }
+//        Expense expense = mappingExpenseDtoToExpenseUtils.mapToExpense(expenseDto);
+//        expense.setEvent(eventService.findEventByIdBasic(eventId));
+//        expenseRepository.save(expense);
+//    }
 
     public void saveAndAddToEventByPrinciple(String username, Long eventId, ExpenseDto expenseDto) {
         List<String> eventUserList = eventService.findEventUserUsernameById(eventId);
@@ -141,9 +200,10 @@ public class ExpenseService {
             event.getEventMembers().add(eventMember);
             eventService.updateEvent(event);
         }
-        Expense expense = mappingExpenseDtoToExpenseUtils.mapToExpense(expenseDto);
+        Expense expense = mappingExpenseDtoToExpenseUtils.mapToExpenseFoSave(expenseDto);
         expense.setEvent(eventService.findEventByIdBasic(eventId));
-        expenseRepository.save(expense);
+        Expense newExpense = expenseRepository.save(expense);
+        mappingExpenseDtoToExpenseUtils.savePayersOfExpense(expenseDto, newExpense);
     }
 
 
