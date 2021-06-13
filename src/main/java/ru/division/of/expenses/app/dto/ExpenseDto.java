@@ -19,7 +19,7 @@ public class ExpenseDto {
     private Long id;
     private String buyer;
     private String comment;
-    private String event;
+    private Long event;
     private Calendar expenseDate;
     private BigDecimal totalExpenseSum;
     private Integer numberOfExpenseParticipants;
@@ -33,7 +33,7 @@ public class ExpenseDto {
             this.buyer = expense.getBuyer().getUsername();
         }
         if (expense.getEvent() != null) {
-            this.event = expense.getEvent().getTitle();
+            this.event = expense.getEvent().getId();
         }
         this.comment = expense.getComment();
         this.expenseDate = expense.getExpenseDate();

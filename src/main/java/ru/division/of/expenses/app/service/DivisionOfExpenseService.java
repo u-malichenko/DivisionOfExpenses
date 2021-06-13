@@ -22,14 +22,11 @@ public class DivisionOfExpenseService {
         resetEventMemberSaldo(eventMembers);
         for (Expense expense : event.getExpenseList()
         ) {
-//            calculateExpense(expense, eventMembers);
-//            event.setTotalEventSum(event.getTotalEventSum().add(expense.getTotalExpenseSum()));
             calculateExpense(expense);
         }
         eventRepository.save(event);
     }
 
-//    public void calculateExpense(Expense expense, Collection<EventMember> eventMemberList) {
       public void calculateExpense(Expense expense) {
         Collection<EventMember> eventMemberList = expense.getEvent().getEventMembers();
         Event event = expense.getEvent();

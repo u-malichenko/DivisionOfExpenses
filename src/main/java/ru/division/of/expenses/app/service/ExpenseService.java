@@ -89,13 +89,11 @@ public class ExpenseService {
     public ResponseEntity<?> updateExpense(String username, ExpenseDto expenseDto) {
         if(username.equals(expenseRepository.findBuyerUsernameByExpenseId(expenseDto.getId())) ||
                 username.equals(eventService.findEventManagerUsernameByExpenseId(expenseDto.getId()))){
-            Expense oldExpense = expenseRepository.getOne(expenseDto.getId());
-            divisionOfExpenseService.rollbackSaldoChangingExpenseBeforeUpdate(oldExpense);
             Expense expense = mappingExpenseDtoToExpenseUtils.mapToExpenseFoUpdate(expenseDto);
             Expense newExpense = updateExpense(expense);
             if(newExpense != null){
                 mappingExpenseDtoToExpenseUtils.savePayersOfExpense(expenseDto, newExpense);
-                divisionOfExpenseService.calculateExpense(newExpense);
+                divisionOfExpenseService.calculateEvent(newExpense.getEvent());
                 return new ResponseEntity<String>("Expense was successfully updated", HttpStatus.ACCEPTED);
             }
         }
