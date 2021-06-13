@@ -51,3 +51,4 @@ INSERT INTO expense (bill_photo, comment, total_expense_sum, buyer_id, event_id)
 
 
 
+

@@ -1,6 +1,7 @@
 package ru.division.of.expenses.app.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.division.of.expenses.app.dto.ExpenseDto;
@@ -14,6 +15,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/expense")
+@Slf4j
 public class ExpenseController {
 
     private final ExpenseService expenseService;
@@ -23,8 +25,10 @@ public class ExpenseController {
     // менеджер События или участник Траты
     @GetMapping("/{id}")
     public ResponseEntity<?> findById(Principal principal,
-                                      @PathVariable Long id){
-        return expenseService.findById(principal.getName(), id);
+                                      @PathVariable Long id) {
+        ResponseEntity<?> responseEntity = expenseService.findById(principal.getName(), id);
+        log.info("Get Expense By Id Answer " + responseEntity);
+        return responseEntity;
     }
 
     // участник трат
@@ -49,6 +53,7 @@ public class ExpenseController {
             Principal principal,
             @PathVariable Long eventId,
             @RequestBody ExpenseDto expenseDto){
+        log.info("saving incomming DTO " + expenseDto);
         expenseService.saveAndAddToEventByPrinciple(principal.getName(), eventId, expenseDto);
     }
 

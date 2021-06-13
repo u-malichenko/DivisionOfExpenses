@@ -12,6 +12,8 @@ import ru.division.of.expenses.app.repository.PartitialPayersRepository;
 import ru.division.of.expenses.app.repository.UserRepository;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -23,21 +25,21 @@ public class MappingExpenseDtoToExpenseUtils {
     private final PartitialPayersRepository partitialPayersRepository;
     private final DirectPayersRepository directPayersRepository;
 
-    public Expense mapToExpense(ExpenseDto expenseDto){
+    public Expense mapToExpense(ExpenseDto expenseDto) {
 
         Expense expense = new Expense();
 
-        if(expenseDto.getId() != null){
+        if (expenseDto.getId() != null) {
             expense = expenseRepository.findById(expenseDto.getId()).orElse(new Expense());
         }
-        if(expenseDto.getBuyer() != null){
+        if (expenseDto.getBuyer() != null) {
             expense.setBuyer(userRepository.findByUsername(expenseDto.getBuyer()).get());
         }
         expense.setTotalExpenseSum(expenseDto.getTotalExpenseSum());
         expense.setComment(expenseDto.getComment());
         expense.setExpenseDate(expenseDto.getExpenseDate());
 //        if(expense.getPartitialPayersList() != null) {
-        if(expense.getPartitialPayersList().size() > 0) {
+        if (expense.getPartitialPayersList().size() > 0) {
             for (PartitialPayer partitialPayer : partitialPayersRepository.findByExpense(expense).get()) {
                 partitialPayersRepository.delete(partitialPayer);
             }
@@ -51,13 +53,13 @@ public class MappingExpenseDtoToExpenseUtils {
         }
 
 //        if(expense.getDirectPayersList() != null) {
-        if(expense.getDirectPayersList().size() > 0) {
+        if (expense.getDirectPayersList().size() > 0) {
             for (DirectPayer directPayer : directPayersRepository.findByExpense(expense).get()) {
                 directPayersRepository.delete(directPayer);
             }
         }
 
-        for (Map.Entry<String, BigDecimal> o : expenseDto.getDirectPayerMap().entrySet()){
+        for (Map.Entry<String, BigDecimal> o : expenseDto.getDirectPayerMap().entrySet()) {
             DirectPayer directPayer = new DirectPayer();
             directPayer.setUser(userRepository.findByUsername(o.getKey()).get());
             directPayer.setSumma(o.getValue());
@@ -65,6 +67,61 @@ public class MappingExpenseDtoToExpenseUtils {
             directPayersRepository.save(directPayer);
         }
 
+
+        return expense;
+
+    }
+
+    public Expense mapToNewExpense(ExpenseDto expenseDto) {
+
+        Expense expense = new Expense();
+        List<PartitialPayer> partitialPayerList = new ArrayList<>();
+        List<DirectPayer> directPayerList = new ArrayList<>();
+
+        if (expenseDto.getBuyer() != null) {
+            expense.setBuyer(userRepository.findByUsername(expenseDto.getBuyer()).get());
+        }
+        expense.setTotalExpenseSum(expenseDto.getTotalExpenseSum());
+        expense.setComment(expenseDto.getComment());
+        expense.setExpenseDate(expenseDto.getExpenseDate());
+        if (expense.getPartitialPayersList().size() > 0) {
+            for (PartitialPayer partitialPayer : partitialPayersRepository.findByExpense(expense).get()) {
+                partitialPayersRepository.delete(partitialPayer);
+            }
+        }
+        for (Map.Entry<String, BigDecimal> o : expenseDto.getPartitialPayerMap().entrySet()) {
+            PartitialPayer partitialPayer = new PartitialPayer();
+            partitialPayer.setUser(userRepository.findByUsername(o.getKey()).get());
+            partitialPayer.setCoefficient(o.getValue());
+            partitialPayer.setExpense(expense);
+            partitialPayerList.add(partitialPayer);
+        }
+
+        if (expense.getDirectPayersList().size() > 0) {
+            for (DirectPayer directPayer : directPayersRepository.findByExpense(expense).get()) {
+                directPayersRepository.delete(directPayer);
+            }
+        }
+
+        for (Map.Entry<String, BigDecimal> o : expenseDto.getDirectPayerMap().entrySet()) {
+            DirectPayer directPayer = new DirectPayer();
+            directPayer.setUser(userRepository.findByUsername(o.getKey()).get());
+            directPayer.setSumma(o.getValue());
+            directPayer.setExpense(expense);
+            directPayerList.add(directPayer);
+        }
+
+        expense = expenseRepository.save(expense);
+
+        for (PartitialPayer partitialPayer : partitialPayerList
+        ) {
+            partitialPayer.setExpense(expense);
+        }
+
+        for (DirectPayer directPayer : directPayerList
+        ) {
+            directPayer.setExpense(expense);
+        }
 
         return expense;
 

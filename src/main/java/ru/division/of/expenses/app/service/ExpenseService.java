@@ -1,8 +1,6 @@
 package ru.division.of.expenses.app.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -123,6 +121,7 @@ public class ExpenseService {
         expenseRepository.save(expense);
     }
 
+
     public void saveAndAddToEventByPrinciple(String username, Long eventId, ExpenseDto expenseDto) {
         List<String> eventUserList = eventService.findEventUserUsernameById(eventId);
         if(!eventUserList.contains(username)){
@@ -147,9 +146,11 @@ public class ExpenseService {
             event.getEventMembers().add(eventMember);
             eventService.updateEvent(event);
         }
-        Expense expense = mappingExpenseDtoToExpenseUtils.mapToExpense(expenseDto);
-        expense.setEvent(eventService.findEventByIdBasic(eventId));
+        Expense expense = mappingExpenseDtoToExpenseUtils.mapToNewExpense(expenseDto);
+        Event event = eventService.findEventByIdBasic(eventId);
+        expense.setEvent(event);
         expenseRepository.save(expense);
+        divisionOfExpenseService.calculateEvent(event);
     }
 
 

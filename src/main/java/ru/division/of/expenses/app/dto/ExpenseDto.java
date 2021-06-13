@@ -51,9 +51,9 @@ public class ExpenseDto {
         List<String> directList = new ArrayList<>(directPayerMap.keySet());
         List<String> partitialList = new ArrayList<>(partitialPayerMap.keySet());
 
-        if(directPayerMap.containsKey(buyer)){
+        if (directPayerMap.containsKey(buyer)) {
             this.numberOfExpenseParticipants--;
-        }else if (partitialPayerMap.containsKey(buyer)){
+        } else if (partitialPayerMap.containsKey(buyer)) {
             this.numberOfExpenseParticipants--;
         }
 
@@ -61,5 +61,20 @@ public class ExpenseDto {
                 directList.contains(aObject)).collect(Collectors.toList());
         this.numberOfExpenseParticipants = this.numberOfExpenseParticipants - result.size();
 
+    }
+
+    @Override
+    public String toString() {
+        return "ExpenseDto{" +
+                "\nid=" + id +
+                "\n, buyer='" + buyer + '\'' +
+                "\n, comment='" + comment + '\'' +
+                "\n, event='" + event + '\'' +
+                "\n, expenseDate=" + expenseDate +
+                "\n, totalExpenseSum=" + totalExpenseSum +
+                "\n, numberOfExpenseParticipants=" + numberOfExpenseParticipants +
+                "\n, directPayerMap=" + directPayerMap +
+                "\n, partitialPayerMap=" + partitialPayerMap +
+                '}';
     }
 }
