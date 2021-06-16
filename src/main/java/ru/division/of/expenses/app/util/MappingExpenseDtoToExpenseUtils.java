@@ -23,51 +23,6 @@ public class MappingExpenseDtoToExpenseUtils {
     private final PartitialPayersRepository partitialPayersRepository;
     private final DirectPayersRepository directPayersRepository;
 
-//    public Expense mapToExpense(ExpenseDto expenseDto){
-//
-//        Expense expense = new Expense();
-//
-//        if(expenseDto.getId() != null){
-//            expense = expenseRepository.findById(expenseDto.getId()).orElse(new Expense());
-//        }
-//        if(expenseDto.getBuyer() != null){
-//            expense.setBuyer(userRepository.findByUsername(expenseDto.getBuyer()).get());
-//        }
-//        expense.setTotalExpenseSum(expenseDto.getTotalExpenseSum());
-//        expense.setComment(expenseDto.getComment());
-//        expense.setExpenseDate(expenseDto.getExpenseDate());
-////        if(expense.getPartitialPayersList().size() > 0) {
-//        if(expense.getPartitialPayersList() != null) {
-//            for (PartitialPayer partitialPayer : partitialPayersRepository.findByExpense(expense).get()) {
-//                partitialPayersRepository.delete(partitialPayer);
-//            }
-//        }
-//        for (Map.Entry<String, BigDecimal> o : expenseDto.getPartitialPayerMap().entrySet()) {
-//            PartitialPayer partitialPayer = new PartitialPayer();
-//            partitialPayer.setUser(userRepository.findByUsername(o.getKey()).get());
-//            partitialPayer.setCoefficient(o.getValue());
-//            partitialPayer.setExpense(expense);
-//            partitialPayersRepository.save(partitialPayer);
-//        }
-//
-////        if(expense.getDirectPayersList().size() > 0) {
-//        if(expense.getDirectPayersList() != null) {
-//            for (DirectPayer directPayer : directPayersRepository.findByExpense(expense).get()) {
-//                directPayersRepository.delete(directPayer);
-//            }
-//        }
-//
-//        for (Map.Entry<String, BigDecimal> o : expenseDto.getDirectPayerMap().entrySet()){
-//            DirectPayer directPayer = new DirectPayer();
-//            directPayer.setUser(userRepository.findByUsername(o.getKey()).get());
-//            directPayer.setSumma(o.getValue());
-//            directPayer.setExpense(expense);
-//            directPayersRepository.save(directPayer);
-//        }
-//
-//        return expense;
-//    }
-
     public Expense mapToExpenseFoSave(ExpenseDto expenseDto){
 
         Expense expense = new Expense();
