@@ -124,24 +124,6 @@ public class ExpenseService {
         if(!eventUserList.contains(username)){
             return;
         }
-        List<String> eventUserUsernameList = eventService.findEventUserUsernameById(eventId);
-        List<String> eventMemberUserUsername = eventService.findEventMemberUsernameById(eventId);
-        if (!eventUserUsernameList.contains(expenseDto.getBuyer())) {
-            Event event = eventService.findEventByIdBasic(eventId);
-            event.getEventUserList().add(userRepository.findByUsername(expenseDto.getBuyer()).get());
-            eventService.updateEvent(event);
-        }
-        if (!eventMemberUserUsername.contains(expenseDto.getBuyer())) {
-            Event event = eventService.findEventByIdBasic(eventId);
-
-            User expenseBuyer = userRepository.findByUsername(expenseDto.getBuyer()).get();
-            EventMember eventMember = new EventMember();
-            eventMember.setUser(expenseBuyer);
-            eventMember.setEvent(event);
-            eventMemberRepository.save(eventMember);
-            event.getEventMembers().add(eventMember);
-            eventService.updateEvent(event);
-        }
         Expense expense = mappingExpenseDtoToExpenseUtils.mapToExpenseFoSave(expenseDto);
         expense.setEvent(eventService.findEventByIdBasic(eventId));
         Expense newExpense = expenseRepository.save(expense);
