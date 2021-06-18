@@ -3,6 +3,8 @@ package ru.division.of.expenses.app.util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.division.of.expenses.app.dto.ExpenseDto;
+import ru.division.of.expenses.app.exceptionhandling.EventNotFoundException;
+import ru.division.of.expenses.app.exceptionhandling.UserNotFoundException;
 import ru.division.of.expenses.app.model.DirectPayer;
 import ru.division.of.expenses.app.model.Expense;
 import ru.division.of.expenses.app.model.PartitialPayer;
@@ -31,7 +33,16 @@ public class MappingExpenseDtoToExpenseUtils {
             expense = expenseRepository.findById(expenseDto.getId()).orElse(new Expense());
         }
         if(expenseDto.getBuyer() != null){
-            expense.setBuyer(userRepository.findByUsername(expenseDto.getBuyer()).get());
+//            expense.setBuyer(userRepository.findByUsername(expenseDto.getBuyer()).get());
+            try {
+                expense.setBuyer(userRepository.findByUsername(expenseDto.getBuyer()).orElseThrow(
+                        () -> new UserNotFoundException("Not found")
+                ));
+            }catch (UserNotFoundException e){
+                System.out.println(e);
+                expense.setBuyer(null);
+            }
+
         }
         expense.setTotalExpenseSum(expenseDto.getTotalExpenseSum());
         expense.setComment(expenseDto.getComment());
