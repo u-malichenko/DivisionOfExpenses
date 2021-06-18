@@ -31,10 +31,15 @@ public interface EventRepository extends JpaRepository<Event, Long>, JpaSpecific
            Pageable pageable
     );
 
+//    @Query(
+//            value = "SELECT e.expenseList FROM Event e WHERE e.id = :id"
+//    )
+//    Page<Expense> findExpenseByEventId(@Param("id") Long id, Pageable pageable);
+
     @Query(
             value = "SELECT e.expenseList FROM Event e WHERE e.id = :id"
     )
-    Page<Expense> findExpenseByEventId(@Param("id") Long id, Pageable pageable);
+    List<Expense> findExpenseByEventId(@Param("id") Long id);
 
     @Query(
             value = "SELECT e FROM Event e WHERE e.eventManager.username =:username"

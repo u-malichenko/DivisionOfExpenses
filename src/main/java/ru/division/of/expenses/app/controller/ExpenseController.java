@@ -77,14 +77,19 @@ public class ExpenseController {
 
 //////////////////////////////////////////////////////////////////
 
+//    @GetMapping("/ByEventId/{id}")
+//    public List<ExpenseDto> findExpenseByEventId(@PathVariable Long id,
+//                                                 @RequestParam(required = false, defaultValue = "1") int page ,
+//                                                 @RequestParam(required = false, defaultValue = "5") int size){
+//        if (page <= 0) {
+//            page = 1;
+//        }
+//        return eventService.findExpenseByEventId(id, page, size);
+//    }
+
     @GetMapping("/ByEventId/{id}")
-    public List<ExpenseDto> findExpenseByEventId(@PathVariable Long id,
-                                                 @RequestParam(required = false, defaultValue = "1") int page ,
-                                                 @RequestParam(required = false, defaultValue = "5") int size){
-        if (page <= 0) {
-            page = 1;
-        }
-        return eventService.findExpenseByEventId(id, page, size);
+    public List<ExpenseDto> findExpenseByEventId(@PathVariable Long id){
+        return eventService.findExpenseByEventId(id);
     }
 
     //

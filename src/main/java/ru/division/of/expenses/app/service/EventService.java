@@ -207,12 +207,23 @@ public class EventService {
                 .collect(Collectors.toList());
     }
 
+//    public List<ExpenseDto> findExpenseByEventId(
+//            Long id,
+//            int page,
+//            int size
+//    ) {
+////        Page<Expense> expenses = eventRepository.findExpenseByEventId(id, PageRequest.of(page - 1, size));
+//        Page<Expense> expenses = eventRepository.findExpenseByEventId(id, PageRequest.of(page, size));
+//        return expenses
+//                .stream()
+//                .map(ExpenseDto::new)
+//                .collect(Collectors.toList());
+//    }
+
     public List<ExpenseDto> findExpenseByEventId(
-            Long id,
-            int page,
-            int size
+            Long id
     ) {
-        Page<Expense> expenses = eventRepository.findExpenseByEventId(id, PageRequest.of(page - 1, size));
+        List<Expense> expenses = eventRepository.findExpenseByEventId(id);
         return expenses
                 .stream()
                 .map(ExpenseDto::new)
