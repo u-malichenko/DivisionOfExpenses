@@ -10,36 +10,35 @@ import ru.division.of.expenses.app.model.User;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class EventDto1 {
+public class EventDtoForEditPage {
 
     private Long id;
     private String title;
-    private Calendar date;
     private String description;
-    private String managerUsername;
+    private Calendar date;
+    private String eventManager;
     private BigDecimal totalEventSum;
     private List<String> eventUserList;
-    private List<ExpenseDto> expenseList;
+    private Integer amountOfExpense;
 
-    public EventDto1(Event event) {
-
+    public EventDtoForEditPage(Event event) {
         this.id = event.getId();
         this.title = event.getTitle();
         this.date = event.getDate();
-        this.description = event.getDescription();
-        if(event.getEventManager() != null){
-            this.managerUsername = event.getEventManager().getUsername(); }
+        this.eventManager = event.getEventManager().getUsername();
         this.totalEventSum = event.getTotalEventSum();
+        this.amountOfExpense = event.getExpenseList().size();
         this.eventUserList = event.getEventUserList().stream()
                 .map(User::getUsername)
                 .collect(Collectors.toList());
-        this.expenseList = event.getExpenseList().stream()
-                .map(ExpenseDto::new)
-                .collect(Collectors.toList());
+        this.description = event.getDescription();
+
     }
+
 }
